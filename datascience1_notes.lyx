@@ -1,0 +1,989 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+The Data Scientist's Toolbox - Notes
+\end_layout
+
+\begin_layout Author
+Tanner Prestegard
+\end_layout
+
+\begin_layout Date
+Course taken from 3/2/2015 - 3/28/2015
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+
+\series bold
+What do data scientists do?
+\end_layout
+
+\begin_layout Enumerate
+Define the question.
+\end_layout
+
+\begin_layout Enumerate
+Define the ideal data set.
+\end_layout
+
+\begin_layout Enumerate
+Determine what data you can access.
+\end_layout
+
+\begin_layout Enumerate
+Obtain the data.
+\end_layout
+
+\begin_layout Enumerate
+Clean the data.
+\end_layout
+
+\begin_layout Enumerate
+Exploratory data analysis.
+\end_layout
+
+\begin_layout Enumerate
+Statistical predition/modeling.
+\end_layout
+
+\begin_layout Enumerate
+Interpret the results.
+\end_layout
+
+\begin_layout Enumerate
+Challenge the results.
+\end_layout
+
+\begin_layout Enumerate
+Synthesize/write up results.
+\end_layout
+
+\begin_layout Enumerate
+Create reproducible code.
+\end_layout
+
+\begin_layout Enumerate
+Distribute results to other people.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+The Data Scientist's Toolbox
+\end_layout
+
+\begin_layout Itemize
+R is the data science community's workhorse.
+\end_layout
+
+\begin_layout Itemize
+RStudio is an IDE for R; supposed to be very useful.
+\end_layout
+
+\begin_layout Itemize
+We will use R markdown documents as documentation for our code - HTML files
+ are generated from R markdown documents.
+\end_layout
+
+\begin_layout Itemize
+We will use Github for sharing code and documents.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Getting help in R
+\end_layout
+
+\begin_layout Itemize
+?rnorm - will give you help documentation for function 'rnorm'.
+\end_layout
+
+\begin_layout Itemize
+help.search(
+\begin_inset Quotes eld
+\end_inset
+
+rnorm
+\begin_inset Quotes erd
+\end_inset
+
+) - more flexible, may not even have to get the naming right.
+\end_layout
+
+\begin_layout Itemize
+Get arguments - args(
+\begin_inset Quotes eld
+\end_inset
+
+rnorm
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Type function name without any backets - R will reproduce the code in the
+ console.
+\end_layout
+
+\begin_layout Itemize
+Can try StackOverflow for help from others.
+\end_layout
+
+\begin_layout Itemize
+How to ask an R question:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What steps will produce the problem?
+\end_layout
+
+\begin_layout Itemize
+What is the expected output?
+\end_layout
+
+\begin_layout Itemize
+What do you see instead?
+\end_layout
+
+\begin_layout Itemize
+What version of the product (R, other packages) are you using?
+\end_layout
+
+\begin_layout Itemize
+What operating system are you using?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How to ask a data analysis question:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What is the question you are trying to answer?
+\end_layout
+
+\begin_layout Itemize
+What steps/tools did you use to answer it?
+\end_layout
+
+\begin_layout Itemize
+What did you expect to see?
+\end_layout
+
+\begin_layout Itemize
+What do you see instead?
+\end_layout
+
+\begin_layout Itemize
+What other solutions have you thought about?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can get data analysis / statistics help on CrossValidated.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Notes on Googling data science questions
+\end_layout
+
+\begin_layout Itemize
+Use [data type] data analysis or [data type] R package
+\end_layout
+
+\begin_layout Itemize
+Try to identify what data analysis is called for your data type:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Biostatistics for medical data.
+\end_layout
+
+\begin_layout Itemize
+Data science for data from web analytics.
+\end_layout
+
+\begin_layout Itemize
+Machine learning for data in computer science or computer vision.
+\end_layout
+
+\begin_layout Itemize
+Natural language processing for data from texts.
+\end_layout
+
+\begin_layout Itemize
+Signal processing for data from electrical signals.
+\end_layout
+
+\begin_layout Itemize
+Business analytics for data on customers.
+\end_layout
+
+\begin_layout Itemize
+Econometrics for economic data.
+\end_layout
+
+\begin_layout Itemize
+Statistical process control for data about industrial processes.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Git and Github
+\end_layout
+
+\begin_layout Itemize
+Need to download git - a free version control system.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Terminal interface in Windows - git bash
+\end_layout
+
+\begin_layout Itemize
+Open git bash, and do the following lines:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+a
+\end_layout
+
+\begin_layout Itemize
+b
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Github - allows users to push and pull their local repositories to and from
+ remote repositories on the web.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Provides a way to share your files with others and access their files.
+\end_layout
+
+\begin_layout Itemize
+Provides a remote backup method in case your local files are lost.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Creating a Github repository (two methods):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can create your own repo from scratch - use the Github interface to do this.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In git bash, make a new directory, then do 'git init'.
+\end_layout
+
+\begin_layout Itemize
+Check out your directory with 'git remote add origin https://github.com/tprestega
+rd/test-repo.git'
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Or, you can 
+\begin_inset Quotes eld
+\end_inset
+
+fork
+\begin_inset Quotes erd
+\end_inset
+
+ another user's repository.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Fork it using the Github interface.
+\end_layout
+
+\begin_layout Itemize
+Then get a local copy using 'git clone https://github.com/tprestegard/repoName.git
+'
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Basic git commands
+\end_layout
+
+\begin_layout Itemize
+To add all new files: git add .
+ (assumes you are in the directory of the new files you want to add)
+\end_layout
+
+\begin_layout Itemize
+To update file changes (deletion or name changes): git add -u
+\end_layout
+
+\begin_layout Itemize
+To do both of the previous things: git add -A
+\end_layout
+
+\begin_layout Itemize
+Commit to the LOCAL repo using: git commit -m 
+\begin_inset Quotes eld
+\end_inset
+
+message
+\begin_inset Quotes erd
+\end_inset
+
+, where message is a useful description of what you did.
+\end_layout
+
+\begin_layout Itemize
+To commit to the remote repo on Github: git push
+\end_layout
+
+\begin_layout Itemize
+Branches:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Create a branch: git checkout -b branch_name
+\end_layout
+
+\begin_layout Itemize
+To see what branch you are on: git branch
+\end_layout
+
+\begin_layout Itemize
+To switch back to the master branch type: git checkout master
+\end_layout
+
+\begin_layout Itemize
+If you want to merge your changes into another branch or repo: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Go to Github and click the 
+\begin_inset Quotes eld
+\end_inset
+
+Compare and pull request
+\begin_inset Quotes erd
+\end_inset
+
+, then the other user can decide if they want to allow the request.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Help:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Git documentation: http://git-scm.com/doc
+\end_layout
+
+\begin_layout Itemize
+Github help: https://help.github.com
+\end_layout
+
+\begin_layout Itemize
+Stack Overflow
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Markdown
+\end_layout
+
+\begin_layout Itemize
+Use extension .md for markdown files.
+\end_layout
+
+\begin_layout Itemize
+Headings:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+## creates a secondary heading.
+\end_layout
+
+\begin_layout Itemize
+### creates a tertiary heading.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Lists: use '* item* to put items into a bulleted list.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Downloading and installing R packages
+\end_layout
+
+\begin_layout Itemize
+Primary location to get R packages - CRAN.
+\end_layout
+
+\begin_layout Itemize
+Use the available.packags() function to get information about available packages
+ on CRAN.
+\end_layout
+
+\begin_layout Itemize
+To install an R package, use the install.packages() function in R.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: install.packages(
+\begin_inset Quotes eld
+\end_inset
+
+package-name
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Example for installing multiple packages: install.packages(c(
+\begin_inset Quotes eld
+\end_inset
+
+package1
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+package2
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+package3
+\begin_inset Quotes erd
+\end_inset
+
+))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Loading R packages: use library(package-name).
+ Don't use quotes!
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Package dependencies will be loaded first.
+\end_layout
+
+\begin_layout Itemize
+After loading, the functions exported by that package will be attached to
+ the top of the search list.
+\end_layout
+
+\begin_layout Itemize
+Use search() to see them.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Types of data science questions
+\end_layout
+
+\begin_layout Itemize
+Descriptive
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Goal: describe a set of data.
+\end_layout
+
+\begin_layout Itemize
+First type of data analysis performed.
+\end_layout
+
+\begin_layout Itemize
+Descriptions cannot usually be generalized without additional statistical
+ modeling.
+\end_layout
+
+\begin_layout Itemize
+Description and interpretation are different steps.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Exploratory
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Goal: find relationships you didn't know about
+\end_layout
+
+\begin_layout Itemize
+Good for discovering new connections and defining future studies.
+\end_layout
+
+\begin_layout Itemize
+Exploratory analyses are usually not the final say and they should not be
+ used alone for generalizing/predicting.
+\end_layout
+
+\begin_layout Itemize
+Correlation does not imply causation.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Inferential
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Goal: use a relatively small sample of data to say something about a bigger
+ population.
+\end_layout
+
+\begin_layout Itemize
+Inference is commonly the goal of statistical models.
+\end_layout
+
+\begin_layout Itemize
+Involves estimating both the quantity you are interested in and your uncertainty
+ about your estimate.
+\end_layout
+
+\begin_layout Itemize
+Depends heavily on both the population and the sampling scheme.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Predictive
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Goal: use the data on some objects to predict values for another object.
+\end_layout
+
+\begin_layout Itemize
+If X predicts Y, it does NOT mean that X causes Y.
+\end_layout
+
+\begin_layout Itemize
+Accurate prediction depends heavily on measuring the right variables.
+\end_layout
+
+\begin_layout Itemize
+Although some models are better than others, more data and a simple model
+ is generally a good recipe.
+\end_layout
+
+\begin_layout Itemize
+Prediction is very hard, especially about the future.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Causal
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Goal: to find out what happens to one variable when you change another variable.
+\end_layout
+
+\begin_layout Itemize
+Usually requres randomized studies to identify causation.
+\end_layout
+
+\begin_layout Itemize
+There are approaches to inferring causation in non-randomized studies, but
+ they are complicated and sensitive to the assumptions you make.
+\end_layout
+
+\begin_layout Itemize
+Causal relationships are usually identified as 
+\begin_inset Quotes eld
+\end_inset
+
+average
+\begin_inset Quotes erd
+\end_inset
+
+ effects, but may not apply to every individual.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ex: if you give this population this drug, on average, they may have an
+ increased lifespan.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Causal models are usually the 
+\begin_inset Quotes eld
+\end_inset
+
+gold standard
+\begin_inset Quotes erd
+\end_inset
+
+ for data analysis.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Mechanistic
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Goal: understand the exact changes in variables that lead to changes in
+ other variables for individual objects.
+\end_layout
+
+\begin_layout Itemize
+Incredibly hard to infer, except in very simple situations.
+\end_layout
+
+\begin_layout Itemize
+Usually modeled by a deterministic set of equations.
+\end_layout
+
+\begin_layout Itemize
+Most commonly applicable in physical sciences or engineering.
+\end_layout
+
+\begin_layout Itemize
+Generally the only random component is measurement error.
+\end_layout
+
+\begin_layout Itemize
+If the equations are known but the parameters are not, they may be inferred
+ with data analysis.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+What is data?
+\end_layout
+
+\begin_layout Itemize
+Data are values of qualitative or quantitative variables, belonging to a
+ set of items.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Variables are measurements or characteristics of an item.
+\end_layout
+
+\begin_layout Itemize
+Qualitative: country of origin, gender, etc.
+\end_layout
+
+\begin_layout Itemize
+Quantitative: height, weight, blood pressure, etc.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Data can be text files, video, audio, etc.
+\end_layout
+
+\begin_layout Itemize
+The most important thing in data science is the question - the second most
+ important is the data.
+\end_layout
+
+\begin_layout Itemize
+Often, the data will limit or enable the questions, but having data can't
+ save you if you don't have a question.
+\end_layout
+
+\begin_layout Subsection*
+Experimental design
+\end_layout
+
+\begin_layout Itemize
+Have a plan for data and code sharing.
+\end_layout
+
+\begin_layout Itemize
+Formulate your question in advance.
+\end_layout
+
+\begin_layout Itemize
+Confounding - assuming a correlation between two variables when really it
+ is a different variable causing the correlation.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: does shoe size correlate to literacy, or is it really age? (kids
+ have smaller shoe size and lower literacy)
+\end_layout
+
+\begin_layout Itemize
+Also known as spurious correlation.
+\end_layout
+
+\begin_layout Itemize
+Randomization and blocking
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If you can and want to, fix a variable.
+\end_layout
+
+\begin_layout Itemize
+If you don't fix a variable, stratify it (i.e., use all possible values of
+ the variable equally with all other variables).
+\end_layout
+
+\begin_layout Itemize
+If you can't fix a variable, randomize it.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Prediction - key quantities
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sensitivity: Pr(positive test | you have the disease)
+\end_layout
+
+\begin_layout Itemize
+Specificity: Pr(negative test | no disease)
+\end_layout
+
+\begin_layout Itemize
+Positive predictive value: Pr(you have the disease | positive test)
+\end_layout
+
+\begin_layout Itemize
+Negative predictive value: Pr(no disease | negative test)
+\end_layout
+
+\begin_layout Itemize
+Accuracy: Pr(correct outcome) = sum of positive and negative predictive
+ values.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Beware 
+\begin_inset Quotes eld
+\end_inset
+
+data dredging
+\begin_inset Quotes erd
+\end_inset
+
+ - if you do 100 trials, it's expected that 5% will fall outside a 2 sigma
+ level.
+\end_layout
+
+\begin_layout Itemize
+Good experiments:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Have replication.
+\end_layout
+
+\begin_layout Itemize
+Measure variability.
+\end_layout
+
+\begin_layout Itemize
+Generalize to the problem you care about.
+\end_layout
+
+\begin_layout Itemize
+Are transparent.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Prediction is not inference, but both can be important.
+\end_layout
+
+\end_body
+\end_document
