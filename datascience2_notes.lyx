@@ -275,8 +275,1055 @@ R Internals (very low level)
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+R Console Input and Evaluation
+\end_layout
+
 \begin_layout Itemize
-TEST
+Assignment operator: <-
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: x <- 1 assigns the value 1 to x.
+\end_layout
+
+\begin_layout Itemize
+Example: msg <- 
+\begin_inset Quotes eld
+\end_inset
+
+hello
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Comments: #
+\end_layout
+
+\begin_layout Itemize
+Auto-printing: assign a value to x, then just enter x.
+ The value will be auto-printed.
+\end_layout
+
+\begin_layout Itemize
+Sequence: x <- 1:20
+\end_layout
+
+\begin_layout Subsection*
+R Objects and Attributes
+\end_layout
+
+\begin_layout Itemize
+R has five basic or 
+\begin_inset Quotes eld
+\end_inset
+
+atomic
+\begin_inset Quotes erd
+\end_inset
+
+ classes of objects.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Character
+\end_layout
+
+\begin_layout Itemize
+Numeric (real numbers) (decimals)
+\end_layout
+
+\begin_layout Itemize
+Integer
+\end_layout
+
+\begin_layout Itemize
+Complex
+\end_layout
+
+\begin_layout Itemize
+Logical (true/false)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The most basic object is a vector.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A vector can only contain objects of the same class.
+\end_layout
+
+\begin_layout Itemize
+But a list can! A list is represented as a vector but can contain objects
+ of different classes.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Empty vectors can be created with the vector() function.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+First argument: class of objects in vector.
+\end_layout
+
+\begin_layout Itemize
+Second argument: length of vector.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Numbers
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Generally treated as double precision real numbers.
+\end_layout
+
+\begin_layout Itemize
+If you explicitly want an integer, you need to specify the L suffix: 1L.
+\end_layout
+
+\begin_layout Itemize
+There is also a special number Inf which represents infinity (1/0).
+\end_layout
+
+\begin_layout Itemize
+The value NaN represents an undefined value.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+R objects can have attributes.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Names, dimnames
+\end_layout
+
+\begin_layout Itemize
+Dimensions
+\end_layout
+
+\begin_layout Itemize
+Class: numeric, character, etc.
+\end_layout
+
+\begin_layout Itemize
+Length
+\end_layout
+
+\begin_layout Itemize
+Other user-defined attributes/metadata.
+\end_layout
+
+\begin_layout Itemize
+Attributes of an object can be accessed using the attributes() function.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+R Vectors and Lists
+\end_layout
+
+\begin_layout Itemize
+The c() function can be used to create vectors of objects.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ex: x <- c(0.5, 0.6)
+\end_layout
+
+\begin_layout Itemize
+Ex: x <- c(TRUE, FALSE)
+\end_layout
+
+\begin_layout Itemize
+Ex: x <- c(
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+b
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+c
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using the vector() function:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: x <- vector(
+\begin_inset Quotes eld
+\end_inset
+
+numeric
+\begin_inset Quotes erd
+\end_inset
+
+, length = 10) outputs a vector of 10 zeros (0 is default value).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+When different objects are mixed in a vector, 
+\emph on
+coercion
+\emph default
+ occurs so that every element in the vector is of the same class.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ex: y <- c(1.7, 
+\begin_inset Quotes erd
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+) is a character vector, so the first element will be a string: 
+\begin_inset Quotes eld
+\end_inset
+
+1.7
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Ex: y <- c(TRUE, 2) is numeric because True/False can be represented as
+ 1/0.
+\end_layout
+
+\begin_layout Itemize
+Ex: y <- c(
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+, TRUE) is a character vector.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Explicit coercion - use the as.* functions:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: x <- 0:6 is an integer sequence, so we can do as.numeric(x), as.character
+(x), as.logical(x), etc.
+\end_layout
+
+\begin_layout Itemize
+Coercion doesn't always work - nonsensical coercion results in NAs and a
+ warning.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Lists - a special type of vector that can contain elements of different
+ classes.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+They are a VERY important data type in R.
+\end_layout
+
+\begin_layout Itemize
+Example: x <- list(1, 
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+, TRUE, 1 + 4i)
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Matrices
+\end_layout
+
+\begin_layout Itemize
+Matrices are vectors with a dimension attribute.
+\end_layout
+
+\begin_layout Itemize
+The dimension attribute is itself an integer vector of length 2 (nrow, ncol).
+\end_layout
+
+\begin_layout Itemize
+Example: m <- matrix(nrow = 2, ncol = 3)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can do dim(m), attributes(m) to get attributes of the matric.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Matrices are inserted column-wise: 1st column is filled, then 2nd column,
+ and so on.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example; m <- matrix(1:6, nrow = 2, ncol = 3) has column 1 = 1, 2; column
+ 2 = 3, 4; column 3 = 5, 6
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Matrices can be created directly from vectors by adding a dimension attribute.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+m <- 1:0
+\end_layout
+
+\begin_layout Itemize
+dim(m) <- c(2,5)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Matrices can be created by column-binding or row-binding with cbind() and
+ rbind()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+x <- 1:3
+\end_layout
+
+\begin_layout Itemize
+y <- 10:12
+\end_layout
+
+\begin_layout Itemize
+cbind(x,y) gives a matrix with column 1 = 1,2,3 and column 2 = 10,11,12
+\end_layout
+
+\begin_layout Itemize
+rbind(x,y) gives a matrix with column 1 = 1,10; column 2 = 2,11; column
+ 3 = 3,12
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+Factors
+\end_layout
+
+\begin_layout Itemize
+Factors are a special type of data that are used to represent categorical
+ data.
+\end_layout
+
+\begin_layout Itemize
+Factors can be ordered or unordered.
+ You can think of a factor as an integer vector where each integer has a
+ label.
+\end_layout
+
+\begin_layout Itemize
+Factors are treated specially by modeling functions like lm() and glm()
+\end_layout
+
+\begin_layout Itemize
+Using factors with labels is better than using integers because factors
+ are self-describing; having a variable that has values 
+\begin_inset Quotes eld
+\end_inset
+
+Male
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Female
+\begin_inset Quotes erd
+\end_inset
+
+ is more descriptive than a variable that has values 1 and 2.
+\end_layout
+
+\begin_layout Itemize
+Factors are created with factor().
+ Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+x <- factor(c(
+\begin_inset Quotes eld
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+no
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+no
+\begin_inset Quotes erd
+\end_inset
+
+))
+\end_layout
+
+\begin_layout Itemize
+When you auto-print this vector, the levels are shown - levels are possible
+ values in the factor.
+\end_layout
+
+\begin_layout Itemize
+table(x) gives the frequency of each value.
+\end_layout
+
+\begin_layout Itemize
+unclass(x) shows what is underlying the vectors (
+\begin_inset Quotes eld
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+ is represented as 2, 
+\begin_inset Quotes eld
+\end_inset
+
+no
+\begin_inset Quotes erd
+\end_inset
+
+ is represented as 1)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The order of the levels can be set using the levels argument to factor().
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+x <- factor(c(
+\begin_inset Quotes eld
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+no
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+no
+\begin_inset Quotes erd
+\end_inset
+
+), levels=c(
+\begin_inset Quotes eld
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+no
+\begin_inset Quotes erd
+\end_inset
+
+))
+\end_layout
+
+\begin_layout Itemize
+This has 
+\begin_inset Quotes eld
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+ represented by 1 and 
+\begin_inset Quotes eld
+\end_inset
+
+no
+\begin_inset Quotes erd
+\end_inset
+
+ represented by 2.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Missing Values
+\end_layout
+
+\begin_layout Itemize
+Missing values are denoted by NA or NaN.
+\end_layout
+
+\begin_layout Itemize
+NaN is used for undefined mathematical operations, NA is used for everything
+ else.
+\end_layout
+
+\begin_layout Itemize
+is.na() tests objects to see if they are NA.
+\end_layout
+
+\begin_layout Itemize
+is.nan() is used to test for NaN.
+\end_layout
+
+\begin_layout Itemize
+NA values have a class (integer, character, etc.)
+\end_layout
+
+\begin_layout Itemize
+NaN values are also NA, but the reverse is not necessarily true.
+\end_layout
+
+\begin_layout Subsection*
+Data Frames
+\end_layout
+
+\begin_layout Itemize
+Data frames are used to store tabular data.
+\end_layout
+
+\begin_layout Itemize
+They are represented as a special type of list where every element of the
+ list has to have the same length.
+\end_layout
+
+\begin_layout Itemize
+Each element of the list can be thought of as a column and the length of
+ each element of the list is the number of rows.
+\end_layout
+
+\begin_layout Itemize
+Unlike matrices, data frames can store different classes of objects in each
+ column.
+\end_layout
+
+\begin_layout Itemize
+Data frames also have a special attribute called row.names.
+\end_layout
+
+\begin_layout Itemize
+Data frames are usually craeted by calling read.table() or read.csv().
+\end_layout
+
+\begin_layout Itemize
+Can be converted to a matrix by calling data.matrix().
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This may cause coercion if the data types are not the same!
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Data frames can also be created using data.frame()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+x <- data.frame(foo = 1:4, bar = c(T,T,T,F))
+\end_layout
+
+\begin_layout Itemize
+nrow(x) gives number of rows.
+\end_layout
+
+\begin_layout Itemize
+ncol(x) gives number of columns.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Data Types - The Names Attribute
+\end_layout
+
+\begin_layout Itemize
+R objects can also have names, which is very useful for writing readable
+ code and self-describing objects.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+x <- 1:3
+\end_layout
+
+\begin_layout Itemize
+names(x) is NULL at this point.
+\end_layout
+
+\begin_layout Itemize
+names(x) <- c(
+\begin_inset Quotes eld
+\end_inset
+
+foo
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+bar
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+norf
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Now auto-printing x shows the names above each element (foo, bar, norf)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+List names
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+x <- list(a = 1, b = 2, c = 3)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Matrix names (dimnames)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+m <- matrix(1:4, nrow = 2, ncol = 2)
+\end_layout
+
+\begin_layout Itemize
+dimnames(m) < list(c(
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+b
+\begin_inset Quotes erd
+\end_inset
+
+), c(
+\begin_inset Quotes eld
+\end_inset
+
+c
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+d
+\begin_inset Quotes erd
+\end_inset
+
+)) (this labels the rows as 
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+b
+\begin_inset Quotes erd
+\end_inset
+
+ and the columns as 
+\begin_inset Quotes eld
+\end_inset
+
+c
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+d
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Reading Data Into R
+\end_layout
+
+\begin_layout Itemize
+read.table(), read.csv() for reading tabular data.
+\end_layout
+
+\begin_layout Itemize
+readLines() for reading lines of a text file.
+\end_layout
+
+\begin_layout Itemize
+source() for reading in R code files (inverse of dump()).
+\end_layout
+
+\begin_layout Itemize
+dget() for reading in R code files (inverse of dput()).
+\end_layout
+
+\begin_layout Itemize
+load() for reading in saved workspaces.
+\end_layout
+
+\begin_layout Itemize
+read.table() arguments:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+file - name of file, or a connection.
+\end_layout
+
+\begin_layout Itemize
+header - logical indicating if the first line of the file is a header line.
+\end_layout
+
+\begin_layout Itemize
+sep - a string indicated how the columns are separated.
+\end_layout
+
+\begin_layout Itemize
+colClasses - a character vector indicating the class of each column in the
+ dataset.
+\end_layout
+
+\begin_layout Itemize
+nrows - the number of rows in the dataset.
+\end_layout
+
+\begin_layout Itemize
+comment.char - a character string indicating the comment character.
+\end_layout
+
+\begin_layout Itemize
+skip - the number of lines to skip from the beginning.
+\end_layout
+
+\begin_layout Itemize
+stringsAsFactors - should character variables be coded as factors?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+For small to moderate sized datasets, you can usually call read.table() without
+ specifying any other arguments:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+data <- read.table(
+\begin_inset Quotes eld
+\end_inset
+
+foo.txt
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+R will automatically skip lines that begin with #, figure out how many rows
+ there and how much memory to allocate, and figure out variable types.
+\end_layout
+
+\begin_layout Itemize
+It may run faster if you provide other information.
+\end_layout
+
+\begin_layout Itemize
+read.csv() is the same except it assumes the separator value is a comma (instead
+ of a space).
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Reading Large Tables
+\end_layout
+
+\begin_layout Itemize
+Some things you can do to make your life easier and prevent R from choking
+ when you use large datasets.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Read the help page for read.table, which contains many hints.
+\end_layout
+
+\begin_layout Itemize
+Make a rough calculation of the memory required to store your dataset.
+\end_layout
+
+\begin_layout Itemize
+Set comment.char = 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ if there are no commented lines in your file.
+\end_layout
+
+\begin_layout Itemize
+Use the colClasses argument.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Specifying this option instead of using the default can make read.table run
+ twice as fast!
+\end_layout
+
+\begin_layout Itemize
+If you only specify a single value for colClasses, it assumes all columns
+ are this class.
+\end_layout
+
+\begin_layout Itemize
+A quick and dirty way to figure out column classes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+initial <- read.table(
+\begin_inset Quotes eld
+\end_inset
+
+datatable.txt
+\begin_inset Quotes erd
+\end_inset
+
+, nrows = 100)
+\end_layout
+
+\begin_layout Itemize
+classes <- sapply(initial,class)
+\end_layout
+
+\begin_layout Itemize
+tabAll <- read.table(
+\begin_inset Quotes eld
+\end_inset
+
+datatable.txt
+\begin_inset Quotes erd
+\end_inset
+
+, colClasses = classes)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Setting nrows doesn't make it run faster but does help with memory usage.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Should know the following about your system:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+RAM in your computer.
+\end_layout
+
+\begin_layout Itemize
+What other applications are in use?
+\end_layout
+
+\begin_layout Itemize
+What OS?
+\end_layout
+
+\begin_layout Itemize
+Is the OS 32 or 64-bit?
+\end_layout
+
+\begin_layout Itemize
+Are there other users logged into the same system?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Roughly calculating memory requirements
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: data frame with 1500000 rows and 120 columns, all of which are
+ numeric data.
+\end_layout
+
+\begin_layout Itemize
+1500000*120*8 bytes/numeric = 1440000000 bytes = 1440000000/2^20 bytes/MB
+ = 1373.29 MB
+\end_layout
+
+\begin_layout Itemize
+Will need some overhead for reading in this data - probably about a factor
+ of 2.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+
 \end_layout
 
 \end_body
