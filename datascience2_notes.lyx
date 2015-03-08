@@ -99,7 +99,11 @@ Writing code / setting your working directory
 \end_layout
 
 \begin_layout Itemize
-In R, you can do 'getwd()' to get the current directory you're working in.
+In R, you can use 
+\family typewriter
+getwd()
+\family default
+ to get the current directory you're working in.
 \end_layout
 
 \begin_layout Itemize
@@ -362,8 +366,7 @@ A vector can only contain objects of the same class.
 \end_layout
 
 \begin_layout Itemize
-But a list can! A list is represented as a vector but can contain objects
- of different classes.
+A list is represented as a vector but can contain objects of different classes.
 \end_layout
 
 \end_deeper
@@ -1322,9 +1325,1060 @@ Will need some overhead for reading in this data - probably about a factor
 \end_layout
 
 \end_deeper
-\begin_layout Standard
+\begin_layout Subsection*
+Textual Data Formats
+\end_layout
+
+\begin_layout Itemize
+dump and dput are useful because the resulting textual format is editable,
+ and may be possible to recover if corrupted.
+\end_layout
+
+\begin_layout Itemize
+Unlike writing out a table or csv file, dump and dput preserve the metadata
+ so that another user won't have to specify it all over again.
+\end_layout
+
+\begin_layout Itemize
+Textual formats can work much better with version control programs which
+ can only track changes meaningfully in text files.
+\end_layout
+
+\begin_layout Itemize
+Downside: textual files are not very space-efficient.
+ One option is to compress them.
+\end_layout
+
+\begin_layout Itemize
+dput-ing R objects: provides a way to write R code that can be used to reconstru
+ct an R object.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+y <- data.frame(a = 1, b = 
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+dput(y) gives: structure(list(a=1, b=structure(1L, .Label = 
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+, class = 
+\begin_inset Quotes eld
+\end_inset
+
+factor
+\begin_inset Quotes erd
+\end_inset
+
+)), .Names = c(
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+b
+\begin_inset Quotes erd
+\end_inset
+
+), row.names = c(NA, -1L), class = 
+\begin_inset Quotes eld
+\end_inset
+
+data.frame
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+dput(y, file = 
+\begin_inset Quotes eld
+\end_inset
+
+y.r
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+new.y <- dget(
+\begin_inset Quotes eld
+\end_inset
+
+y.R
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+dump can be used on multiple R objects, unlike dput.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+y <- data.frame(a=1,b=
+\begin_inset Quotes erd
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dump(c(
+\begin_inset Quotes eld
+\end_inset
+
+x
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+y
+\begin_inset Quotes erd
+\end_inset
+
+), file = 
+\begin_inset Quotes eld
+\end_inset
+
+data.R
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+rm(x,y)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+source(
+\begin_inset Quotes eld
+\end_inset
+
+data.R
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ to get x and y from the file.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Connections - Interfaces to the Outside World
+\end_layout
+
+\begin_layout Itemize
+Data are read in using connection interfaces.
+\end_layout
+
+\begin_layout Itemize
+Connections can be made to files (most common) or to other things.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+file
+\family default
+ - opens a connection to a file.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+con <- file(
+\begin_inset Quotes eld
+\end_inset
+
+foo.txt
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+r
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+data <- read.csv(con)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+close(con)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+gzfile
+\family default
+ - opens a connection to a file compressed with gzip.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+con <- gzfiles(
+\begin_inset Quotes eld
+\end_inset
+
+words.gz
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x <- readLines(con, 10)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+bzfile
+\family default
+ - opens a connection to a file compressed with bzip2.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+url
+\family default
+ - opens a connection to a webpage.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+con <- url(
+\begin_inset Quotes eld
+\end_inset
+
+http://ww.jhsph.edu
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+r
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x <- readLines(con)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+Subsetting R Objects
+\end_layout
+
+\begin_layout Itemize
+Several operators for extracting subsets in R.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+[ - returns a subset of the same class as the original; can be used to select
+ more than one element (with one exception).
+\end_layout
+
+\begin_layout Itemize
+[[ - is used to extract elements of a list or data frame and can only be
+ used to extract a single element.
+ The class of the returned object will not necessarily be a list or data
+ frame.
+\end_layout
+
+\begin_layout Itemize
+$ - is used to extract elements of a list or data frame by name; semantics
+ are similar to that of [[.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- c(
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+b
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+c
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+c
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+d
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[1]
+\family default
+ returns 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
 
 \end_layout
 
+\begin_layout Itemize
+
+\family typewriter
+x[1:4]
+\family default
+ returns 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+b
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+c
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+c
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[x > 
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+]
+\family default
+ returns 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+b
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+c
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+c
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+d
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+u <- x > 
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+ returns 
+\family typewriter
+FALSE TRUE TRUE TRUE TRUE FALSE
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Subsetting lists is a little different because you can use any of the 3
+ operators.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- list(foo = 1:4, bar = 0.6)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[1]
+\family default
+ returns 
+\family typewriter
+$foo
+\family default
+ and 
+\family typewriter
+1 2 3 4
+\family default
+ (i.e., a list)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[[1]]
+\family default
+ returns 
+\family typewriter
+1 2 3 4
+\family default
+ (i.e., just a sequence)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x$bar
+\family default
+ or 
+\family typewriter
+x[[
+\begin_inset Quotes eld
+\end_inset
+
+bar
+\begin_inset Quotes erd
+\end_inset
+
+]]
+\family default
+ returns 
+\family typewriter
+0.6
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[
+\begin_inset Quotes eld
+\end_inset
+
+bar
+\begin_inset Quotes erd
+\end_inset
+
+]
+\family default
+ returns 
+\family typewriter
+$bar
+\family default
+ and 
+\family typewriter
+0.6
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To extract multiple elements of a list, use the single bracket operator
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- list(foo = 1:4, bar = 0.6, baz = 
+\begin_inset Quotes eld
+\end_inset
+
+hello
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[c(1,3)]
+\family default
+ return 
+\family typewriter
+$foo 1 2 3 4
+\family default
+ and 
+\family typewriter
+$baz 
+\begin_inset Quotes eld
+\end_inset
+
+hello
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The [[ operator can be used with string variables where the name of the
+ element is computed.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+name <- 
+\begin_inset Quotes eld
+\end_inset
+
+foo
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[[name]]
+\family default
+ returns 
+\family typewriter
+1 2 3 4
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Subsetting nested elements of a list
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- list(a = list(10,12,14), b = c(3.14,2.81))
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[[c(1,3))]]
+\family default
+ returns 
+\family typewriter
+14
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[[1]][[3]]
+\family default
+ returns 
+\family typewriter
+14
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[[c(2,1)]]
+\family default
+ returns 
+\family typewriter
+3.14
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Subsetting matrices - can use (i,j) type indices
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- matrix(1:6, 2, 3)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[1, 2]
+\family default
+ returns 
+\family typewriter
+3
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[2, 1]
+\family default
+ returns 
+\family typewriter
+2
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Matrix indices can also be missing:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x[1, ]
+\family default
+ returns first row: 
+\family typewriter
+1 3 5
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+By default, when a single element of a matrix is retrieved, it is returned
+ as a vector of length 1 rather than a 1 x 1 matrix.
+ Use 
+\family typewriter
+drop = FALSE
+\family default
+ to turn this behavior off.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x[1, 2, drop = FALSE]
+\family default
+ returns 
+\family typewriter
+3
+\family default
+ as a matrix.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Subsetting a single column or row gives a vector by default, too.
+ Can use 
+\family typewriter
+drop = FALSE
+\family default
+ again here.
+\end_layout
+
+\begin_layout Itemize
+Partial matching of names is allowed with [[ and $.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- list (aardvark = 1:5)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x$a
+\family default
+ returns 
+\family typewriter
+1 2 3 4 5
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[[
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+]] returns NULL
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[[
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+, exact = FALSE]]
+\family default
+ returns 
+\family typewriter
+1 2 3 4 5
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Removing NA Values
+\end_layout
+
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- c(1,2,NA,4,NA,5)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+bad <- is.na(x)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[!bad]
+\family default
+ returns 
+\family typewriter
+1 2 4 5
+\end_layout
+
+\begin_layout Itemize
+Note: exclamation point is NOT operator.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Finding subset of multiple things with no missing values:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- c(1,2,NA,4,NA,5)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+y <- c(
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+b
+\begin_inset Quotes erd
+\end_inset
+
+,NA,
+\begin_inset Quotes erd
+\end_inset
+
+d
+\begin_inset Quotes erd
+\end_inset
+
+,NA,
+\begin_inset Quotes erd
+\end_inset
+
+f
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+good <- complete.cases(x,y)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+good
+\family default
+ returns 
+\family typewriter
+TRUE TRUE FALSE TRUE FALSE TRUE
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x[good]
+\family default
+ gives 
+\family typewriter
+1 2 4 5
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+y[good]
+\family default
+ gives 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+b
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+d
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+f
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Can use this to get only good rows or columns in a data file.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Vectorized Operations
+\end_layout
+
+\begin_layout Itemize
+Can do operations on array elements in parallel (just like in Matlab).
+\end_layout
+
+\begin_layout Itemize
+Can do this on matrices as well.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x * y
+\family default
+ is element-wise multiplication.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+x %*% y
+\family default
+ is true matrix multiplication.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
