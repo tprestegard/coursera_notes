@@ -2727,5 +2727,59 @@ return
  This can also be used to interrupt the flow of a program.
 \end_layout
 
+\begin_layout Subsection*
+R Functions
+\end_layout
+
+\begin_layout Itemize
+Example of function syntax:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+add2 <- function(x,y=5) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	x + y
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+y=5
+\family default
+ assigns a default value to 
+\family typewriter
+y
+\family default
+ in case the user doesn't specify 
+\family typewriter
+y
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+Don't need a return statement - all functions return the value of the last
+ expression.
+\end_layout
+
 \end_body
 \end_document
