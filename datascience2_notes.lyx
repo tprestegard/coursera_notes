@@ -2380,5 +2380,352 @@ x %*% y
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Control Structures - If, Else
+\end_layout
+
+\begin_layout Itemize
+Basic structure:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (<condition1>) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	## do something
+\end_layout
+
+\begin_layout Plain Layout
+
+} else if (<condition2>){
+\end_layout
+
+\begin_layout Plain Layout
+
+	## do something
+\end_layout
+
+\begin_layout Plain Layout
+
+} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+	## do something
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Can assign value:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+y <- if (<condition1>) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	10
+\end_layout
+
+\begin_layout Plain Layout
+
+} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+	0
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Control Structures - For Loops
+\end_layout
+
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for (i in 1:10){
+\end_layout
+
+\begin_layout Plain Layout
+
+	print(i)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Example 2: all of these for loops are equivalent.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+x <- c("a","b","c","d")
+\end_layout
+
+\begin_layout Plain Layout
+
+for (i in 1:4){
+\end_layout
+
+\begin_layout Plain Layout
+
+	print(x[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+for (i in seq_along(x)){
+\end_layout
+
+\begin_layout Plain Layout
+
+	print(x[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+for (letter in x){
+\end_layout
+
+\begin_layout Plain Layout
+
+	print(letter)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Can nest for loops - example: loop over elements in a matrix.
+\end_layout
+
+\begin_layout Subsection*
+Control Structures - While Loops
+\end_layout
+
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+count <- 0
+\end_layout
+
+\begin_layout Plain Layout
+
+while (count < 10 {
+\end_layout
+
+\begin_layout Plain Layout
+
+	print(count)
+\end_layout
+
+\begin_layout Plain Layout
+
+	cout <- count + 1
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Control Structures - Repeat, Next, Break
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+repeat
+\family default
+ initiates an infinite loop - these are not common but do have their uses.
+ The only way to exit is to call 
+\family typewriter
+break
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+x0 <- 1
+\end_layout
+
+\begin_layout Plain Layout
+
+tol <- 1e-8
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+repeat {
+\end_layout
+
+\begin_layout Plain Layout
+
+	x1 <- computeEstimate()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (abs(x1-x0) < tol) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		break
+\end_layout
+
+\begin_layout Plain Layout
+
+	} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+		x0 <- x1
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+This is dangerous because there is no guarantee that the loop will converge.
+\end_layout
+
+\begin_layout Itemize
+It's better to set a hard limit on the number of iterations and then report
+ whether convergence was achieved or not.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+next
+\family default
+ is used to skip an iteration of a loop.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+return
+\family default
+ signals that a function should exit and return a given value.
+ This can also be used to interrupt the flow of a program.
+\end_layout
+
 \end_body
 \end_document
