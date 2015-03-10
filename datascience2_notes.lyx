@@ -3225,8 +3225,292 @@ constructor
  function which contains all of the necessary data for evaluating the function.
 \end_layout
 
-\begin_layout Standard
-k
+\begin_layout Subsection*
+Coding Standards in R
+\end_layout
+
+\begin_layout Itemize
+Write code in a text file with a text editor.
+\end_layout
+
+\begin_layout Itemize
+Indent your code to keep the flow of the program and different control blocks
+ easily readable.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suggested to set TAB to be 4 - 8 spaces.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Limit the width of your code (80 columns?)
+\end_layout
+
+\begin_layout Itemize
+Limit the length of your functions.
+\end_layout
+
+\begin_layout Subsection*
+Dates and Times in R
+\end_layout
+
+\begin_layout Itemize
+R has a special representation for dates and times.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Dates are represented by the 
+\family typewriter
+Date
+\family default
+ class.
+\end_layout
+
+\begin_layout Itemize
+Times are represented by the 
+\family typewriter
+POSIXct
+\family default
+ or the 
+\family typewriter
+POSIXlt
+\family default
+ class.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+POSIXct
+\family default
+ is just a very large integer under the hood
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+POSIXlt
+\family default
+ is a list underneath and stores a bunch of other useful information like
+ the day of the week, day of the year, month, day of the month, etc.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Dates are stored internally as the number of days since 1/1/1970.
+\end_layout
+
+\begin_layout Itemize
+Times are stored internally as the number of seconds since 1/1/1970.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Date example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- as.Date(
+\begin_inset Quotes eld
+\end_inset
+
+1970-01-01
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+unclass(x)
+\family default
+ returns 0.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+There are a number of generic functions that work on dates and times.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+weekdays
+\family default
+: gives day of the week
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+months
+\family default
+: gives the month name
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Time example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- Sys.time()
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+p <- as.POSIXlt(x)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+names(unclass(p))
+\family default
+ returns 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+sec
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+min
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+hour
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+mday
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+mon
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+year
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+wday
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+yday
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+isdst
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+c <- as.POSIXct(x)
+\family default
+ gives 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+Already in 'POSIXct format
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+strptime
+\family default
+ can convert from string to a Date or Time object (just like in Python).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Check 
+\family typewriter
+?strptime
+\family default
+ to get the formatting strings.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+You can use + and - on dates and times.
+\end_layout
+
+\begin_layout Itemize
+You can use comparison operators, too.
+\end_layout
+
+\begin_layout Itemize
+Can't always mix different objects (need to convert between classes before
+ performing operations).
+\end_layout
+
+\begin_layout Itemize
+Even keeps track of leap years, leap seconds, daylight savings, and time
+ zones.
 \end_layout
 
 \end_body
