@@ -2781,5 +2781,378 @@ Don't need a return statement - all functions return the value of the last
  expression.
 \end_layout
 
+\begin_layout Itemize
+Functions are R objects of class 
+\begin_inset Quotes eld
+\end_inset
+
+function.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Use the function directive to define a function: 
+\family typewriter
+f <- function(<arguments) { ## do stuff }
+\end_layout
+
+\begin_layout Itemize
+Functions can be passed as arguments to other functions.
+\end_layout
+
+\begin_layout Itemize
+Functions can be nested (defined inside of another function).
+\end_layout
+
+\begin_layout Itemize
+Named arguments:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+May potentially have default values.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Formal
+\emph default
+ arguments are the arguments included in the function definition.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+formals
+\family default
+ returns a list of all formal arguments of a function.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+R function arguments can be matched positionally, or by name:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+sd(x = mydata, na.rm = FALSE)
+\family default
+ is the same as 
+\family typewriter
+sd(na.rm = FALSE, x = mydata)
+\end_layout
+
+\begin_layout Itemize
+You can mix positional matching and matching by name.
+ When are argument is matched by name, it is 
+\begin_inset Quotes eld
+\end_inset
+
+taken out
+\begin_inset Quotes erd
+\end_inset
+
+ of the argument list and the remaining unnamed arguments are matched in
+ the order that they are listed in the function definition.
+\end_layout
+
+\begin_layout Itemize
+Named arguments are useful on the command line when you have a long argument
+ list and you want to mostly use defaults for everything except an argument
+ near the end of the list, or if you can remember the name of the argument
+ but not its position.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Function arguments can also be partially matched (useful if you don't remember
+ the argument's exact name).
+\end_layout
+
+\begin_layout Subsection*
+Defining a Function
+\end_layout
+
+\begin_layout Itemize
+Function arguments can be set to 
+\family typewriter
+NULL
+\family default
+ by default.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f <- function(a, b=1, c=2, d=NULL) {
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Arguments to function are evaluated 
+\emph on
+lazily
+\emph default
+, so they are only evaluated when they are needed:
+\end_layout
+
+\begin_layout Itemize
+Example: you can call this function with 
+\family typewriter
+f(2)
+\family default
+; b is not needed since it's never used and the 2 gets positionally matched
+ to a.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f <- function(a, b) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	a^2
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+This also means that if an argument is missing, the code actually executes
+ every line up until that argument is needed.
+\end_layout
+
+\begin_layout Itemize
+The 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+...
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+ argument is used to indicate a variable number of arguments.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Useful when you extend another function and you don't want to copy the entire
+ argument list of the original function.
+\end_layout
+
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f <- function(x, y, type = "1", ...) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	plot(x, y, type = type, ...)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+This argument is also necessary when the number of arguments passed to the
+ function cannot be known in advance.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For example, the 
+\family typewriter
+paste
+\family default
+ function can take as many arguments as needed.
+ If you were to extend this function, the 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+...
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+ operator would be useful.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+One catch: any arguments in the argument list must be named explicitly and
+ cannot be partially matched.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Symbol Binding
+\end_layout
+
+\begin_layout Itemize
+When R tries to bind a value to a symbol, it looks through the global environmen
+t and the packages in the search list.
+\end_layout
+
+\begin_layout Itemize
+The order of packages in the search list matters!
+\end_layout
+
+\begin_layout Itemize
+Users can configure which packages get loaded on startup.
+\end_layout
+
+\begin_layout Itemize
+When a user loads a package with 
+\family typewriter
+library
+\family default
+, the namespace of that package gets put in position 2 on the search list
+ and everything else gets shifted down.
+\end_layout
+
+\begin_layout Itemize
+R has separate namespaces for functions and non-functions, so it's possible
+ to have an object and function with the same name.
+\end_layout
+
+\begin_layout Itemize
+Scoping rules determine how a value is associated with a free variable in
+ a function.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+R uses 
+\emph on
+lexical
+\emph default
+ or 
+\emph on
+static
+\emph default
+ scoping.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f <- function(x, y) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	x^2 + y/z
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Here z is not a formal argument or a local variable - it's called a 
+\emph on
+free variable
+\emph default
+.
+\end_layout
+
+\begin_layout Itemize
+Lexical scoping means that the values of free variables are searched for
+ in the environment in which the function was defined.
+\end_layout
+
+\begin_layout Itemize
+If the value of a symbol is not found in this environment, the search is
+ continued in the parent environment.
+\end_layout
+
+\begin_layout Itemize
+The search continues down the sequence of parent environments until we hit
+ the top-level environment; this is usually the global environment (workspace)
+ or the namespace of a package.
+\end_layout
+
+\begin_layout Itemize
+After the top-level environment, the search continues down the search list
+ until we hit the empty environment.
+\end_layout
+
+\begin_layout Itemize
+If a value for a given symbol cannot be found once the empty environment
+ is arrived at, an error is thrown.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
