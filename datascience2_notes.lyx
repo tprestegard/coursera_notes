@@ -3154,5 +3154,80 @@ If a value for a given symbol cannot be found once the empty environment
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Typically a function is defined in the global environment so the values
+ of free variables are just found in the user's workspace.
+\end_layout
+
+\begin_layout Itemize
+But in R, you can have functions defined inside other functions - in this
+ case the environment in which the function is defined is the body of another
+ function.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+You can use this to define a function which constructs other functions.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+What's in a function's environment?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can use 
+\family typewriter
+ls(environment(function))
+\family default
+ to get this.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+In R, all objects must be stored in memory.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+All functions must carry a pointer to their respective defining environments,
+ which could be anywhere.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Optimization
+\end_layout
+
+\begin_layout Itemize
+Some optimization routines: 
+\family typewriter
+optim, nlm, optimize
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+May be useful to hold some parameters fixed and allow other to vary during
+ the optimization.
+\end_layout
+
+\begin_layout Itemize
+Useful solution - write a 
+\begin_inset Quotes eld
+\end_inset
+
+constructor
+\begin_inset Quotes erd
+\end_inset
+
+ function which contains all of the necessary data for evaluating the function.
+\end_layout
+
+\begin_layout Standard
+k
+\end_layout
+
 \end_body
 \end_document
