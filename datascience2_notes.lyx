@@ -3513,5 +3513,826 @@ Even keeps track of leap years, leap seconds, daylight savings, and time
  zones.
 \end_layout
 
+\begin_layout Subsection*
+Loop functions - lapply
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+lapply
+\family default
+ loops over a list and evaluates a function on each element.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+sapply
+\family default
+ is the same as lapply, but tries to simplify the result.
+\end_layout
+
+\begin_layout Itemize
+lapply takes three arguments:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A list 
+\family typewriter
+x.
+\end_layout
+
+\begin_layout Itemize
+A function or the name of a function.
+\end_layout
+
+\begin_layout Itemize
+Other arguments using the ...
+ argument.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The looping is done internally in C code.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+lapply
+\family default
+ always returns a list, regardless of th input class
+\end_layout
+
+\begin_layout Itemize
+Example:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+x <- list(a=1:5, b=rnorm(10))
+\end_layout
+
+\begin_layout Plain Layout
+
+lapply(x,mean)
+\end_layout
+
+\begin_layout Plain Layout
+
+$a
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 3
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+$b
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 0.0296824
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Example 2:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+x <- 1:3
+\end_layout
+
+\begin_layout Plain Layout
+
+lapply(x,runif,min=0,max=10)
+\end_layout
+
+\begin_layout Plain Layout
+
+[[1]]
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 3.302142
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+[[2]]
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 6.848960 7.195282
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+[[3]]
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 3.5031416 0.8465707 9.7421014
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+lapply
+\family default
+ and friends make heavy use of 
+\emph on
+anonymous
+\emph default
+ functions.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+x <- 1:4
+\end_layout
+
+\begin_layout Plain Layout
+
+lapply(x, function(elt) elt[,1])
+\end_layout
+
+\begin_layout Plain Layout
+
+$a
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 1 2
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+$b
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 1 2 3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+sapply
+\family default
+ simplifications.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If the result is a list where every element is length 1, it returns a vector.
+\end_layout
+
+\begin_layout Itemize
+If the result is a list where every element is a vector of the same length
+ (>1), a matrix is returned.
+\end_layout
+
+\begin_layout Itemize
+If it can't figure things out, a list is returned.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Loop functions - apply
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+apply
+\family default
+ applies a function over the margins of an array.
+\end_layout
+
+\begin_layout Itemize
+It is most ofter used to apply a function to the rows of columns of a matrix.
+\end_layout
+
+\begin_layout Itemize
+It can be used with general arrays (e.g., taking the average of an array of
+ matrices).
+\end_layout
+
+\begin_layout Itemize
+It is not really faster than writing a loop, but works in a single line.
+\end_layout
+
+\begin_layout Itemize
+Arguments:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+An array 
+\family typewriter
+x
+\family default
+ (recall that an array is a vector with dimensions attached to it).
+\end_layout
+
+\begin_layout Itemize
+An integer vector 
+\family typewriter
+margin
+\family default
+ indicating which margins should be 
+\begin_inset Quotes eld
+\end_inset
+
+retained
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Using 
+\family typewriter
+margin
+\family default
+ = 2 will keep dimension 2 (i.e.
+ it will apply the function over each column).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A function 
+\family typewriter
+fun
+\family default
+ to be applied.
+\end_layout
+
+\begin_layout Itemize
+...
+ other arguments.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Shortcut functions - highly optimized to do special operations quickly.
+ Faster than actually calling apply.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+rowSums = apply(x,1,sum)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+rowMeans = apply(x,1,mean)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+colSums = apply(x,2,sum)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+colMeans = apply(x,2,mean)
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Loop functions - mapply
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+mapply
+\family default
+ is the multivariate version of 
+\family typewriter
+lapply
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+Arguments:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+fun
+\family default
+ - function to apply.
+\end_layout
+
+\begin_layout Itemize
+...
+ - arguments to apply over.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MoreArgs
+\family default
+ - list of other arguments to 
+\family typewriter
+fun
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Simplify
+\family default
+ - indicates whether the result should be simplified.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: the following two lines are equivalent.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+list(rep(1,4), rep(2,3), rep(3,2), rep(4,1))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+mapply(rep, 1:4, 4:1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+mapply
+\family default
+ can be used to vectorize a function (i.e., allow vector inputs to functions
+ that don't normally allow it).
+\end_layout
+
+\begin_layout Subsection*
+Loop functions - tapply
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+tapply
+\family default
+ (
+\begin_inset Quotes eld
+\end_inset
+
+table apply
+\begin_inset Quotes erd
+\end_inset
+
+) applies a function over subsets of a vector.
+\end_layout
+
+\begin_layout Itemize
+Arguments:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x
+\family default
+ is a vector.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Index
+\family default
+ is a factor or a list of factors.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+fun
+\family default
+ is a function to be applied.
+\end_layout
+
+\begin_layout Itemize
+...
+ contains other arguments to be passed to 
+\family typewriter
+fun
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+simplify
+\family default
+ specifies if we should simplify the result.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Uses factor variables to split the input vector into groups.
+\end_layout
+
+\begin_layout Subsection*
+Loop functions - split
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+split
+\family default
+ is not technically a loop function, but rather an auxiliary function that
+ is typically used in conjunction with loop functions.
+\end_layout
+
+\begin_layout Itemize
+It takes a vector or other obejct and splits it into gropus determined by
+ a factor or list of factor.
+\end_layout
+
+\begin_layout Itemize
+Arguments:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x
+\family default
+ is a vector or list or data frame.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+f
+\family default
+ is a factor (or coerced to one) or a list of factors
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+drop
+\family default
+ indicates whether empty levels should be dropped.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can use 
+\family typewriter
+gl
+\family default
+ function to define factors.
+\end_layout
+
+\begin_layout Itemize
+In some cases, using 
+\family typewriter
+split
+\family default
+ then 
+\family typewriter
+lapply
+\family default
+ can be equivalent to doing 
+\family typewriter
+tapply
+\family default
+.
+ But the first method is more flexible in general.
+\end_layout
+
+\begin_layout Itemize
+Example with data from Programming Assignment #1:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+s <- split(airquality, airquality$Month) ## here we use the month as a factor
+ variable even though it isn't one technically
+\end_layout
+
+\begin_layout Plain Layout
+
+lapply(s, function(x) colMeans(x[, c("Ozone", "Solar.R", "Wind")], na.rm =
+ TRUE))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Splitting on more than one level:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+x <- rnorm(10)
+\end_layout
+
+\begin_layout Plain Layout
+
+f1 <- gl(2,5)
+\end_layout
+
+\begin_layout Plain Layout
+
+f2 <- gl(5,2)
+\end_layout
+
+\begin_layout Plain Layout
+
+interaction(f1,f2)
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 1.1 1.1 1.2 1.2 1.3 2.3 2.4 2.4 2.5 2.5
+\end_layout
+
+\begin_layout Plain Layout
+
+10 Levels: [1] 1.1 1.1 1.2 1.2 1.3 2.3 2.4 2.4 2.5 2.5
+\end_layout
+
+\begin_layout Plain Layout
+
+str(split(x, list(f1,f2), drop = True))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This can be useful (for example) if you want to divide people based on multiple
+ pieces of demographic information.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Debugging tools in R
+\end_layout
+
+\begin_layout Itemize
+First step: diagnosing the problem.
+\end_layout
+
+\begin_layout Itemize
+Indications that there is a problem:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+message
+\family default
+: a generic notification/diagnostic message produced by the 
+\family typewriter
+message
+\family default
+ function; execution continues.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+warning
+\family default
+: indicates that something is wrong but not necessarily fatal; execution
+ of the function continues; generated by the 
+\family typewriter
+warning
+\family default
+ function.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+error
+\family default
+: a fatal problem has occurred; execution stop; produced by the 
+\family typewriter
+stop
+\family default
+ function.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+condition
+\family default
+: a generic concept for indicating that something unexpected can occur;
+ programmers can create their own conditions.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Things to think about:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What was your input? How did you call the function?
+\end_layout
+
+\begin_layout Itemize
+What were you expecting? Output, messages, other results?
+\end_layout
+
+\begin_layout Itemize
+What did you get? How does this differ from your expectations?
+\end_layout
+
+\begin_layout Itemize
+Were your expectations correct in the first place?
+\end_layout
+
+\begin_layout Itemize
+Can you reproduce the problem exactly? (can be hard if random numbers are
+ involved)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Primary debugging tools in R:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+traceback
+\family default
+: prints out the function call stack after an error occurs; does nothing
+ if there's no error.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+debug
+\family default
+: flags a function for 
+\begin_inset Quotes eld
+\end_inset
+
+debug
+\begin_inset Quotes erd
+\end_inset
+
+ mode which allows you to step through the execution of a function one line
+ at a time.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+browser
+\family default
+: suspends the execution of a function wherever it is called and puts the
+ function in debug mode.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+trace
+\family default
+: allows you to insert debugging code into a function at specific places.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+recover
+\family default
+: allows you to modify the error behavior so that you can browse the function
+ call stack.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+To use in the command line, enter 
+\family typewriter
+options(error = recover)
+\family default
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+These tools are all 
+\emph on
+interactive
+\emph default
+, which is very useful!
+\end_layout
+
 \end_body
 \end_document
