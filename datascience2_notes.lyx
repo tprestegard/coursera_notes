@@ -3563,7 +3563,7 @@ The looping is done internally in C code.
 \family typewriter
 lapply
 \family default
- always returns a list, regardless of th input class
+ always returns a list, regardless of the input class
 \end_layout
 
 \begin_layout Itemize
@@ -4058,7 +4058,7 @@ x
 \family typewriter
 f
 \family default
- is a factor (or coerced to one) or a list of factors
+ is a factor (or coerced to one) or a list of factors.
 \end_layout
 
 \begin_layout Itemize
@@ -4103,14 +4103,27 @@ status open
 
 \begin_layout Plain Layout
 
-s <- split(airquality, airquality$Month) ## here we use the month as a factor
- variable even though it isn't one technically
+s <- split(airquality, airquality$Month
 \end_layout
 
 \begin_layout Plain Layout
 
-lapply(s, function(x) colMeans(x[, c("Ozone", "Solar.R", "Wind")], na.rm =
- TRUE))
+## above we use the month as a factor variable
+\end_layout
+
+\begin_layout Plain Layout
+
+## even though it isn't one technically
+\end_layout
+
+\begin_layout Plain Layout
+
+lapply(s, function(x) colMeans(x[, c("Ozone", "Solar.R", "Wind")],
+\end_layout
+
+\begin_layout Plain Layout
+
+	   na.rm = TRUE))
 \end_layout
 
 \end_inset
