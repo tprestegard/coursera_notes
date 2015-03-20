@@ -4347,5 +4347,245 @@ interactive
 , which is very useful!
 \end_layout
 
+\begin_layout Subsection*
+The str function
+\end_layout
+
+\begin_layout Itemize
+Displays the internal structure of an R object.
+\end_layout
+
+\begin_layout Itemize
+It's a diagnostic function and an alternative to 'summary'.
+\end_layout
+
+\begin_layout Itemize
+It is especially well suited to compactly display the abbreviated contents
+ of lists (which may be nested).
+\end_layout
+
+\begin_layout Itemize
+Roughly one line per basic object.
+\end_layout
+
+\begin_layout Itemize
+Basic goal: answer the question 
+\begin_inset Quotes eld
+\end_inset
+
+what's in this object?
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Simulation - generating random numbers
+\end_layout
+
+\begin_layout Itemize
+Functions for probability distributions in R:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+rnorm
+\family default
+: generate random normal variates with a given mean and standard deviation.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dnorm
+\family default
+: evaluate the normal probability density with a given mean and standard
+ deviation at a point or vector of points.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+pnorm
+\family default
+: evaluate the cumulative distribution function for a normal distribution.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+rpois
+\family default
+: generate random Poisson variates with a given rate.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Probability distribution functions usually have four functions associated
+ with them.
+ These functions are prefixed with the following letters:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+d
+\family default
+ for density.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+r
+\family default
+ for random number generation.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+p
+\family default
+ for cumulative distribution.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+q
+\family default
+ for quantile function.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Setting the random number seed with 
+\family typewriter
+set.seed(x)
+\family default
+ ensures reproducibility.
+\end_layout
+
+\begin_layout Subsection*
+Simulation - simulating a linear model
+\end_layout
+
+\begin_layout Itemize
+Example model: 
+\begin_inset Formula $y=\beta_{0}+\beta_{1}x+\epsilon$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+First, generate 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ as random variables based on whatever distributions they have.
+\end_layout
+
+\begin_layout Itemize
+Then add the 
+\begin_inset Formula $\beta_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\beta_{1}$
+\end_inset
+
+ constants to get 
+\begin_inset Formula $y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection*
+Simulation - random sampling
+\end_layout
+
+\begin_layout Itemize
+The 
+\family typewriter
+sample
+\family default
+ function draws randomly from a specified set of (scalar) objects allowing
+ you to sample from arbitrary distribution.
+\end_layout
+
+\begin_layout Itemize
+Examples:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sample(1:10,4)
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 3 4 5 7
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+sample(letters,5)
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] "q" "b" "e" "x" "p"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+sample(1:10) ## permutation
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 4 7 10 6 9 2 8 3 1 5
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+sample(1:10, replace = TRUE) ## sample with replacement
+\end_layout
+
+\begin_layout Plain Layout
+
+[1] 2 9 7 8 2 8 5 9 7 8
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
