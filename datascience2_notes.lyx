@@ -4587,5 +4587,230 @@ sample(1:10, replace = TRUE) ## sample with replacement
 
 \end_layout
 
+\begin_layout Subsection*
+R profiler
+\end_layout
+
+\begin_layout Itemize
+Profiling is a systematic way to examine how much time is spent in different
+ parts of a progrm.
+\end_layout
+
+\begin_layout Itemize
+Useful when trying to optimize your code.
+\end_layout
+
+\begin_layout Itemize
+Often code runs fine once, but what if you have to put it in a loop for
+ 1000 iterations? Is it still fast enough?
+\end_layout
+
+\begin_layout Itemize
+Profiling is better than guessing!
+\end_layout
+
+\begin_layout Itemize
+Optimizing your code
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Getting the biggest impact depends on knowing where the code spends most
+ of its time.
+\end_layout
+
+\begin_layout Itemize
+This cannot be done without performance analysis or profiling.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+General principles of optimization:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Design first, then optimize.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Premature optimization is the root of all evil.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Measure (collect data), don't guess.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using 
+\family typewriter
+system.time()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Takes an arbitrary R expression as input and returns the amount of time
+ to evaluate the expression.
+\end_layout
+
+\begin_layout Itemize
+If there's an error, it gives the time until the error occurred.
+\end_layout
+
+\begin_layout Itemize
+Returns an object of class 
+\family typewriter
+proc_time
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+User time: time charged to the CPU for this expression.
+\end_layout
+
+\begin_layout Itemize
+Elapsed time: 
+\begin_inset Quotes eld
+\end_inset
+
+wall clock
+\begin_inset Quotes erd
+\end_inset
+
+ time.
+\end_layout
+
+\begin_layout Itemize
+Usually these two times are relatively close for straightforward computing
+ tasks.
+\end_layout
+
+\begin_layout Itemize
+Elapsed time may be greater than user time if the CPU spends a lot of time
+ waiting around.
+\end_layout
+
+\begin_layout Itemize
+Elapsed time may be smaller than the user time if your machine has multiple
+ cores and is capable of using them.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ex: multi-threaded BLAS libraries.
+\end_layout
+
+\begin_layout Itemize
+Ex: parallel processing via the 
+\family typewriter
+parallel
+\family default
+ package.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+system.time()
+\family default
+ is very useful, but not if you don't know where to start!
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using the R profiler 
+\family typewriter
+Rprof()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+R must be compiled with profiler support (it usually is).
+\end_layout
+
+\begin_layout Itemize
+The 
+\family typewriter
+summaryRprof()
+\family default
+ funciton summarizes the profiler output (otherwise it's not readable).
+\end_layout
+
+\begin_layout Itemize
+DO NOT use 
+\family typewriter
+system.time()
+\family default
+ and 
+\family typewriter
+Rprof()
+\family default
+ together or you will be sad!.
+\end_layout
+
+\begin_layout Itemize
+The profiler keeps track of the function call stack at regularly sampled
+ intervals and tabulates how much time is spent in each function.
+\end_layout
+
+\begin_layout Itemize
+The default sampling interval is 0.02 seconds.
+\end_layout
+
+\begin_layout Itemize
+If your code runs very quickly, the profiler is not very useful (but then
+ you probably don't need it anyway).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using 
+\family typewriter
+summaryRprof()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This function tabulates the R profiler output and calculates how much time
+ is spent in each function.
+\end_layout
+
+\begin_layout Itemize
+There are two methods for normalizing the data:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+by.total
+\family default
+ divides the time spent in each function by the total run time.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+by.self
+\family default
+ does the same but first subtracts out lower-level function calls.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+It does not profile C or Fortran code!
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
