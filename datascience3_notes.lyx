@@ -1,0 +1,1123 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Getting and Cleaning Data - Notes
+\end_layout
+
+\begin_layout Author
+Tanner Prestegard
+\end_layout
+
+\begin_layout Date
+Course taken from 4/6/2015 - 5/3/2015
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+
+\series bold
+Motivation
+\end_layout
+
+\begin_layout Itemize
+Real data can be messy and incomplete, or can be in a different format than
+ you expect.
+\end_layout
+
+\begin_layout Itemize
+Data can be in an environment where you need to extract it out (ex: mySQL
+ or MongoDB).
+\end_layout
+
+\begin_layout Itemize
+The goal of this course: raw data -> processing script -> tidy data.
+\end_layout
+
+\begin_layout Itemize
+After you have tidy data, you can do the data analysis (but that is not
+ the focus of this course).
+\end_layout
+
+\begin_layout Subsection*
+Raw and processed data
+\end_layout
+
+\begin_layout Itemize
+Definition of data: data are values of qualitative or quantitative variables,
+ belonging to a set of items.
+\end_layout
+
+\begin_layout Itemize
+Raw data
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The original source of the data.
+\end_layout
+
+\begin_layout Itemize
+Often hard to use for data analyses.
+\end_layout
+
+\begin_layout Itemize
+Data analysis includes processing.
+\end_layout
+
+\begin_layout Itemize
+Raw data may only need to be processed once.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Processed data
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Data that is ready for analysis
+\end_layout
+
+\begin_layout Itemize
+Processing can include merging, subsetting, transforming, etc.
+\end_layout
+
+\begin_layout Itemize
+There may be standards for processing.
+\end_layout
+
+\begin_layout Itemize
+All processing steps should be recorded!
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Components of Tidy Data
+\end_layout
+
+\begin_layout Itemize
+You should have four things when you finish processing data.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The raw data.
+\end_layout
+
+\begin_layout Itemize
+A tidy data set.
+\end_layout
+
+\begin_layout Itemize
+A code book describing each variable and its value in the tidy data set
+ (this is also referred to as metadata).
+\end_layout
+
+\begin_layout Itemize
+An explicit and exact recipe that you used to go from raw data to the tidy
+ data and the code book (in our case, it will be an R script).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Raw data is in the 
+\begin_inset Quotes eld
+\end_inset
+
+right
+\begin_inset Quotes erd
+\end_inset
+
+ (unadulterated) format if:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+You ran no software on the data.
+\end_layout
+
+\begin_layout Itemize
+You did not manipulate or remove any of the data.
+\end_layout
+
+\begin_layout Itemize
+You did not summarize the data in any way.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Tidy data description
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Each variable that you measured should be in one column.
+\end_layout
+
+\begin_layout Itemize
+Each different observation should be in a different row.
+\end_layout
+
+\begin_layout Itemize
+There should be one table for each 
+\begin_inset Quotes eld
+\end_inset
+
+kind
+\begin_inset Quotes erd
+\end_inset
+
+ of variable.
+\end_layout
+
+\begin_layout Itemize
+If you have multiple tables, they should include a column in the tables
+ that allows them to be linked.
+\end_layout
+
+\begin_layout Itemize
+Include a row at the top of each file with variable names.
+ These variable names should be human readable.
+\end_layout
+
+\begin_layout Itemize
+In general, data should be saved in one file per table.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The code book
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Information about the variables (including units) in the data set.
+\end_layout
+
+\begin_layout Itemize
+Information about the summary choices you made.
+\end_layout
+
+\begin_layout Itemize
+Information about the experimental study design you used.
+\end_layout
+
+\begin_layout Itemize
+A common format is a Word/text file.
+\end_layout
+
+\begin_layout Itemize
+There should be a section called 
+\begin_inset Quotes eld
+\end_inset
+
+study design
+\begin_inset Quotes erd
+\end_inset
+
+ that has a thorough description of how you collected the data.
+\end_layout
+
+\begin_layout Itemize
+There must be a section called 
+\begin_inset Quotes eld
+\end_inset
+
+code book
+\begin_inset Quotes erd
+\end_inset
+
+ that describes each variable and its units.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The instruction list
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ideally a computer script (an R script in our case).
+\end_layout
+
+\begin_layout Itemize
+The input for the script is the raw data.
+\end_layout
+
+\begin_layout Itemize
+The output is the procesesd, tidy data.
+\end_layout
+
+\begin_layout Itemize
+There are 
+\bar under
+no parameters
+\bar default
+ in the script.
+ (the recipe should be exact, it shouldn't need to be tweaked or modified
+ by future users)
+\end_layout
+
+\begin_layout Itemize
+In some cases, it will not be possible to script every step.
+ In that case you should provide instructions.
+ (Ex: run the script on datasets 1, 2, 3 and then run another script to
+ combine the results)
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Downloading files
+\end_layout
+
+\begin_layout Itemize
+The downloading process can be included in the processing script so that
+ everything is automated and helps with reproducibility.
+\end_layout
+
+\begin_layout Itemize
+Getting/setting your working directory:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+getwd()
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+setwd()
+\end_layout
+
+\begin_layout Itemize
+Either can use absolute or relative paths.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Checking for and creating directories:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+file.exists(
+\begin_inset Quotes eld
+\end_inset
+
+directoryName
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ will check to see if the directory exists.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dir.create(
+\begin_inset Quotes eld
+\end_inset
+
+directoryName
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ will create a directory if it doesn't exist.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Getting data from the internet - 
+\family typewriter
+download.file()
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Downloads a file from the internet.
+\end_layout
+
+\begin_layout Itemize
+Important parameters are 
+\family typewriter
+url, destfile, method
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+url
+\family default
+: link to file.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+destfile
+\family default
+: filename to save the data as.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+method
+\family default
+: how to access the data.
+ May need to use 
+\family typewriter
+method=
+\begin_inset Quotes erd
+\end_inset
+
+curl
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Useful for downloading tab-delimited, csv, and other files.
+\end_layout
+
+\begin_layout Itemize
+Good to keep track of the date that you downloaded the data because they
+ may change.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use the 
+\family typewriter
+date()
+\family default
+ function to get this.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Some notes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If the URL starts with 
+\emph on
+http
+\emph default
+, 
+\family typewriter
+download.file()
+\family default
+ is OK.
+\end_layout
+
+\begin_layout Itemize
+If the URL starts with 
+\emph on
+http
+\emph default
+s, 
+\family typewriter
+download.file()
+\family default
+ is OK in Windows.
+\end_layout
+
+\begin_layout Itemize
+If the URL starts with 
+\emph on
+http
+\emph default
+s, you may need to use 
+\family typewriter
+method=
+\begin_inset Quotes erd
+\end_inset
+
+curl
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+ on a Mac.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Reading local 
+\begin_inset Quotes eld
+\end_inset
+
+flat
+\begin_inset Quotes erd
+\end_inset
+
+ files
+\end_layout
+
+\begin_layout Itemize
+Flat files are things like text files or csv files.
+\end_layout
+
+\begin_layout Itemize
+Most common way to use this is with 
+\family typewriter
+read.table()
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Flexible and robust but requires more parameters.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Important parameters: 
+\family typewriter
+file, header, sep, row.names, nrows
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reads the data into RAM - big data can cause problems.
+\end_layout
+
+\begin_layout Itemize
+Related: 
+\family typewriter
+read.csv(), read.csv2()
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+Other useful parameters:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+quote: you can tell R whether there are any quoted values.
+ 
+\family typewriter
+quote=
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+ means no quotes.
+\end_layout
+
+\begin_layout Itemize
+na.strings: sets the character that represents a missing value.
+\end_layout
+
+\begin_layout Itemize
+nrows: how many rows of the file to read.
+\end_layout
+
+\begin_layout Itemize
+skip: number of lines to skip before starting to read.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A big problem in reading flat files is that you see quotation marks like
+ ` or 
+\begin_inset Quotes eld
+\end_inset
+
+ in the data.
+ Setting 
+\family typewriter
+quote=
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+ often resolves these problems.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Reading Excel files
+\end_layout
+
+\begin_layout Itemize
+May be the most widely used format for sharing data, but can be a little
+ more difficult to handle with a scripting language like R.
+\end_layout
+
+\begin_layout Itemize
+Need load the 
+\family typewriter
+xlsx
+\family default
+ package.
+ 
+\family typewriter
+XLConnect
+\family default
+ can be useful too.
+\end_layout
+
+\begin_layout Itemize
+Functions to use:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+read.xlsx()
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+read.xlsx2()
+\family default
+ - this is much faster but may be slightly unstable for reading subsets
+ of rows.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+You can read specific rows and/or columns using the 
+\family typewriter
+colIndex
+\family default
+ and 
+\family typewriter
+rowIndex
+\family default
+ parameters.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+write.xlsx
+\family default
+ will write out an Excel file (and has similar arguments).
+\end_layout
+
+\begin_layout Itemize
+In general it is advised to store your data as flat files (csv or tsv) as
+ they are easier to distribute.
+\end_layout
+
+\begin_layout Subsection*
+Reading XML
+\end_layout
+
+\begin_layout Itemize
+Extensible markup language.
+\end_layout
+
+\begin_layout Itemize
+Frequently used to store structured data.
+\end_layout
+
+\begin_layout Itemize
+Particularly widely used in internet applicatinos.
+\end_layout
+
+\begin_layout Itemize
+Extracting XML is the basis for most web scraping.
+\end_layout
+
+\begin_layout Itemize
+Components
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Markup - labels that give the text structure.
+\end_layout
+
+\begin_layout Itemize
+Content - the actual text of the document.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+XML tags
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tags correspond to general labels.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Start tags - ex: 
+\family typewriter
+<section>
+\end_layout
+
+\begin_layout Itemize
+End tags - ex: 
+\family typewriter
+</section>
+\end_layout
+
+\begin_layout Itemize
+Empty tags - ex: 
+\family typewriter
+<line-break />
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Elements are specific examples of tags.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+<Greeting> Hello, world </Greeting>
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Attributes are components of the labels
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+<img src=
+\begin_inset Quotes erd
+\end_inset
+
+jeff.jpg
+\begin_inset Quotes erd
+\end_inset
+
+ alt=
+\begin_inset Quotes erd
+\end_inset
+
+instructor
+\begin_inset Quotes erd
+\end_inset
+
+ />
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+<step number=
+\begin_inset Quotes erd
+\end_inset
+
+3
+\begin_inset Quotes erd
+\end_inset
+
+> Connect A to B.
+ </step>
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+How to read XML files into R:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+library(XML)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+doc <- xmlTreeParse(fileURL, useInternal=TRUE)
+\end_layout
+
+\begin_layout Itemize
+After this, it's still a structured object, so we have to use different
+ functions to get different elements.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+rootNode <- xmlRoot(doc)
+\family default
+ to get root node.
+\end_layout
+
+\begin_layout Itemize
+Can use 
+\family typewriter
+names(rootNode)
+\family default
+ to get names of root node elements.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To directly access parts of the XML document:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use double brackets: 
+\family typewriter
+rootNode[[1]]
+\family default
+, or 
+\family typewriter
+rootNode[[1]][[1]]
+\family default
+ if you want to go into deeper subsets (if they exist).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To programmatically extract parts of the file:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use 
+\family typewriter
+xmlSApply(rootNode, xmlValue)
+\family default
+ (
+\family typewriter
+xmlValue
+\family default
+ returns the value of the element).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A better solution may be to use 
+\family typewriter
+XPath
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Problem: it's a whole new language.
+\end_layout
+
+\begin_layout Itemize
+Get information from http://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/
+XML.pdf
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+/node
+\family default
+ is the top-level node.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+//node
+\family default
+ is a node at any level.
+\end_layout
+
+\begin_layout Itemize
+We probably only need to know a few different commands in 
+\family typewriter
+XPath
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+XPath
+\family default
+ examples:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+xpathSApply(rootNode,
+\begin_inset Quotes erd
+\end_inset
+
+//name
+\begin_inset Quotes erd
+\end_inset
+
+,xmlValue)
+\family default
+ will return the names of all values.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+xpathSApply(rootNode,
+\begin_inset Quotes erd
+\end_inset
+
+//price,xmlValue)
+\family default
+ will return the price nodes.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+xpathSApply(doc,
+\begin_inset Quotes erd
+\end_inset
+
+//li[@class='score']
+\begin_inset Quotes erd
+\end_inset
+
+,xmlValue)
+\family default
+ gets all list elements with a class equal to score.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To parse HTML files, use 
+\family typewriter
+htmlTreeParse()
+\family default
+.
+\end_layout
+
+\begin_layout Subsection*
+Reading JSON
+\end_layout
+
+\begin_layout Itemize
+JSON = Javascript Object Notation
+\end_layout
+
+\begin_layout Itemize
+Lightweight data storage.
+\end_layout
+
+\begin_layout Itemize
+Common format for data from application programming interfaces (APIs).
+\end_layout
+
+\begin_layout Itemize
+Similar structure to XML, but a very different syntax and format.
+\end_layout
+
+\begin_layout Itemize
+Data stored as:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Numbers (double)
+\end_layout
+
+\begin_layout Itemize
+Strings (double quoted)
+\end_layout
+
+\begin_layout Itemize
+Boolean (true or false)
+\end_layout
+
+\begin_layout Itemize
+Array (ordered, comma-separated enclosed by [])
+\end_layout
+
+\begin_layout Itemize
+Object (unordered, comma-separated collection of key:value pairs enclosed
+ by {})
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reading data from JSON
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+library(jsonlite)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+jsonData <- fromJSON(fileURL)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+names(jsonData)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+You can also take data frames in R and turn it into a JSON data set.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+myjson <- toJSON(iris, pretty=TRUE)
+\family default
+ (pretty=TRUE gives nice indentation)
+\end_layout
+
+\begin_layout Itemize
+We can take this and send it right back to a data table using 
+\family typewriter
+fromJSON().
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+iris2 <- fromJSON(myjson)
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_body
+\end_document
