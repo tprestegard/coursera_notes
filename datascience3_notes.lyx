@@ -1405,8 +1405,1153 @@ read.table()
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Reading from MySQL
+\end_layout
+
+\begin_layout Itemize
+Free and widely used open source database software, widely used in internet-base
+d applications.
+\end_layout
+
+\begin_layout Itemize
+Data are structured in:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Databases
+\end_layout
+
+\begin_layout Itemize
+Tables within databases
+\end_layout
+
+\begin_layout Itemize
+Fields within tables
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Each row is called a record.
+\end_layout
+
+\begin_layout Itemize
+Documentation at http://www.mysql.com
+\end_layout
+
+\begin_layout Itemize
+Installing MySQL - go to http://dev.mysql.com/doc/reman/5.7/en/installing.html
+\end_layout
+
+\begin_layout Itemize
+Install RMySQL on Windows:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Go to http://biostat.mc.vanderbilt.edu/wiki/Main/RMySQL or http://www.ahschulz.de/201
+3/07/23/installing-rmysql-under-windows/
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Connecting and listing databases:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+ucscDb <- dbConnect(MySQL(), user=
+\begin_inset Quotes erd
+\end_inset
+
+genome
+\begin_inset Quotes erd
+\end_inset
+
+, host =
+\begin_inset Quotes erd
+\end_inset
+
+genome-mysql.cse.ucsc.edu
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+result <- dbGetQuery(uscscDb,
+\begin_inset Quotes erd
+\end_inset
+
+show databases;
+\begin_inset Quotes erd
+\end_inset
+
+); dbDisconnect(ucscDb);
+\end_layout
+
+\begin_layout Itemize
+result shows a list of all databases available in this MySQL server
+\end_layout
+
+\begin_layout Itemize
+To get a particular database: 
+\family typewriter
+hg19 <- dbConnect(MySQL(), user=
+\begin_inset Quotes erd
+\end_inset
+
+genome
+\begin_inset Quotes erd
+\end_inset
+
+, db=
+\begin_inset Quotes erd
+\end_inset
+
+hg19
+\begin_inset Quotes erd
+\end_inset
+
+, host =
+\begin_inset Quotes erd
+\end_inset
+
+genome-mysql.cse.ucsc.edu
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+To get a list of all tables: 
+\family typewriter
+allTables <- dbListTables(hg19)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+List field names of a table: 
+\family typewriter
+dbListFields(hg19,
+\begin_inset Quotes erd
+\end_inset
+
+tableName
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Get dimensions of a specific table: 
+\family typewriter
+dbGetQuery(hg19, 
+\begin_inset Quotes eld
+\end_inset
+
+select count(*) from tableName
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+To read from a table (example): 
+\family typewriter
+affyData <- dbReadTable(hg19, 
+\begin_inset Quotes eld
+\end_inset
+
+affyU133Plus2
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+To select a specific subset: 
+\family typewriter
+query <- dbSendquery(hg19, 
+\begin_inset Quotes eld
+\end_inset
+
+select * from affyU133Plus2 where misMatches between 1 and 3
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+affyMis <- fetch(query); quantile(affyMis$misMatches)
+\end_layout
+
+\begin_layout Itemize
+Can specify 
+\family typewriter
+n=10
+\family default
+ as a 2nd argument in 
+\family typewriter
+query
+\family default
+ to only get a few rows.
+\end_layout
+
+\begin_layout Itemize
+Note: 
+\family typewriter
+misMatches
+\family default
+ is a column in the table.
+\end_layout
+
+\begin_layout Itemize
+Need to do 
+\family typewriter
+dbClearResult(query)
+\family default
+ to clear the query from the remote server.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Very important to close your connection! (do it as soon as you have the
+ data you need)
+\end_layout
+
+\begin_layout Itemize
+RMySQL vignette: http://cran.r-project.org/web/packages/RMySQL/RMySQL.pdf
+\end_layout
+
+\begin_layout Itemize
+List of commands: http://www.pantz.org/software/mysql/mysqlcommands.html
+\end_layout
+
+\begin_layout Subsection*
+Reading from HDF5
+\end_layout
+
+\begin_layout Itemize
+Used for storing large data sets and structed data sets.
+\end_layout
+
+\begin_layout Itemize
+Support storing a range of data types.
+\end_layout
+
+\begin_layout Itemize
+HDF = Hierarchical Data Format
+\end_layout
+
+\begin_layout Itemize
+Data is stored in groups which contain 0 or more groups with their metadata.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Have a group header with group name and list of attributes.
+\end_layout
+
+\begin_layout Itemize
+Have a group symbol table with a list of objects in the group.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Datasets are multidimensional array of data elements along with metadata
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Have a header with name, datatype, dataspace, and storage layout.
+\end_layout
+
+\begin_layout Itemize
+Have a data array with the data - like a data frame.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To install and load:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+source(
+\begin_inset Quotes eld
+\end_inset
+
+http://bioconductor.org/biocLite.R
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+biocLite(
+\begin_inset Quotes eld
+\end_inset
+
+rhdf5
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+library(rhdf5)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To create a file: 
+\family typewriter
+created = h5createFile(
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+To create groups within the file:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+created = h5createGroup(
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+foo
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+created = h5createGroup(
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+foo/foobaa
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To list groups: 
+\family typewriter
+h5ls(
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Write to groups:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+A = matrix(1:10,nr=5,nc=2)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+h5write(a, 
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+foo/A
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+B = array(seq(0.1,2.0,by=0.1),dim=c(5,2,2))
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+attr(B, 
+\begin_inset Quotes eld
+\end_inset
+
+scale
+\begin_inset Quotes erd
+\end_inset
+
+) <- 
+\begin_inset Quotes eld
+\end_inset
+
+liter
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+h5write(B, 
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+foo/foobaa/B
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Write a data set directly:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+df = data.frame(1L:5L, seq(0,1,length.out=5), c(
+\begin_inset Quotes eld
+\end_inset
+
+ab
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+cde
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+fghi
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+s
+\begin_inset Quotes erd
+\end_inset
+
+), stringAsFactors=FALSE)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+h5write(df, 
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+df
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reading data
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+readA = h5read(
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+foo/A
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+readB = h5read(
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+foo/foobaa/B
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+readdf = h5read(
+\begin_inset Quotes eld
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+df
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Writing and reading chunks
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+h5write(c(12,13,14),
+\begin_inset Quotes erd
+\end_inset
+
+example.h5
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+foo/A
+\begin_inset Quotes erd
+\end_inset
+
+,index=list(1:3,1))
+\end_layout
+
+\begin_layout Itemize
+This writes to the first 3 rows in the first column of this dataset.
+\end_layout
+
+\begin_layout Itemize
+Can do the same kind of indexing with 
+\family typewriter
+h5read
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+hdf5 can be used to opimize reading/writing from disk in R.
+\end_layout
+
+\begin_layout Subsection*
+Reading data from the web
+\end_layout
+
+\begin_layout Itemize
+Web scraping is programmatically extracting data from the HTML code of websites.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+It can be a great way to get data.
+\end_layout
+
+\begin_layout Itemize
+Many websites have information you may want to programmatically read.
+\end_layout
+
+\begin_layout Itemize
+In some cases this is against the terms of service for the website.
+\end_layout
+
+\begin_layout Itemize
+Attempting to read too many pages too quickly can get your IP address blocked.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Getting data off webpages with 
+\family typewriter
+readLines()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+con = url(
+\begin_inset Quotes eld
+\end_inset
+
+web address
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+htmlCode = readLines(con)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+close(con)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can parse with XML instead:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+html = htmlTreeParse(url, useInternalNodes=TRUE)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+xpathSApply(html, 
+\begin_inset Quotes eld
+\end_inset
+
+//title
+\begin_inset Quotes erd
+\end_inset
+
+, xmlValue)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using GET from the httr package
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+html2 = GET(url)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+content2 = content(html2, as=
+\begin_inset Quotes erd
+\end_inset
+
+test
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+parsedHtml = htmlParse(content2, asText=TRUE)
+\end_layout
+
+\begin_layout Itemize
+Then you can use 
+\family typewriter
+xpathSApply
+\family default
+ as you would have otherwise.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Accessing website with passwords
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+pg2 = GET(url,authenticate(
+\begin_inset Quotes eld
+\end_inset
+
+user
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+passwd
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using handles
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+google = handle(
+\begin_inset Quotes eld
+\end_inset
+
+http://google.com
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+pg1 = GET(handle=google, path=
+\begin_inset Quotes erd
+\end_inset
+
+/
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Only need to authenticate this handle one time.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Reading data from APIs
+\end_layout
+
+\begin_layout Itemize
+API - Application Programming Interface
+\end_layout
+
+\begin_layout Itemize
+Example: https://dev.twitter.com/docs/api/1/get/blocks/blocking
+\end_layout
+
+\begin_layout Itemize
+Usually need to create an account with the development team: https://dev.twitter.c
+om/apps
+\end_layout
+
+\begin_layout Itemize
+Need to create a new application, fill in details.
+\end_layout
+
+\begin_layout Itemize
+Accessing Twitter from R
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+myapp = oauth_app(
+\begin_inset Quotes eld
+\end_inset
+
+twitter
+\begin_inset Quotes erd
+\end_inset
+
+, key=
+\begin_inset Quotes erd
+\end_inset
+
+yourConsumerKey
+\begin_inset Quotes erd
+\end_inset
+
+, secret=
+\begin_inset Quotes erd
+\end_inset
+
+yourConsumerSecret
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+sig = sign_oauth1.0(myapp, token=
+\begin_inset Quotes erd
+\end_inset
+
+yourToken
+\begin_inset Quotes erd
+\end_inset
+
+, token_secret=
+\begin_inset Quotes eld
+\end_inset
+
+yourTokenSecret
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+homeTL = GET(
+\begin_inset Quotes eld
+\end_inset
+
+https://api.twitter.com/1.1/statuses/home_timeline.json
+\begin_inset Quotes erd
+\end_inset
+
+, sig)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Converting the json object
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+json1 = cnotent(homeTL)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+json2 = jsonlite::fromJSON(toJSON(json1))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How do we know what URL to use?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Documentation for Twitter API: https://dev.twitter.com/docs/api/1.1/get/search/twee
+ts
+\end_layout
+
+\begin_layout Itemize
+Lots of other useful information there.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+httr allows GET, POST, PUT, DELETE requests if you are authorized.
+\end_layout
+
+\begin_layout Itemize
+You can authenticate with a user name or password, but most modern APIs
+ use something like oauth.
+\end_layout
+
+\begin_layout Itemize
+httr works well with Facebook, Google, Twitter, Github, etc.
+\end_layout
+
+\begin_layout Subsection*
+Reading from other sources
+\end_layout
+
+\begin_layout Itemize
+There is a package in R for almost everything!
+\end_layout
+
+\begin_layout Itemize
+The best way to find packages - Google 
+\begin_inset Quotes eld
+\end_inset
+
+MySQL R package
+\begin_inset Quotes erd
+\end_inset
+
+ for example.
+\end_layout
+
+\begin_layout Itemize
+Interacting more directly with files
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+file - open a connection to a text file.
+\end_layout
+
+\begin_layout Itemize
+url - open a connection to a url.
+\end_layout
+
+\begin_layout Itemize
+gzfile - open a connection to a .gz file.
+\end_layout
+
+\begin_layout Itemize
+bzfile - open a connection to a .bz2 file.
+\end_layout
+
+\begin_layout Itemize
+?connection for more information.
+\end_layout
+
+\begin_layout Itemize
+Remember to close connections.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+foreign
+\family default
+ packages is useful for working with data from other statistical analysis
+ programs.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Loads data from Minitab, S, SAS, SPSS, Stata, Systat
+\end_layout
+
+\begin_layout Itemize
+Basic functions:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+read.arff (Weka)
+\end_layout
+
+\begin_layout Itemize
+read.dta (Stata)
+\end_layout
+
+\begin_layout Itemize
+read.mtp (Minitab)
+\end_layout
+
+\begin_layout Itemize
+read.octave (Octave)
+\end_layout
+
+\begin_layout Itemize
+read.spss (SPSS)
+\end_layout
+
+\begin_layout Itemize
+read.xport (SAS)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Reading images
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+jpeg - https://cran.r-project.org/web/packages/jpeg/index.html
+\end_layout
+
+\begin_layout Itemize
+readbitmap - http://cran.r-project.org/web/packages/readbitmap/index.html
+\end_layout
+
+\begin_layout Itemize
+png - http://cran.r-project.org/web/packages/png/index.html
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reading GIS data (Geographic Information Systems)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+rdgal, rgeos, raster
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reading music data (directly from mp3)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+tuneR, seewave
+\end_layout
+
+\begin_layout Itemize
+Lots of nice musical processing packages in R.
+\end_layout
+
+\end_deeper
 \begin_layout Standard
 
+\end_layout
+
+\begin_layout Itemize
+lets
 \end_layout
 
 \end_body
