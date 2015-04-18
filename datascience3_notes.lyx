@@ -2371,7 +2371,7 @@ Converting the json object
 \begin_layout Itemize
 
 \family typewriter
-json1 = cnotent(homeTL)
+json1 = content(homeTL)
 \end_layout
 
 \begin_layout Itemize
