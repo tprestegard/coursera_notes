@@ -3531,5 +3531,387 @@ mutate
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Managing data frames with dplyr
+\end_layout
+
+\begin_layout Itemize
+Data frame properties:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+One observation per row.
+\end_layout
+
+\begin_layout Itemize
+Each column represents a variable or measure or characteristic.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+dplyr
+\family default
+ does not necessarily provide any new functionality, but greatly simplifies
+ a lot of other operations and makes them much faster.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dplyr
+\family default
+ function properties
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+First argument is a data frame.
+\end_layout
+
+\begin_layout Itemize
+Subsequent arguments describe what to do with it.
+\end_layout
+
+\begin_layout Itemize
+You can refer to columns in the data frame directly without using the $
+ operator.
+\end_layout
+
+\begin_layout Itemize
+The result is a new data frame.
+\end_layout
+
+\begin_layout Itemize
+Data frames must be properly formatted and annotated for this to be useful.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+select
+\family default
+ function
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Allows you access a set of columns within the data frame.
+\end_layout
+
+\begin_layout Itemize
+Example: 
+\family typewriter
+head(select(data, city:dptp))
+\family default
+ selects all columns between those labeled city and dptp
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+head(select(chicago,-(city:dptp)))
+\family default
+ selects all columns except those in the specified range.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+filter
+\family default
+ function
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Used to subset rows based on conditions
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+filter(chicago, pm25tmean2 > 30 & tmpd > 80)
+\family default
+ selects all rows where these conditions are satisfied.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+arrange
+\family default
+ function
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Used to re-order the rows of a data frame based on the values of a particular
+ column.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+rename
+\family default
+ function
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Used to rename a variable.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+chicago <- rename(chicago, pm25 = pm25tmean2, dewpoint = dptp)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+New variable name is on the left!
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+mutate
+\family default
+ function
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Creates a new variable and adds it to the data frame.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+chicago <- mutate(chicago, pm25detrend = pm25-mean(pm25, na.rm = TRUE))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+group_by
+\family default
+ function
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Allows you to essentially split a data frame according to categorical variables.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+chicago <- mutate(chicago, tempcat = factor(1*(tmpd > 80), label=c(
+\begin_inset Quotes eld
+\end_inset
+
+cold
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+hot
+\begin_inset Quotes erd
+\end_inset
+
+))
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+hotcold <- group_by(chicago, tempcat)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+summarize(hotcold, pm25 = mean(pm25), o3 = max(o3tmean2), no2 = median(no2tmean2
+))
+\family default
+ gives the resuling information as grouped by the 
+\begin_inset Quotes eld
+\end_inset
+
+cold
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+hot
+\begin_inset Quotes erd
+\end_inset
+
+ categories.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can use the pipeline operator 
+\family typewriter
+%>%
+\family default
+ to send the output of one function directly to another function.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dplyr
+\family default
+ can be useful with other data frame 
+\begin_inset Quotes eld
+\end_inset
+
+backends
+\begin_inset Quotes erd
+\end_inset
+
+ like data.table and the SQL interface for relational databases via the DBI
+ package.
+\end_layout
+
+\begin_layout Subsection*
+Merging data
+\end_layout
+
+\begin_layout Itemize
+Merging more than one data set together, usually want to use some type of
+ ID to match them up.
+\end_layout
+
+\begin_layout Itemize
+Examples include two datasets: one called 
+\family typewriter
+reviews
+\family default
+ and one called 
+\family typewriter
+solutions
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+The 
+\family typewriter
+merge()
+\family default
+ command merges data frames.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x
+\family default
+: data frame 1
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+y
+\family default
+: data frame 2
+\end_layout
+
+\begin_layout Itemize
+Use 
+\family typewriter
+by, by.x,
+\family default
+ or 
+\family typewriter
+by.y
+\family default
+ to merge.
+\end_layout
+
+\begin_layout Itemize
+Example: 
+\family typewriter
+merged_data = merge(reviews, solutions, by.x=
+\begin_inset Quotes erd
+\end_inset
+
+solution_id
+\begin_inset Quotes erd
+\end_inset
+
+, by.y=
+\begin_inset Quotes erd
+\end_inset
+
+id
+\begin_inset Quotes erd
+\end_inset
+
+, all=TRUE)
+\end_layout
+
+\begin_layout Itemize
+Default - merge all common column names (can do 
+\family typewriter
+intersect(names(solutions), names(reviews))
+\family default
+ to get common names).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can also use 
+\family typewriter
+join()
+\family default
+ in the 
+\family typewriter
+plyr
+\family default
+ package - faster, but fewer features.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Will only merge on the basis of a common ID.
+\end_layout
+
+\begin_layout Itemize
+Can use 
+\family typewriter
+join_all(list(df1,df2,df3))
+\family default
+ to merge more than one data frame (must use data frame list syntax).
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+
+\end_layout
+
 \end_body
 \end_document
