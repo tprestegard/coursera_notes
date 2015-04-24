@@ -3909,9 +3909,5 @@ join_all(list(df1,df2,df3))
 \end_layout
 
 \end_deeper
-\begin_layout Standard
-
-\end_layout
-
 \end_body
 \end_document

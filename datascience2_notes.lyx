@@ -927,7 +927,7 @@ Data frames also have a special attribute called row.names.
 \end_layout
 
 \begin_layout Itemize
-Data frames are usually craeted by calling read.table() or read.csv().
+Data frames are usually created by calling read.table() or read.csv().
 \end_layout
 
 \begin_layout Itemize
