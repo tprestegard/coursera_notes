@@ -3909,5 +3909,941 @@ join_all(list(df1,df2,df3))
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Editing text variables
+\end_layout
+
+\begin_layout Itemize
+Fixing character vectors
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Convert case:
+\family typewriter
+ tolower(), toupper()
+\end_layout
+
+\begin_layout Itemize
+Splitting strings: 
+\family typewriter
+strsplit(str_vect,
+\begin_inset Quotes erd
+\end_inset
+
+separator
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: 
+\family typewriter
+strsplit(
+\begin_inset Quotes eld
+\end_inset
+
+Location.1
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+
+\backslash
+
+\backslash
+.
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ gives 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+Location
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+1
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using 
+\family typewriter
+sapply()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+firstElement <- function(x){x[1]}
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+sapply(splitNames,firstElement)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using 
+\family typewriter
+sub()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Replace underscores with nothing:
+\family typewriter
+ sub(
+\begin_inset Quotes eld
+\end_inset
+
+_
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+,names(reviews))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+gsub()
+\family default
+ - replaces multiple instances.
+ 
+\family typewriter
+sub()
+\family default
+ just replaces the first occurrence.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Finding values
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+grep(search_str,str_vect)
+\family default
+, returns vector indices of matches.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can use 
+\family typewriter
+value=TRUE
+\family default
+, this returns the value rather than the index.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+grepl(search_str,str_vect)
+\family default
+, returns logical vector of TRUE or FALSE.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Other useful functions in the 
+\family typewriter
+stringr
+\family default
+ and base packages
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+nchar(str)
+\family default
+ tells you the number of characters in the string.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+substr(str,n1,n2)
+\family default
+ gets the sub-string between the indices specified.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+paste(str1,str2,str3,sep=
+\begin_inset Quotes eld
+\end_inset
+
+ 
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ pastes the strings together using the specified separator.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+paste0(str1,str2,str3)
+\family default
+ pastes together without any space.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+str_trim(
+\begin_inset Quotes eld
+\end_inset
+
+Jeff 
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ trims of all space at the end.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Names of variables should be:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+All lower case when possible.
+\end_layout
+
+\begin_layout Itemize
+Descriptive.
+\end_layout
+
+\begin_layout Itemize
+Not duplicated.
+\end_layout
+
+\begin_layout Itemize
+Not have underscores, dots, or white spaces.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Regular expressions
+\end_layout
+
+\begin_layout Itemize
+Thought of as a combination of literals (exact matches) and metacharacters.
+\end_layout
+
+\begin_layout Itemize
+Have a rich set of metacharacters.
+\end_layout
+
+\begin_layout Itemize
+Used to search through strings and match patterns.
+\end_layout
+
+\begin_layout Itemize
+We need a way to express whitespace word boundaries, sets of literals, the
+ beginning/end of a line, and other things.
+\end_layout
+
+\begin_layout Itemize
+Metacharacters (seem to be the same as Perl for the most part):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+^
+\family default
+: start of a line.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+$
+\family default
+: end of a line.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+[Bb][Uu]
+\family default
+: matches BU or Bu or bU or bu.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+[0-9][a-zA-Z]
+\family default
+: matches any combination of number and uppercase or lowercase letters.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+[^?.]$
+\family default
+: caret here indicates 
+\begin_inset Quotes eld
+\end_inset
+
+NOT
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This will match any line not ending in a question mark or period.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+.
+\family default
+: used to refer to any character.
+ 
+\family typewriter
+9.10
+\family default
+ will match 
+\family typewriter
+9/10, 9110, 911
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+str1|str2|str3
+\family default
+: matches 
+\family typewriter
+str1
+\family default
+ OR 
+\family typewriter
+str2
+\family default
+ OR 
+\family typewriter
+str3
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+?
+\family default
+: the indicated expression is optional.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ex: 
+\family typewriter
+[Gg]eorge( [Ww]
+\backslash
+.)? [Bb]ush
+\family default
+ will optionally match a W or w in the middle.
+\end_layout
+
+\begin_layout Itemize
+Note: have to escape the 
+\family typewriter
+.
+
+\family default
+ here so it is not interpreted as a metacharacter.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+*
+\family default
+: repeats any character any number of times, including none.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
++
+\family default
+: at least one of the item.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+{m}
+\family default
+: match expression exactly 
+\family typewriter
+m
+\family default
+ times.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+{m,}
+\family default
+: match expression at least 
+\family typewriter
+m
+\family default
+ times.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+{1,5}
+\family default
+: match expression at least 1 time but no more than 5.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Parentheses can also be used to return the matched expressions.
+\end_layout
+
+\begin_layout Itemize
+The matches can be accessed using 
+\family typewriter
+
+\backslash
+1, 
+\backslash
+2
+\family default
+, etc.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: 
+\family typewriter
++([a-zA-Z]+) +
+\backslash
+1 +
+\family default
+ is looking for repetition of a phrase.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+*
+\family default
+ is greedy so it always matches the longest possible string that satisfies
+ the regular expression.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+To make it less greedy, we can use the question mark.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+^s(.*?)s$
+\family default
+ is less greedy than 
+\family typewriter
+^s(.*)s$
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Regular expressions are typically used with 
+\family typewriter
+grep, grepl, sub, gsub
+\family default
+.
+\end_layout
+
+\begin_layout Subsection*
+Working with dates
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+date()
+\family default
+ function gives a character variable containing something like 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+Sun Jan 12 17:48:33 2014
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Sys.Date()
+\family default
+ gives Date variable containing something like 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+2014-01-12
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+format(d2, 
+\begin_inset Quotes eld
+\end_inset
+
+%a %b %d
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ gives 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+Sun Jan 12
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Useful characters:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+%d - day as a number.
+\end_layout
+
+\begin_layout Itemize
+%a - abbreviated weekday.
+\end_layout
+
+\begin_layout Itemize
+%A - unabbreviated weekday.
+\end_layout
+
+\begin_layout Itemize
+%m - month (01-12).
+\end_layout
+
+\begin_layout Itemize
+%b = abbreviated month.
+\end_layout
+
+\begin_layout Itemize
+%B = unabbreviated month.
+\end_layout
+
+\begin_layout Itemize
+%y - 2 digit year.
+\end_layout
+
+\begin_layout Itemize
+%Y - 4 digit year.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Creating dates:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+x <- c(
+\begin_inset Quotes eld
+\end_inset
+
+1jan1960
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+2jan1960
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+30jul1960
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+z <- as.Date(x, 
+\begin_inset Quotes eld
+\end_inset
+
+%d%b%Y
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Difference: 
+\family typewriter
+as.numeric(z[1] - z[2])
+\family default
+ gives 
+\family typewriter
+-1
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+weekdays(date1)
+\family default
+ gives day of week name as a character vector.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+months(date1)
+\family default
+ gives full month name as a character vector.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+julian(date1)
+\family default
+ gives the number of days since 1/1/1970.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+attr(, 
+\begin_inset Quotes eld
+\end_inset
+
+origin
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ gives the origin of the Julian calendar.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+lubridate packages for dates:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+ymd(
+\begin_inset Quotes eld
+\end_inset
+
+20140108
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ gives 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+2014-01-08 UTC
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+mdy(
+\begin_inset Quotes eld
+\end_inset
+
+08/04/2013
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ gives 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+2013-08-04 UTC
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dmy(
+\begin_inset Quotes eld
+\end_inset
+
+03-04-2013
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+ gives 
+\family typewriter
+
+\begin_inset Quotes eld
+\end_inset
+
+2013-04-03 UTC
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Can also use things like 
+\family typewriter
+ymd_hms(str, tz=timezone)
+\family default
+ on a character vector of year-monthh-day hour-minute-second.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+To learn more about how to handle timezones look at ?Sys.timezone.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+wday()
+\family default
+ gives the weekday as a number; specifying 
+\family typewriter
+label=TRUE
+\family default
+ gives the day of the week abbreviation.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+POSIXct
+\family default
+ and 
+\family typewriter
+POSIXlt
+\family default
+ are also useful date and time classes.
+\end_layout
+
+\begin_layout Subsection*
+Data resources
+\end_layout
+
+\begin_layout Itemize
+Open government sites
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+United Nations - http://data.un.org
+\end_layout
+
+\begin_layout Itemize
+United States - http://www.data.gov
+\end_layout
+
+\begin_layout Itemize
+Many more: http://www.data.gov/opendatasites
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Gapminder: development and human health.
+ http://www.gapminder.org
+\end_layout
+
+\begin_layout Itemize
+Survey data from United States: http://www.asdfree.com
+\end_layout
+
+\begin_layout Itemize
+Infochimps Marketplace: http://www.infochimps.com/marketplace
+\end_layout
+
+\begin_layout Itemize
+Kaggle: company that offers data science competitions.
+ http://www.kaggle.com
+\end_layout
+
+\begin_layout Itemize
+UCI machine learning
+\end_layout
+
+\begin_layout Itemize
+Some APIs with R interfaces
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+twitter and twitteR package
+\end_layout
+
+\begin_layout Itemize
+figshar and rfigshare package
+\end_layout
+
+\begin_layout Itemize
+PLoS and rplos package
+\end_layout
+
+\begin_layout Itemize
+rOpenSci - academic focu.
+\end_layout
+
+\begin_layout Itemize
+Facebook and RFacebook
+\end_layout
+
+\begin_layout Itemize
+Google maps and RGoogleMaps
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+d
+\end_layout
+
 \end_body
 \end_document
