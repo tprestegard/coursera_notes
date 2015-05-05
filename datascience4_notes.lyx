@@ -1,0 +1,208 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Exploratory Data Analysis - Notes
+\end_layout
+
+\begin_layout Author
+Tanner Prestegard
+\end_layout
+
+\begin_layout Date
+Course taken from 5/4/2015 - 5/31/2015
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+
+\series bold
+Principles of analytic graphics
+\end_layout
+
+\begin_layout Itemize
+Principle 1: show comparisons.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Evidence for a hypothesis is always relative to a competing hypothesis.
+\end_layout
+
+\begin_layout Itemize
+Always ask 
+\begin_inset Quotes eld
+\end_inset
+
+compared to what?
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Principle 2: show causality, mechanism, explanation, systematic structure.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What is your causal framework for thinking about a question?
+\end_layout
+
+\begin_layout Itemize
+Explain how you think the system is operating.
+\end_layout
+
+\begin_layout Itemize
+Can also show evidence to support your explanation of the results.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Principle 3: show multivariate data (more than two variables).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The real world is multivariate.
+\end_layout
+
+\begin_layout Itemize
+Need to 
+\begin_inset Quotes eld
+\end_inset
+
+escape flatland
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Principle 4: integration of evidence.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Completely integrate words, number, images, diagrams.
+\end_layout
+
+\begin_layout Itemize
+Data graphics should make use of many modes of data presentation.
+\end_layout
+
+\begin_layout Itemize
+Don't let the tool drive the analysis.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Principle 5: describe and document the evidence with appropriate labels,
+ scales, sources, etc.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A data graphic should tell a complete and credible story.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Principle 6: content is king.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Analytical presentations ultimately stand or fall depending on the quality,
+ relevance, and integrity of their content.
+\end_layout
+
+\begin_layout Itemize
+Think about the story you are trying to tell with your graphic.
+\end_layout
+
+\end_deeper
+\end_body
+\end_document
