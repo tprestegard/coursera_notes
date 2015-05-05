@@ -204,5 +204,869 @@ Think about the story you are trying to tell with your graphic.
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Exploratory graphs
+\end_layout
+
+\begin_layout Itemize
+Why do we use graphs in data analysis?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+To understand data properties.
+\end_layout
+
+\begin_layout Itemize
+To find patterns in data.
+\end_layout
+
+\begin_layout Itemize
+To suggest modeling strategies.
+\end_layout
+
+\begin_layout Itemize
+To 
+\begin_inset Quotes eld
+\end_inset
+
+debug
+\begin_inset Quotes erd
+\end_inset
+
+ analyses.
+\end_layout
+
+\begin_layout Itemize
+To communicate results.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Exploratory graphics are mainly about the first four things - not as important
+ for communicating results.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tend to be made quickly (on the fly as you're looking through the data).
+\end_layout
+
+\begin_layout Itemize
+A large number are made.
+\end_layout
+
+\begin_layout Itemize
+The goal is for personal understanding.
+\end_layout
+
+\begin_layout Itemize
+Axes/legends are generally cleaned up later.
+\end_layout
+
+\begin_layout Itemize
+Color/size are primarily used for information.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Simple summaries of data
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+One dimension:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Five-number summary (
+\family typewriter
+summary()
+\family default
+)
+\end_layout
+
+\begin_layout Itemize
+Box plots (
+\family typewriter
+boxplot()
+\family default
+)
+\end_layout
+
+\begin_layout Itemize
+Histograms (
+\family typewriter
+hist(data, col= 
+\begin_inset Quotes eld
+\end_inset
+
+green
+\begin_inset Quotes erd
+\end_inset
+
+, breaks = 100)
+\family default
+)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+breaks
+\family default
+ specifies the number of bins to use.
+\end_layout
+
+\begin_layout Itemize
+Can plot 
+\begin_inset Quotes eld
+\end_inset
+
+rug
+\begin_inset Quotes erd
+\end_inset
+
+ underneath histogram bars to show where the data are located.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Density plots
+\end_layout
+
+\begin_layout Itemize
+Bar plots (
+\family typewriter
+barplot()
+\family default
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Two dimensions:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Multiple/overlaid 1D plots (
+\family typewriter
+Lattice
+\family default
+, 
+\family typewriter
+ggplot2
+\family default
+)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: multiple boxplots.
+ 
+\family typewriter
+boxplot(pm25 ~ region, data = pollution, col = 
+\begin_inset Quotes eld
+\end_inset
+
+red
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Example: multiple histograms.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+hist(subset(pollution, region == 
+\begin_inset Quotes eld
+\end_inset
+
+east
+\begin_inset Quotes erd
+\end_inset
+
+)$pm25, col= 
+\begin_inset Quotes eld
+\end_inset
+
+green
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+hist(subset(pollution, region == 
+\begin_inset Quotes eld
+\end_inset
+
+west
+\begin_inset Quotes erd
+\end_inset
+
+)$pm25, col= 
+\begin_inset Quotes eld
+\end_inset
+
+green
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Scatter plots
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+with(pollution, plot(latitude, pm25))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Smooth scatter plots
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+More than two dimensions:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Multiple/overlaid 2D plots; co-plots
+\end_layout
+
+\begin_layout Itemize
+Use color, size, and shape to add dimensions.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+with(pollution, plot(latitude, pm25, col=region))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Spinning plots.
+\end_layout
+
+\begin_layout Itemize
+Actual 3D plots (not very useful).
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Overlaying features
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+abline(v=12)
+\family default
+ draws a vertical line at x=12.
+ Can use 
+\family typewriter
+h=5
+\family default
+ for example, to draw a horizontal line.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Further resources
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+R Graph Gallery - lots of examples
+\end_layout
+
+\begin_layout Itemize
+R Bloggers
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Plotting systems in R
+\end_layout
+
+\begin_layout Itemize
+The base plotting system - old system that came with the base system of
+ R
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Artist's palette
+\begin_inset Quotes erd
+\end_inset
+
+ model.
+\end_layout
+
+\begin_layout Itemize
+Start with a blank canvas and build up from there.
+\end_layout
+
+\begin_layout Itemize
+Starts with the 
+\family typewriter
+plot()
+\family default
+ function or something similar.
+\end_layout
+
+\begin_layout Itemize
+Use annotation functions to add/modify (
+\family typewriter
+text, lines, points, axis
+\family default
+)
+\end_layout
+
+\begin_layout Itemize
+Convenient, mirrors how we think of building plots and analyzing data.
+\end_layout
+
+\begin_layout Itemize
+Can't go back once plot has started, need to plan in advance.
+\end_layout
+
+\begin_layout Itemize
+Difficult to 
+\begin_inset Quotes eld
+\end_inset
+
+translate
+\begin_inset Quotes erd
+\end_inset
+
+ to others once a new plot has been created (no graphical 
+\begin_inset Quotes eld
+\end_inset
+
+language
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Plot is just a series of R commands.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The lattice system (
+\family typewriter
+lattice
+\family default
+ package)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Pros:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Plots are created with a single function call (
+\family typewriter
+xyplot, bwplot,
+\family default
+ etc.).
+\end_layout
+
+\begin_layout Itemize
+Most useful for conditioning types of plots - looking at how y changes with
+ x across levels of z.
+\end_layout
+
+\begin_layout Itemize
+Things like marings/spacing are set automatically because the entire plot
+ is specified at once.
+\end_layout
+
+\begin_layout Itemize
+Good for putting many plots on a screen.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cons:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sometimes awkward to specify an entire plot in a single function call.
+\end_layout
+
+\begin_layout Itemize
+Annotation in plot is not especially intuitive.
+\end_layout
+
+\begin_layout Itemize
+Use of panel functions and subscripts difficult to wield and requires intense
+ preparation.
+\end_layout
+
+\begin_layout Itemize
+Cannot 
+\begin_inset Quotes eld
+\end_inset
+
+add
+\begin_inset Quotes erd
+\end_inset
+
+ to the plot once it is created.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: plot life expectancy vs.
+ income by region.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+xyplot(Life.Exp ~ Income | region, data = state, layout = c(4,1))
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+The ggplot2 system (
+\family typewriter
+ggplot2
+\family default
+ package)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Splits the difference between base and lattice in a number of ways.
+\end_layout
+
+\begin_layout Itemize
+Automatically deals with spacing, text, titles, but also allows you to annotate
+ by adding to a plot.
+\end_layout
+
+\begin_layout Itemize
+Superficial similarity to lattice but generally easier/more intuitive to
+ use.
+\end_layout
+
+\begin_layout Itemize
+Default mode makes many choices for you but you can still customize it.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+The base plotting system
+\end_layout
+
+\begin_layout Itemize
+Core plotting packages: 
+\family typewriter
+graphics, grDevices
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+The process of making a plot:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Where will the plot be made?
+\end_layout
+
+\begin_layout Itemize
+How will the plot be used?
+\end_layout
+
+\begin_layout Itemize
+Is there a large amount of data going into the plot?
+\end_layout
+
+\begin_layout Itemize
+Do you need to be able to dynamically resize the plot?
+\end_layout
+
+\begin_layout Itemize
+What graphics system will you use? (the plotting systems generally can't
+ be mixed)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Two phases to creating a base plot:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Initializing a new plot.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Calling 
+\family typewriter
+plot(x,y)
+\family default
+ or 
+\family typewriter
+hist(x)
+\family default
+ will launch a graphics device if one is not already open and draw a new
+ plot on the device.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Annotating or adding to an existing plot.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The base graphics system has many parameters that can be set and tweaked
+ - these are documented in 
+\family typewriter
+?par
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+Some important base graphics parameters:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+pch
+\family default
+: marker symbol (default is open circle).
+ Can take a number, which refers to a table of symbols, or a character,
+ which will be used as the symbol.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+cex
+\family default
+: marker size.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+lty
+\family default
+: line type (default is solid line).
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+lwd
+\family default
+: line width, specified as an integer multiple.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+col
+\family default
+: plotting color, specified as a number, string, or hex code.
+ The 
+\family typewriter
+colors()
+\family default
+ function gives you a vector of colors by name.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+xlab
+\family default
+: character string for the x-axis label.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ylab
+\family default
+: character string for the y-axis label.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+par()
+\family default
+ function is used to specify global graphics parameters that affect all
+ plots in an R session.
+ These parameters can be overidden when specified as arguments to specific
+ plotting functions.
+ Some examples:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+las
+\family default
+: orientation of the axis labels on the plot.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+bg
+\family default
+: background color.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+mar
+\family default
+: margin size.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+oma
+\family default
+: outer margin size (default is 0 for all sides).
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+mfrow
+\family default
+: number of plots per row, column (plots are filled row-wise).
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+mfcol
+\family default
+: number of plots per row, column (plots are filled column-wise).
+\end_layout
+
+\begin_layout Itemize
+Can get default values for these parameters by calling 
+\family typewriter
+par()
+\family default
+ with the parameter string.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Key base plotting functions:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+plot
+\family default
+: makes scatter plot or other type of plot depending on the class of the
+ object being plotted.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+lines
+\family default
+: add lines to a plot, given a vector x values and a ccorresponding vector
+ of y values (or a two-column matrix).
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+points
+\family default
+: add points to a plot.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+text
+\family default
+: add text labels to a plot using specified x and y coordinates.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+title
+\family default
+: add annotations to x and y axis labels, title, subtitle, outer margin.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+mtext
+\family default
+: add arbitrary text to the inner or outer margins of the plot.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+axis
+\family default
+: add axis ticks or labels.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Use 
+\family typewriter
+type = 
+\begin_inset Quotes eld
+\end_inset
+
+n
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+ as an argument to 
+\family typewriter
+plot
+\family default
+ to initialize the plot but not actually put anything in it.
+ Can use 
+\family typewriter
+points
+\family default
+ or 
+\family typewriter
+lines
+\family default
+ to add things afterwards.
+\end_layout
+
+\begin_layout Itemize
+Multiple base plots:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+par(mfrow = c(1,e), mar = c(4,4,2,1), oma = c(0,0,2,0))
+\end_layout
+
+\begin_layout Plain Layout
+
+with(airquality, {
+\end_layout
+
+\begin_layout Plain Layout
+
+	plot(Wind, Ozone, main = "Ozone and Wind")
+\end_layout
+
+\begin_layout Plain Layout
+
+	plot(Solar.R, Ozone, main = "Ozone and Solar Radiation")
+\end_layout
+
+\begin_layout Plain Layout
+
+	plot(Temperature, Ozone, main = "Ozone and Temperature")
+\end_layout
+
+\begin_layout Plain Layout
+
+	mtext("Ozone and Weather in New York City", outer = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+})
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The base plotting system is very flexible and offers a high degree of control
+ over plotting.
+\end_layout
+
+\begin_layout Standard
+d
+\end_layout
+
+\begin_layout Itemize
+d
+\end_layout
+
 \end_body
 \end_document
