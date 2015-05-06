@@ -1016,7 +1016,7 @@ status open
 
 \begin_layout Plain Layout
 
-par(mfrow = c(1,e), mar = c(4,4,2,1), oma = c(0,0,2,0))
+par(mfrow = c(1,3), mar = c(4,4,2,1), oma = c(0,0,2,0))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1060,13 +1060,317 @@ The base plotting system is very flexible and offers a high degree of control
  over plotting.
 \end_layout
 
-\begin_layout Standard
-d
+\begin_layout Subsection*
+Graphics devices in R
 \end_layout
 
 \begin_layout Itemize
-d
+A graphics device is something where you can make a plot appear.
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+A window on your computer (screen device).
+\end_layout
+
+\begin_layout Itemize
+A PDF file (file device).
+\end_layout
+
+\begin_layout Itemize
+A PNG or JPEG file (file device).
+\end_layout
+
+\begin_layout Itemize
+A scalable vector graphics (SVG) file (file device).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+When you make a plot in R, it has to be 
+\begin_inset Quotes eld
+\end_inset
+
+sent
+\begin_inset Quotes erd
+\end_inset
+
+ to a specific graphics device.
+\end_layout
+
+\begin_layout Itemize
+The most common place for a plot to be 
+\begin_inset Quotes eld
+\end_inset
+
+sent
+\begin_inset Quotes erd
+\end_inset
+
+ is the screen device.
+\end_layout
+
+\begin_layout Itemize
+Screen device launching functions:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Mac: 
+\family typewriter
+quartz()
+\end_layout
+
+\begin_layout Itemize
+Windows: 
+\family typewriter
+windows()
+\end_layout
+
+\begin_layout Itemize
+Unix/Linux: 
+\family typewriter
+x11()
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+List of devices found in 
+\family typewriter
+?Devices
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+There are also user-created devices in CRAN.
+\end_layout
+
+\begin_layout Itemize
+How does a plot get created?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Most common approach: call a plotting function, the plot appears on the
+ screen, then you can annotate the plot as necessary.
+\end_layout
+
+\begin_layout Itemize
+Other approach:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Explicitly launch a graphics device.
+\end_layout
+
+\begin_layout Itemize
+Call plotting function to make a plot (no plot will appear if using a file
+ device).
+\end_layout
+
+\begin_layout Itemize
+Annotate plot if necessary.
+\end_layout
+
+\begin_layout Itemize
+Explicitly close grahpics device with 
+\family typewriter
+dev.off()
+\family default
+.
+ (this is very important!)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Example of using a file device:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pdf(file = "myplot.pdf")
+\end_layout
+
+\begin_layout Plain Layout
+
+with(faithful, plot(eruptions, waiting))
+\end_layout
+
+\begin_layout Plain Layout
+
+title(main = "Old Faithful Geyser data")
+\end_layout
+
+\begin_layout Plain Layout
+
+dev.off()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Two basic types of file devices:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Vector formats:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+pdf
+\family default
+: useful for line-type graphics, resizes well, usually portable.
+ Not efficient if a plot has many objects/points.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+svg
+\family default
+: XML-based scalable vector graphics, supports animation and interactivity,
+ potentially useful for web-based plots.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+win.metafile
+\family default
+: Windows metafile format (only on Windows).
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+postscript
+\family default
+: older format, also resizes well, usually portable, can be used to create
+ encapsulated postscript files.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Bitmap formats:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+png
+\family default
+: bitmapped format, good for line drawings or images with solid colors,
+ uses lossless compression.
+ Most web browsers can read this format natively, good for plotting many
+ points, does not resize well.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+jpeg
+\family default
+: good for photograhps or natural scenes, uses lossy compression.
+ Good for plotting many, many, many points, does not resize well, can be
+ red by almost any computer and any web browser.
+ Not great for line drawings.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+tiff
+\family default
+: creates bitmap files in the TIFF format, supports lossless compression.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+bmp
+\family default
+: a native Windows bitmapped format.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+It is possible to open multiple graphics devices at once.
+\end_layout
+
+\begin_layout Itemize
+Plotting can only occur on one graphics device at a time.
+\end_layout
+
+\begin_layout Itemize
+The currently active graphics device can be found by calling 
+\family typewriter
+dev.cur().
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Every open graphics device is assigned an integer >= 2.
+\end_layout
+
+\begin_layout Itemize
+You can change the active graphics device using 
+\family typewriter
+dev.set()
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Copying plots from one device to another:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+dev.copy
+\family default
+: copy a plot from one device to another.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dev.copy2pdf
+\family default
+: copy a plot to a PDF file.
+\end_layout
+
+\begin_layout Itemize
+Copying a plot is not an exact operation, so the reuslt may not be identical
+ to the original.
+\end_layout
+
+\begin_layout Itemize
+Make sure to close the file device after copying a plot from the screen
+ to a file!
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
