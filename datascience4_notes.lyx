@@ -1372,5 +1372,1123 @@ Make sure to close the file device after copying a plot from the screen
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+The lattice plotting system
+\end_layout
+
+\begin_layout Itemize
+The lattice plotting system is implemented using the following packages:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+lattice
+\family default
+: code for producing Trellis graphics, which are independent of the base
+ graphics system.
+ Includes functions like 
+\family typewriter
+xyplot, bwplot, levelplot
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+grid
+\family default
+: implements a different graphing system independent of the base system,
+ the 
+\family typewriter
+lattice
+\family default
+ package builds on top of 
+\family typewriter
+grid
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We seldom call functions from the 
+\family typewriter
+grid
+\family default
+ package directly.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The lattice plotting system does not have a 
+\begin_inset Quotes eld
+\end_inset
+
+two-phase
+\begin_inset Quotes erd
+\end_inset
+
+ aspect with separate plotting and annotation like in base plotting.
+\end_layout
+
+\begin_layout Itemize
+All plotting/annotation is done at once with a single function call.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Functions in 
+\family typewriter
+lattice
+\family default
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+xyplot
+\family default
+: main function for creating scatter plots.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+xyplot(y ~ x | f * g, data=data_frame)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Makes a scatter plot of 
+\family typewriter
+y
+\family default
+ vs.
+ 
+\family typewriter
+x
+\family default
+ for the categorical levels 
+\family typewriter
+f
+\family default
+ and 
+\family typewriter
+g
+\family default
+.
+ 
+\family typewriter
+data_frame
+\family default
+ is the data frame containing these variables.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+airquality <- transform(airquality, Month = factor(Month))
+\end_layout
+
+\begin_layout Plain Layout
+
+xyplot(Ozone ~ Wind | Month, data = airquality, layout = c(5,1))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+bwplot
+\family default
+: box and whiskers plots.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+histogram
+\family default
+: histograms.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+stripplot
+\family default
+: like a box plot but with actual points.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dotplot
+\family default
+: plot dots on 
+\begin_inset Quotes eld
+\end_inset
+
+violin strings.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+splom
+\family default
+: scatter plot matrix; like 
+\family typewriter
+pairs
+\family default
+ in the base plotting system.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+levelplot, contourplot
+\family default
+: for plotting image data.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Lattice functions behave differently from base graphics functiosn in one
+ critical way:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Base graphics functions plot data directly to the graphics device.
+\end_layout
+
+\begin_layout Itemize
+Lattice graphics functions return an object of class 
+\series bold
+trellis
+\series default
+.
+\end_layout
+
+\begin_layout Itemize
+The print methods for lattice functions actually do the work of plotting
+ the data on the graphics device.
+\end_layout
+
+\begin_layout Itemize
+Lattice functions can return 
+\begin_inset Quotes eld
+\end_inset
+
+plot objects
+\begin_inset Quotes erd
+\end_inset
+
+ that can, in principle, be stored (but it's usually better to just save
+ the code and the data).
+\end_layout
+
+\begin_layout Itemize
+On the command line, trellis objects are auto-printed so that it appears
+ the function is plotting the data.
+\end_layout
+
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+p <- xyplot(Ozone ~ Wind, data = airquality) ## Nothing happens.
+\end_layout
+
+\begin_layout Plain Layout
+
+print(p) ## Plot appears.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Lattice functions have a panel function which controls what happens inside
+ each panel of the plot.
+\end_layout
+
+\begin_layout Itemize
+The lattice package comes with default panel functions, but you can supply
+ your own if you want to customize what happens in each panel.
+\end_layout
+
+\begin_layout Itemize
+Panel functions receive the x-y coordinates of the data in their panel (along
+ with any optional arguments).
+\end_layout
+
+\begin_layout Itemize
+Panel example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+x <- rnorm(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+f <- rep(0:1, each=50)
+\end_layout
+
+\begin_layout Plain Layout
+
+y <- x + f - (f * x) + rnorm(100, sd=0.5)
+\end_layout
+
+\begin_layout Plain Layout
+
+f <- fator(f, labels = c("Group 1","Group 2"))
+\end_layout
+
+\begin_layout Plain Layout
+
+xyplot(y ~ x | f, layout = c(2,1)) ## Plot with two panels.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+## Custom panel function
+\end_layout
+
+\begin_layout Plain Layout
+
+xyplot(y ~ x | f, panel = function(x, y, ...) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	panel.xyplot(x, y, ...) ## First call the default panel function for 'xyplot'.
+\end_layout
+
+\begin_layout Plain Layout
+
+	panel.abline(h = median(y), lty=2) ## Add a horizontal line at the median.
+\end_layout
+
+\begin_layout Plain Layout
+
+})
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+The ggplot2 plotting system
+\end_layout
+
+\begin_layout Itemize
+What is it? An implementation of the 
+\begin_inset Quotes eld
+\end_inset
+
+Grammar of Graphics
+\begin_inset Quotes erd
+\end_inset
+
+ by Leland Wilkinson.
+ A 
+\begin_inset Quotes eld
+\end_inset
+
+third
+\begin_inset Quotes erd
+\end_inset
+
+ graphics system for R.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Grammar of graphics represents an abstraction of graphics ideas/objects.
+\end_layout
+
+\begin_layout Itemize
+Think 
+\begin_inset Quotes eld
+\end_inset
+
+verb
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+noun
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+adjective
+\begin_inset Quotes erd
+\end_inset
+
+ for graphics.
+\end_layout
+
+\begin_layout Itemize
+Allows for a 
+\begin_inset Quotes eld
+\end_inset
+
+theory of graphics
+\begin_inset Quotes erd
+\end_inset
+
+ on which to build new graphics and graphics objects.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Good documentation at http://ggplot2.org
+\end_layout
+
+\begin_layout Itemize
+The most basic function: 
+\family typewriter
+qplot()
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Works much like the 
+\family typewriter
+plot()
+\family default
+ function in the base graphics system.
+\end_layout
+
+\begin_layout Itemize
+Looks for data in a data frame, similar to 
+\family typewriter
+lattice
+\family default
+, or in the parent environment.
+\end_layout
+
+\begin_layout Itemize
+Plots are made up of aesthetics (size, shape, color) and geoms (points,
+ lines).
+\end_layout
+
+\begin_layout Itemize
+Factors are important for indicating subsets of the data - they should be
+ 
+\series bold
+labeled
+\series default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+qplot()
+\family default
+ hides what goes on underneath, which is OK for most operations.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+ggplot()
+\family default
+ is the core function and very flexible for doing things that 
+\family typewriter
+qplot()
+\family default
+ cannot do.
+\end_layout
+
+\begin_layout Itemize
+Basic example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(displ, hwy, data = mpg)
+\end_layout
+
+\begin_layout Plain Layout
+
+## syntax: qplot(xdata, ydata, data = data_frame)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+## Can add color using the drv variable from the data frame.
+\end_layout
+
+\begin_layout Plain Layout
+
+## Colors are specified automatically.
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(displ, hwy, data = mpg, color = drv)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+## Can use shape to separate categorical variables.
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(displ, hwy, data = mpg, shape = drv)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+## Adding a geom
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(displ, hwy, data = mpg, geom=c("point","smooth"))
+\end_layout
+
+\begin_layout Plain Layout
+
+## can specify geom smoothingmethod with method="method"
+\end_layout
+
+\begin_layout Plain Layout
+
+## (lm is one choice)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Histogram example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+## Basic colored histogram.
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(hwy, data=mpg, fill=drv)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+## smoothing by density
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(hwy, data=mpg, geom = "density")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Facets: like panels in the 
+\family typewriter
+lattice
+\family default
+ package.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+## 3 scatter plots (horizontal spacing).
+\end_layout
+
+\begin_layout Plain Layout
+
+## .
+ means "nothing", putting drv to the left of
+\end_layout
+
+\begin_layout Plain Layout
+
+## the ~ means horizontal spacing.
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(displ, hwy, data=mpg, facets = .~ drv)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+## 3 histograms (vertical spacing).
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(hwy, data=mpg, facets = drv ~ ., binwidth=2)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Difficult to customize 
+\family typewriter
+qplot()
+\family default
+, best to use full ggplot2 if you want to customize.
+\end_layout
+
+\begin_layout Itemize
+Basic components of a ggplot2 plot:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A data frame.
+\end_layout
+
+\begin_layout Itemize
+aesthetic mappings: how data are mapped to color, size, etc.
+\end_layout
+
+\begin_layout Itemize
+geoms: geometric objects like points, lines, shapes, etc.
+\end_layout
+
+\begin_layout Itemize
+facets: for conditional plots.
+\end_layout
+
+\begin_layout Itemize
+stats: statistical transformations like binning, quantiles, smoothing, etc.
+\end_layout
+
+\begin_layout Itemize
+scales: what scale an aesthetic map uses (example: male = red, female =
+ blue).
+\end_layout
+
+\begin_layout Itemize
+A coordinate system.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Plots are built up in layers (somewhat like the base graphics system).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Plot the data.
+\end_layout
+
+\begin_layout Itemize
+Overlay a summary.
+\end_layout
+
+\begin_layout Itemize
+Add metadata and annotation.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Calling 
+\family typewriter
+ggplot()
+\family default
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+## aes = aesthetics (specify x,y variables)
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- ggplot(data, aes(var1, var2))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Add points and print the plot.
+\end_layout
+
+\begin_layout Plain Layout
+
+p <- g + geom_point()
+\end_layout
+
+\begin_layout Plain Layout
+
+print(p)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Adding a smooth layer.
+\end_layout
+
+\begin_layout Plain Layout
+
+p <- g + geom_point() + geom_smooth(method="lm")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Adding facets.
+\end_layout
+
+\begin_layout Plain Layout
+
+p <- g + geom_point() + facet_grid(.
+ ~ var1) + geom_smooth(method = "lm")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Labels come from levels of the facet variables.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Annotation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Labels: 
+\family typewriter
+xlab(), ylab(), labs(), ggtitle()
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+Each of the 
+\family typewriter
+geom
+\family default
+ functions has options to modify.
+\end_layout
+
+\begin_layout Itemize
+For things that only make sense globally, use 
+\family typewriter
+theme()
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: 
+\family typewriter
+theme(legend.position = 
+\begin_inset Quotes eld
+\end_inset
+
+none
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Two standard appearance themes are included:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+theme_gray()
+\family default
+: default theme with gray background.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+theme_bw()
+\family default
+: more stark and plain.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Modifying aesthetics:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+p <- g + geom_point(color = 
+\begin_inset Quotes eld
+\end_inset
+
+steelblue
+\begin_inset Quotes erd
+\end_inset
+
+, size = 4, alpha = 1/2)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+p <- g + geom_point(aes(color = var1), size = 4, alpha = 1/2)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Modifying labels:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+p <- g + geom_point(aes(color = var1)) + labs(title = 
+\begin_inset Quotes eld
+\end_inset
+
+Title
+\begin_inset Quotes erd
+\end_inset
+
+) + labs(x = expression(
+\begin_inset Quotes eld
+\end_inset
+
+log 
+\begin_inset Quotes eld
+\end_inset
+
+ * PM[2.5]), y = 
+\begin_inset Quotes eld
+\end_inset
+
+Y label
+\begin_inset Quotes erd
+\end_inset
+
+))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Customizing the smooth:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+p <- g + geom_smooth(size = 4, linetype = 3, method = 
+\begin_inset Quotes eld
+\end_inset
+
+lm
+\begin_inset Quotes erd
+\end_inset
+
+, se = FALSE)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+se = FALSE
+\family default
+ turns off the confidence interval.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Changing the theme:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+p <- g + geom_point(aes(color = cmicat)) + theme_bw(base_family = 
+\begin_inset Quotes eld
+\end_inset
+
+Times
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Axis limits
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Don't do 
+\family typewriter
+p <- g + geom_line() + ylim(-3, 3)
+\family default
+! This subsets the data to remove any points which don't fall in the specified
+ range.
+\end_layout
+
+\begin_layout Itemize
+Use 
+\family typewriter
+p <- g + geom_line() + coord_cartesian(ylim = c(-3, 3)).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Big example: using 
+\family typewriter
+cut()
+\family default
+ function to turn a continuous variable into a categorical variables using
+ ranges.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+## Calculate quantiles.
+\end_layout
+
+\begin_layout Plain Layout
+
+cutpoints <- quantile(maacs$logno2_new, seq(0, 1, length = 4), na.rm = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Cut the data at the deciles and create a new factor variable.
+\end_layout
+
+\begin_layout Plain Layout
+
+maacs$no2dec <- cut(maacs$logno2_new, cutpoints)
+\end_layout
+
+\begin_layout Plain Layout
+
+## See the levels of the newly created factor variable.
+\end_layout
+
+\begin_layout Plain Layout
+
+levels(maacs$no2dec)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot goal: 2 x 4 array of plots grouped by weight category and NO2 quantiles.
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plots have regression lines, axis labels, an overall title, transparent
+ points,
+\end_layout
+
+\begin_layout Plain Layout
+
+## Non-default font is used.
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- ggplot(maacs, aes(logpm25, NocturnalSympt))
+\end_layout
+
+\begin_layout Plain Layout
+
+g + geom_point(alpha = 1/3)
+\end_layout
+
+\begin_layout Plain Layout
+
+  + facet_wrap(bmicat ~ no2dec, nrow = 2, ncol = 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+  + geom_smooth(method = "lm", se = FALSE, col = "steelblue")
+\end_layout
+
+\begin_layout Plain Layout
+
+  + theme_bw(base_family = "Avenir", base_size = 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+  + labs(x = expression("log " * PM[2.5])
+\end_layout
+
+\begin_layout Plain Layout
+
+  + labs(y = "Nocturnal Symptoms")
+\end_layout
+
+\begin_layout Plain Layout
+
+  + labs(title = "MAACS Cohort")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+dg
+\end_layout
+
 \end_body
 \end_document
