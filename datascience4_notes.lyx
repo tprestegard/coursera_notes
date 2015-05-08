@@ -2560,5 +2560,695 @@ Pick a distance/similarity that makes sense for your problem.
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+## Generate points and plot.
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(1234)
+\end_layout
+
+\begin_layout Plain Layout
+
+par(mar = c(0,0,0,0))
+\end_layout
+
+\begin_layout Plain Layout
+
+x <- rnorm(12, mean = rep(1:3, each = 4), sd = 0.2)
+\end_layout
+
+\begin_layout Plain Layout
+
+y <- rnorm(12, mean = rep(c(1,2,1), each = 4), sd = 0.2)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(x, y, col="blue", pch = 19, cex = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+text(x+0.05, y+0.05, labels = as.character(1:12))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Make data frame and calculate distance.
+\end_layout
+
+\begin_layout Plain Layout
+
+dataFrame <- data.frame(x = x, y = y)
+\end_layout
+
+\begin_layout Plain Layout
+
+dist(dataFrame) ## this contains all pairwise distances.
+\end_layout
+
+\begin_layout Plain Layout
+
+## clustering with hclust
+\end_layout
+
+\begin_layout Plain Layout
+
+hClustering <- hclust
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(hClustering) ## show clustering dendrogram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Hierarchical cluster steps
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Group closest two points into a new point.
+\end_layout
+
+\begin_layout Itemize
+This point's position is given by some intermediate spot between the two
+ points.
+\end_layout
+
+\begin_layout Itemize
+Repeat this for the next two closest points, and keep repeating.
+\end_layout
+
+\begin_layout Itemize
+Can get number of clusters at any point by 
+\begin_inset Quotes eld
+\end_inset
+
+cutting
+\begin_inset Quotes erd
+\end_inset
+
+ the dendrogram/tree.
+\end_layout
+
+\begin_layout Itemize
+You define where to 
+\begin_inset Quotes eld
+\end_inset
+
+cut
+\begin_inset Quotes erd
+\end_inset
+
+ the tree based on what you want to know.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+For 
+\begin_inset Quotes eld
+\end_inset
+
+prettier
+\begin_inset Quotes erd
+\end_inset
+
+ dendrograms, get the 
+\family typewriter
+mypclust
+\family default
+ function from the course website.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Usage: 
+\family typewriter
+myplclust(hClustering, lab = rep(1:3, each=4), lab.col = rep(1:3, each =
+ 4))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can go to the R graph gallery to see more examples of clustering dendrograms.
+\end_layout
+
+\begin_layout Itemize
+Another issue with hierarchical clustering - how do you merge point together?
+ How do you determine its new location?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+One option - just use average position, like center of mass.
+\end_layout
+
+\begin_layout Itemize
+Another option - 
+\series bold
+complete linkage
+\series default
+.
+ Use furthest apart points to determine new position.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Heatmap: uses hierarchical clustering to visualize high-dimensional data.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+dataFrame <- data.frame(x = x, y = y)
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(143)
+\end_layout
+
+\begin_layout Plain Layout
+
+dataMatrix <- as.matrix(dataFrame)[sample(1:12),]
+\end_layout
+
+\begin_layout Plain Layout
+
+heatmap(dataMatrix)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Overall, hierarchical clustering is useful for exploration.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Not always obvious how to choose where to cut.
+\end_layout
+
+\begin_layout Itemize
+Result may be unstable based on choices of merging strategy, distance, changing
+ a few points, etc.
+\end_layout
+
+\begin_layout Itemize
+May also be sensitive to the scaling of different variables.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+K-means clustering
+\end_layout
+
+\begin_layout Itemize
+Can we find things that are close together?
+\end_layout
+
+\begin_layout Itemize
+Similar to hierarchical clustering, how we define close is the most important
+ step.
+\end_layout
+
+\begin_layout Itemize
+K-means clustering is a partitioning approach.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Fix a number of clusters.
+\end_layout
+
+\begin_layout Itemize
+Get 
+\begin_inset Quotes eld
+\end_inset
+
+centroids
+\begin_inset Quotes erd
+\end_inset
+
+ of each cluster.
+\end_layout
+
+\begin_layout Itemize
+Assign things to the closest centroid.
+\end_layout
+
+\begin_layout Itemize
+Recalculate centroids.
+\end_layout
+
+\begin_layout Itemize
+Repeat the previous two steps several times.
+\end_layout
+
+\begin_layout Itemize
+Requires a defined distance metric, a number of clusters, and an initial
+ guess as to cluster centroids.
+\end_layout
+
+\begin_layout Itemize
+Produces a final estimate of cluster centroids and an assignment of each
+ to point to a cluster.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example using 
+\family typewriter
+kmeans()
+\family default
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+## Generate points and plot.
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(1234)
+\end_layout
+
+\begin_layout Plain Layout
+
+par(mar = c(0,0,0,0))
+\end_layout
+
+\begin_layout Plain Layout
+
+x <- rnorm(12, mean = rep(1:3, each = 4), sd = 0.2)
+\end_layout
+
+\begin_layout Plain Layout
+
+y <- rnorm(12, mean = rep(c(1,2,1), each = 4), sd = 0.2)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(x, y, col="blue", pch = 19, cex = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+text(x+0.05, y+0.05, labels = as.character(1:12))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Make data frame and do K-means clustering.
+\end_layout
+
+\begin_layout Plain Layout
+
+dataFrame <- data.frame(x = x, y = y)
+\end_layout
+
+\begin_layout Plain Layout
+
+kmeansObj <- kmeans(dataFrame, centers = 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot results
+\end_layout
+
+\begin_layout Plain Layout
+
+par(mar = rep(0.2,4))
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(x, y, col = kmeansObj$cluster, pch = 19, cex = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+points(kmeansObj$centers, col = 1:3, pch = 3, cex = 3, lwd = 3)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can also plot results with a heatmap.
+\end_layout
+
+\begin_layout Itemize
+K-means clustering requires a number of clusters
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can pick these by eye/intuition.
+\end_layout
+
+\begin_layout Itemize
+Can pick by cross-validation/information theory.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+K-means clustering is not deterministic.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can specify different starting points.
+\end_layout
+
+\begin_layout Itemize
+Can specify a different number of clusters.
+\end_layout
+
+\begin_layout Itemize
+Can specify a different number of iterations.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Dimension reduction
+\end_layout
+
+\begin_layout Itemize
+Principal components analysis and singular value decomposition.
+\end_layout
+
+\begin_layout Itemize
+If we have some matrix data with an underlying pattern in it, it's easy
+ for heatmap to pick that out with hierarchical clustering.
+\end_layout
+
+\begin_layout Itemize
+Patterns in rows and columns:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+hh <- hclust(dist(dataMatrix))
+\end_layout
+
+\begin_layout Plain Layout
+
+dataMatrixOrdered <- dataMatrix([hh$order, ]
+\end_layout
+
+\begin_layout Plain Layout
+
+par(mfrow = c(1,3))
+\end_layout
+
+\begin_layout Plain Layout
+
+image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1])
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(rowMeans(dataMatrixOrdered, 40:1, , xlab = "Row Mean", ylab = "Row",
+ pch = 19)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(colMeans(dataMatrixOrdered), xlab = "Column", ylab = "Column Mean",
+ pch = 19)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Related problem: you have multivariate variables 
+\begin_inset Formula $X_{1},...,X_{n}$
+\end_inset
+
+ such that 
+\begin_inset Formula $X_{1}=\left(X_{11},...,X_{1m}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Goal: find a new set of multivariate variables that are uncorrelated and
+ explain as much variance as possible.
+\end_layout
+
+\begin_layout Itemize
+If you put all of the variables together in one matrix, find the best matrix
+ created with fewer variables (lower rank) tha explains the original data.
+\end_layout
+
+\begin_layout Itemize
+The first goal is statistical (principal components analysis) and the second
+ goal is data compression (singular value decomposition).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Singular value decomposition:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If 
+\begin_inset Formula $X$
+\end_inset
+
+ is a matrix with each variable in a column and each observation in a row,
+ then the SVD is a matrix decomposition: 
+\begin_inset Formula $X=UDV^{T}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The columns of 
+\begin_inset Formula $U$
+\end_inset
+
+ are orthogonal (left singular vectors), the columns of 
+\begin_inset Formula $V$
+\end_inset
+
+ are orthogonal (right singular vectors) and 
+\begin_inset Formula $D$
+\end_inset
+
+ is a diagonal matrix (singular values).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Principal components analysis: the principal components are equal to the
+ right singular values if you first scale the variables (subtract the mean,
+ divide by the standard deviation).
+\end_layout
+
+\begin_layout Itemize
+To do singular value decomposition:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+svd1 <- svd(scale(dataMatrixOrdered))
+\end_layout
+
+\begin_layout Plain Layout
+
+par(mfrow = c(1,3))
+\end_layout
+
+\begin_layout Plain Layout
+
+image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1])
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(svd1$u[,1], 40:1, , xlab="row", ylab = "1st left singular vector",
+ pch = 19)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(svd1$v[,1], xlab="row", ylab = "1st right singular vector", pch = 19)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The “variance explained” tries to summarize how much of the total variation
+ is contained in a particular point.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Access the singular values using 
+\family typewriter
+svd1$d
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+This variance explained is 
+\family typewriter
+svd1$d^2/sum(svd1$d^2)
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Relationship to principal components:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+svd1 <- svd(scale(dataMatrixOrdered))
+\end_layout
+
+\begin_layout Plain Layout
+
+pca1 <- prcomp(dataMatrixOrdered, scale = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(pca1$rotation[, 1], svd1$v[,1], pch = 19,
+\end_layout
+
+\begin_layout Plain Layout
+
+	 xlab = "Principal component 1", ylab = "Right singular vector 1")
+\end_layout
+
+\begin_layout Plain Layout
+
+abline(c(0,1))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Problem: missing values.
+ SVD can't run with missing values.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Solution: 
+\family typewriter
+impute
+\family default
+ package.
+ This packages imputes a missing value in a row using its nearest neighbors.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+PCA/SVD may mix real patterns.
+\end_layout
+
+\begin_layout Itemize
+These techniques can be computationally intensive.
+\end_layout
+
+\begin_layout Itemize
+Alternative approaches:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Factor analysis.
+\end_layout
+
+\begin_layout Itemize
+Independent components analysis.
+\end_layout
+
+\begin_layout Itemize
+Latent semantic analysis.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
