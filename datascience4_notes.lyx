@@ -2486,9 +2486,79 @@ g + geom_point(alpha = 1/3)
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-dg
+\begin_layout Subsection*
+Hierarchical clustering
 \end_layout
 
+\begin_layout Itemize
+Clustering organizes things that are close into groups.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+How do we define close?
+\end_layout
+
+\begin_layout Itemize
+How do we group things?
+\end_layout
+
+\begin_layout Itemize
+How do we visualize and interpret the grouping?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cluster analysis is very important!
+\end_layout
+
+\begin_layout Itemize
+Hierarchical clustering is an agglomerative approach.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Find the closest two things, put them together, then find the next closest
+ and repeat.
+\end_layout
+
+\begin_layout Itemize
+Requires a defined distance and a merging approach.
+\end_layout
+
+\begin_layout Itemize
+Produces a tree showing how close things are to each other.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Most important step - how do we define close?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Distance or similarity
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Continuous - Euclidean distance.
+\end_layout
+
+\begin_layout Itemize
+Continuous - correlation similarity.
+\end_layout
+
+\begin_layout Itemize
+Binary - manhattan distance.
+ (also known as taxicab distance)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Pick a distance/similarity that makes sense for your problem.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
