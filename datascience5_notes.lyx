@@ -1,0 +1,1002 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Reproducible Research - Notes
+\end_layout
+
+\begin_layout Author
+Tanner Prestegard
+\end_layout
+
+\begin_layout Date
+Course taken from 5/4/2015 - 5/31/2015
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+
+\series bold
+Reproducible research: concepts and ideas
+\end_layout
+
+\begin_layout Itemize
+Replication - the ultimate standard for strengthening scientific evidence
+ is replication of findings and conducting studies with independent investigator
+s, data, analytical methods, laboratories, and instruments.
+\end_layout
+
+\begin_layout Itemize
+Replication is particularly important in studies that can impact broad policy
+ or regulatory decisions.
+\end_layout
+
+\begin_layout Itemize
+What's wrong with replication?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Some studies can't be replicated due to time, money, or opportunity constraints.
+\end_layout
+
+\begin_layout Itemize
+Some studies are just unique and the conditions can't be replicated.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reproducible research: make analytic data and code available so that others
+ may reproduce your findings.
+\end_layout
+
+\begin_layout Itemize
+Why do we need reproducible research?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+New technologies increasing data collection throughput; data are more complex
+ and high-dimensional.
+\end_layout
+
+\begin_layout Itemize
+Existing databases can be merged into new 
+\begin_inset Quotes eld
+\end_inset
+
+megadatabases.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Computing power is greatly increase, allowing more sophisticated analyses.
+\end_layout
+
+\begin_layout Itemize
+For every field 
+\begin_inset Quotes eld
+\end_inset
+
+X
+\begin_inset Quotes erd
+\end_inset
+
+ there is now a field 
+\begin_inset Quotes eld
+\end_inset
+
+Computational X
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+What do we need for reproducible research?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Analytic data are available.
+\end_layout
+
+\begin_layout Itemize
+Analytic code is available.
+\end_layout
+
+\begin_layout Itemize
+Documentation of code and data.
+\end_layout
+
+\begin_layout Itemize
+Standard means of distribution.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Who are the players?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Authors
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Want to make their research reproducible.
+\end_layout
+
+\begin_layout Itemize
+Want tools for reproducible research to make their lives easier.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Readers
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Want to reproduce and perhaps expand upon interesting findings.
+\end_layout
+
+\begin_layout Itemize
+Want tools for reproducible research to make their lives easier.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Challenges
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Authors must undergo considerable effort to make their data/results available
+ on the web.
+\end_layout
+
+\begin_layout Itemize
+Readers must download data/results individually and piece together which
+ data go with which code sections, etc.
+\end_layout
+
+\begin_layout Itemize
+Readers may not have the same resources as authors.
+\end_layout
+
+\begin_layout Itemize
+Few tools to help authors/readers, although the toolbox is growing.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+In reality, what happens is:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Authors
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Just put stuff up on the web.
+\end_layout
+
+\begin_layout Itemize
+Journal supplementary materials.
+\end_layout
+
+\begin_layout Itemize
+There are some central databases for various fields.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Readers
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Just download the data and try to figure it out.
+\end_layout
+
+\begin_layout Itemize
+Piece together the software and try to run it.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Idea: literate statistic programming
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+An article is a stream of text and code.
+\end_layout
+
+\begin_layout Itemize
+Analysis code is divided into text and code 
+\begin_inset Quotes eld
+\end_inset
+
+chunks.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Each code chunk loads data and computes results.
+\end_layout
+
+\begin_layout Itemize
+Presentation code formats results into tables, figures, etc.
+\end_layout
+
+\begin_layout Itemize
+Article text explains what is going on.
+\end_layout
+
+\begin_layout Itemize
+Literate programs can be 
+\series bold
+weaved
+\series default
+ to produce human-readable documents and 
+\series bold
+tangled
+\series default
+ to produce machine-readable documents.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Literate programming is a concept that requires:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A documentation language (human readable).
+\end_layout
+
+\begin_layout Itemize
+A programming language (machine readable).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Sweave uses LaTeX and R as the documentation and programming languages,
+ respectively.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Main website: http://www.statistik.lmu.de/~leisch/Sweave
+\end_layout
+
+\begin_layout Itemize
+Sweave limitations:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Focused on LaTeX, which is difficult to learn.
+\end_layout
+
+\begin_layout Itemize
+Lacks features like caching, multiple plots per chunk, mixing programming
+ languages, etc.
+\end_layout
+
+\begin_layout Itemize
+Not frequently updated or very actively developed.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+knitr
+\family default
+ package for R is an alternative for literate programming.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Uses R as the programming language (although others are allowed) and a variety
+ of documentation languages, including LaTeX, Markdown, and HTML.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reproducible research is important as a minimum standard, particularly for
+ studies that are difficult to replicate.
+\end_layout
+
+\begin_layout Itemize
+Infrastructure is needed for creating and distributed reproducible documents,
+ beyond what is currently available.
+\end_layout
+
+\begin_layout Itemize
+There are a growing number of tools for creating reproducible documents.
+\end_layout
+
+\begin_layout Subsection*
+Structure of a data analysis
+\end_layout
+
+\begin_layout Itemize
+Steps in a data analysis
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Define the question.
+\end_layout
+
+\begin_layout Itemize
+Define the ideal data set.
+\end_layout
+
+\begin_layout Itemize
+Determine what data you can access.
+\end_layout
+
+\begin_layout Itemize
+Obtain the data.
+\end_layout
+
+\begin_layout Itemize
+Clean the data.
+\end_layout
+
+\begin_layout Itemize
+Exploratory data analysis.
+\end_layout
+
+\begin_layout Itemize
+Statistical prediction/modeling.
+\end_layout
+
+\begin_layout Itemize
+Interpret results.
+\end_layout
+
+\begin_layout Itemize
+Challenge results.
+\end_layout
+
+\begin_layout Itemize
+Synthesize/write up results.
+\end_layout
+
+\begin_layout Itemize
+Create reproducible code.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Defining a question
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The way you define your questions is extremely important!
+\end_layout
+
+\begin_layout Itemize
+It's the most useful 
+\begin_inset Quotes eld
+\end_inset
+
+dimension reduction
+\begin_inset Quotes erd
+\end_inset
+
+ tool that you can employ.
+\end_layout
+
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+General question: can I automatically detect emails that are spam and those
+ that are not?
+\end_layout
+
+\begin_layout Itemize
+Make it concrete: can I use quantitative characteristics of the emails to
+ classify them as spam?
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Define the ideal data set
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The data set may depend on your goal.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Descriptive: a whole population.
+\end_layout
+
+\begin_layout Itemize
+Exploratory: a random sample with many variables measured.
+\end_layout
+
+\begin_layout Itemize
+Inferential: the right population, randomly sampled.
+\end_layout
+
+\begin_layout Itemize
+Predictive: a training and test data set from the same population.
+\end_layout
+
+\begin_layout Itemize
+Causal: data from a randomized study.
+\end_layout
+
+\begin_layout Itemize
+Mechanistic: data about all components of the system.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Determine what data you can access
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sometimes you can find data for free on the web.
+\end_layout
+
+\begin_layout Itemize
+Other times you may need to buy the dta.
+\end_layout
+
+\begin_layout Itemize
+Be sure to respect the terms of use.
+\end_layout
+
+\begin_layout Itemize
+If the data don't exist, you may need to generate them yourself.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Obtain the data
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Try to obtain the raw data.
+\end_layout
+
+\begin_layout Itemize
+Be sure to reference the source.
+\end_layout
+
+\begin_layout Itemize
+Polite emails go a long way.
+\end_layout
+
+\begin_layout Itemize
+If you will load the data from an internet source, record the URL and the
+ time you accessed the data.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Clean the data
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Raw data often needs to be processed.
+\end_layout
+
+\begin_layout Itemize
+If it is pre-processed, make sure that you understand how it was pre-processed.
+\end_layout
+
+\begin_layout Itemize
+Understand the source of the data (census, sample, convenience sample, etc.).
+\end_layout
+
+\begin_layout Itemize
+May need reformatting, subsampling, etc.
+ Record these steps!
+\end_layout
+
+\begin_layout Itemize
+Determine if the data are good enough - if not, get new data or quit.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Exploratory data analysis
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Look at summaries of the data.
+\end_layout
+
+\begin_layout Itemize
+Check for missing data.
+\end_layout
+
+\begin_layout Itemize
+Create exploratory plots.
+\end_layout
+
+\begin_layout Itemize
+Perform exploratory analyses like clustering.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Statistical prediction/modeling
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Should be informed by the results of your exploratory analysis.
+\end_layout
+
+\begin_layout Itemize
+Exact methods depend on the question of interest.
+\end_layout
+
+\begin_layout Itemize
+Transformations/processing should be accounted for when necessary.
+\end_layout
+
+\begin_layout Itemize
+Measures of uncertainty should be reported.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Interpret results
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use the appropriate language - words like 
+\begin_inset Quotes eld
+\end_inset
+
+describe,
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+correlates with/associated with,
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+leads to/causes,
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+predicts.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Give an explanation.
+\end_layout
+
+\begin_layout Itemize
+Interpret coefficients.
+\end_layout
+
+\begin_layout Itemize
+Interpret measures of uncertainty.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Challenge results
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Challenge all steps: question, data source, processing, analysis, conclusions.
+\end_layout
+
+\begin_layout Itemize
+Challenge measures of uncertainty.
+\end_layout
+
+\begin_layout Itemize
+Challenge choices of terms to include in models.
+\end_layout
+
+\begin_layout Itemize
+Think of potential alternative analyses.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Synthesize/write up results
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Lead with the question.
+\end_layout
+
+\begin_layout Itemize
+Summarize the analyses into the story.
+\end_layout
+
+\begin_layout Itemize
+Don't include every analysis, only include it if:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+It is needed for the story.
+\end_layout
+
+\begin_layout Itemize
+If it is needed to address a challenge.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Order analyses according to the story, rather than chronologically.
+\end_layout
+
+\begin_layout Itemize
+Include 
+\begin_inset Quotes eld
+\end_inset
+
+pretty
+\begin_inset Quotes erd
+\end_inset
+
+ figures that contribute to the story.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Create reproducible code.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use Markdown, knitr, etc.
+ to document your code and your analysis.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Organizing your analysis
+\end_layout
+
+\begin_layout Itemize
+Data analysis files
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Data: raw data, processed data.
+\end_layout
+
+\begin_layout Itemize
+Figures: exploratory figures, final figures.
+\end_layout
+
+\begin_layout Itemize
+R code: raw/unused scripts, final scripts, R Markdown files.
+\end_layout
+
+\begin_layout Itemize
+Text: README files, text of analysis/report.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Raw data
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Should be stored in your analysis folder.
+\end_layout
+
+\begin_layout Itemize
+If accessed from the web, include URL, description, and date accessed in
+ a README file.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Processed data
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Should be named so it's easy to see which script generated the data.
+\end_layout
+
+\begin_layout Itemize
+The processing script -> processed data mapping should be described in the
+ README file.
+\end_layout
+
+\begin_layout Itemize
+Processed data should be 
+\series bold
+tidy
+\series default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Exploratory figures
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Made during the course of your analysis, not necessarily part of your final
+ report.
+\end_layout
+
+\begin_layout Itemize
+They do not need to be 
+\begin_inset Quotes eld
+\end_inset
+
+pretty.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Final figures
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Usually a small subset of the original figures.
+\end_layout
+
+\begin_layout Itemize
+Axes/colors set to make the figure clear.
+\end_layout
+
+\begin_layout Itemize
+Possibly multiple panels.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Raw scripts
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+May be less commented.
+\end_layout
+
+\begin_layout Itemize
+May be multiple versions.
+\end_layout
+
+\begin_layout Itemize
+May include analyses that are later discarded.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Final scripts
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Clearly commented.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Small comments used liberally - what, when, why, how.
+\end_layout
+
+\begin_layout Itemize
+Bigger commented blocks for whole sections.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Include processing details.
+\end_layout
+
+\begin_layout Itemize
+Only analyses that appear in the final write-up.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+R markdown files
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can be used to generate reproducible reports.
+\end_layout
+
+\begin_layout Itemize
+Text and R code are integrated.
+\end_layout
+
+\begin_layout Itemize
+Very easy to create in RStudio
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+README files
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Not necessary if you use R markdown.
+\end_layout
+
+\begin_layout Itemize
+Should contain step-by-step instructions for analysis.
+\end_layout
+
+\begin_layout Itemize
+Example: https://github.com/jtleek/swfdr/blob/master/README.md
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Text of the document
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Should include a title, introduction (motivation), methods (statistics you
+ used), results (including measures of uncertainty), and conclusions (including
+ potential problems).
+\end_layout
+
+\begin_layout Itemize
+It should tell a coherent story.
+\end_layout
+
+\begin_layout Itemize
+It should not include every analysis that you performed.
+\end_layout
+
+\begin_layout Itemize
+References should be included for statistical methods.
+\end_layout
+
+\end_deeper
+\end_body
+\end_document

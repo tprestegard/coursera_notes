@@ -3250,5 +3250,238 @@ Latent semantic analysis.
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Plotting and color in R
+\end_layout
+
+\begin_layout Itemize
+The default color schemes for most plots in R are not very good.
+\end_layout
+
+\begin_layout Itemize
+Recently, there have been developments to improve the handling/specification
+ of colors in plots, graphs, etc.
+\end_layout
+
+\begin_layout Itemize
+There are functions in R and in external packages that are very handy.
+\end_layout
+
+\begin_layout Itemize
+Default image plots in R:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+heat.colors()
+\family default
+: goes from red to white (low to high).
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+topo.colors()
+\family default
+: goes from blue to white (low to high).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+grDevices
+\family default
+ packages has two useful functions:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+colorRamp
+\family default
+: takes a palette of colors and returns a function that takes values between
+ 0 and 1, indicating the extremes of the color palette.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ex: 
+\family typewriter
+pal <- colorRamp(c(
+\begin_inset Quotes eld
+\end_inset
+
+red
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+blue
+\begin_inset Quotes erd
+\end_inset
+
+)); pal(0)
+\family default
+ gives an array 
+\family typewriter
+(255 0 0)
+\family default
+, which is red.
+\end_layout
+
+\begin_layout Itemize
+Ex: 
+\family typewriter
+pal(seq(0,1,len=10))
+\family default
+ gives a list of 10 colors going from red to blue.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+colorRampPalette
+\family default
+: takes a palette of colors and return a function that takes integer arguments
+ and returns a vector of colors interpolating the palette.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pal <- colorRampPalette(c("red","yellow"))
+\end_layout
+
+\begin_layout Plain Layout
+
+pal(2) ## gives "#FF0000" "#FFFF00" which are hex codes for red and yellow.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+The function 
+\family typewriter
+colors()
+\family default
+ lists the names of colors you can use in any plotting function.
+\end_layout
+
+\begin_layout Itemize
+One package on CRAN that contains interesting/useful color palettes: 
+\family typewriter
+RColorBrewer
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+There are three types of palettes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sequential: data are ordered from low to high.
+\end_layout
+
+\begin_layout Itemize
+Diverging: to show how the data diverge from the mean (negative and positive).
+\end_layout
+
+\begin_layout Itemize
+Qualitative: used to represent data that are not ordered (may be factors
+ or categorical data).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Palette information can be used in conjuction with 
+\family typewriter
+colorRamp()
+\family default
+ and 
+\family typewriter
+colorRampPalette()
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+Usage: 
+\family typewriter
+library(RColorBrewer); cols <- brewer.pal(ncolors, 
+\begin_inset Quotes eld
+\end_inset
+
+paletteName
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Some other plotting notes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+rgb
+\family default
+ function can be used to produce any color via red, green, and blue proportions.
+\end_layout
+
+\begin_layout Itemize
+Color transparency can be added via a fourth parameter to 
+\family typewriter
+rgb
+\family default
+ (the 
+\family typewriter
+alpha
+\family default
+ parameter).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This can be very useful when there is a lot of overlap between points.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+colorspace
+\family default
+ package can be used for different control over colors.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Summary: careful use of colors in plots can make it easier for the reader
+ to understand what you are trying to say.
+\end_layout
+
 \end_body
 \end_document
