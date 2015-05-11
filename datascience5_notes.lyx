@@ -998,5 +998,826 @@ References should be included for statistical methods.
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Coding standards in R
+\end_layout
+
+\begin_layout Itemize
+Always use text files and a text editor.
+\end_layout
+
+\begin_layout Itemize
+Indent your code.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Indenting improves readability.
+\end_layout
+
+\begin_layout Itemize
+Suggested to use 4-8 spaces for indents.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Limit the width of your code (80 columns or so).
+\end_layout
+
+\begin_layout Itemize
+Limit the length of individual functions.
+\end_layout
+
+\begin_layout Subsection*
+Markdown
+\end_layout
+
+\begin_layout Itemize
+Markdown is a text-to-HTML conversion tool for web writers.
+ Markdown allows you to write using an easy-to-read, easy-to-write plain
+ text format, then convert it to structurally valid XHTML or HTML.
+\end_layout
+
+\begin_layout Itemize
+Syntax:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Italics: *text*
+\end_layout
+
+\begin_layout Itemize
+Bold: **text**
+\end_layout
+
+\begin_layout Itemize
+Headings:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+# Primary heading
+\end_layout
+
+\begin_layout Itemize
+## Secondary heading
+\end_layout
+
+\begin_layout Itemize
+### Tertiary heading
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Unordered lists (can use characters other than 
+\begin_inset Quotes eld
+\end_inset
+
+-
+\begin_inset Quotes erd
+\end_inset
+
+):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+- first item
+\end_layout
+
+\begin_layout Itemize
+- second item
+\end_layout
+
+\begin_layout Itemize
+- third item
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Ordered lists (don't have to be in order, Markdown will automatically put
+ them in order):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+1.
+ first item
+\end_layout
+
+\begin_layout Itemize
+2.
+ second item
+\end_layout
+
+\begin_layout Itemize
+3.
+ third item
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Links (two methods):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+[Text](URL)
+\end_layout
+
+\begin_layout Itemize
+[Text][1], then at the bottom put [1]: URL 
+\begin_inset Quotes eld
+\end_inset
+
+Text
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Newlines: double space after the end of a line.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Resources: The Official Markdown Guide (daringfireball.net/projects/markdown/basi
+cs)
+\end_layout
+
+\begin_layout Subsection*
+R Markdown
+\end_layout
+
+\begin_layout Itemize
+Markdown is a simplified version of 
+\begin_inset Quotes eld
+\end_inset
+
+markup
+\begin_inset Quotes erd
+\end_inset
+
+ languages.
+\end_layout
+
+\begin_layout Itemize
+Allows you to focus on writing as opposed to formatting.
+\end_layout
+
+\begin_layout Itemize
+Simple/minimal intuitive formatting elements.
+\end_layout
+
+\begin_layout Itemize
+Easily converted to valid HTML (and other formats) using existing tools.
+\end_layout
+
+\begin_layout Itemize
+What is R Markdown?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The integration of R code with markdown.
+\end_layout
+
+\begin_layout Itemize
+Allows you to create documents containing 
+\begin_inset Quotes eld
+\end_inset
+
+live
+\begin_inset Quotes erd
+\end_inset
+
+ R code.
+\end_layout
+
+\begin_layout Itemize
+R code is evaluated as part of the processing of the markdown.
+\end_layout
+
+\begin_layout Itemize
+Results from R code are inserted into markdown document.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+You know that the code in the document will work, because it HAD to work
+ in order to produce the document!
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A core tool in literate statistical programming.
+\end_layout
+
+\begin_layout Itemize
+R Markdown can be converted to standard markdown using the 
+\family typewriter
+knitr
+\family default
+ package in R.
+\end_layout
+
+\begin_layout Itemize
+Markdown can be converted to HTML using the 
+\family typewriter
+markdown
+\family default
+ package in R.
+\end_layout
+
+\begin_layout Itemize
+Any basic text editor can be used to create a markdown document; no special
+ editing tools needed.
+\end_layout
+
+\begin_layout Itemize
+The R Markdown -> Markdown -> HTML work flow can be easily managed using
+ RStudio.
+\end_layout
+
+\begin_layout Itemize
+Can convert R Markdown to slides using the 
+\family typewriter
+slidify
+\family default
+ package.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+The 
+\family typewriter
+knitr
+\family default
+ package
+\end_layout
+
+\begin_layout Itemize
+How do I make my work reproducible?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Decide to do it! (ideally from the start)
+\end_layout
+
+\begin_layout Itemize
+Keep track of things, perhaps with a version control system to track snapshots/c
+hanges.
+\end_layout
+
+\begin_layout Itemize
+Use software whose operation can be coded (i.e, not GUI-based programming).
+\end_layout
+
+\begin_layout Itemize
+Don't save output like temporary data transformations, pre-processing, etc.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can provide raw data and pre-processing code.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Save data in non-proprietary formats.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Literate programming
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Pros:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Text and code all in one place, in logical order.
+\end_layout
+
+\begin_layout Itemize
+Data and results are automatically updated to reflect external changes.
+\end_layout
+
+\begin_layout Itemize
+Code is live - automatic 
+\begin_inset Quotes eld
+\end_inset
+
+regression test
+\begin_inset Quotes erd
+\end_inset
+
+ when building a document.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cons:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Text and code all in one place; can make documents difficult to read, especially
+ if there is a lot of code.
+\end_layout
+
+\begin_layout Itemize
+Can substantially slow down processing of documents (although there are
+ tools to help).
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+What is 
+\family typewriter
+knitr
+\family default
+?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+An R package (available on CRAN) that supports RMarkdown, LaTeX, and HTML
+ as documentation languages.
+\end_layout
+
+\begin_layout Itemize
+Can export to PDF and HTML.
+\end_layout
+
+\begin_layout Itemize
+Built right into RStudio for your convenience.
+\end_layout
+
+\begin_layout Itemize
+Requirements:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A recent version of R.
+\end_layout
+
+\begin_layout Itemize
+A text editor.
+\end_layout
+
+\begin_layout Itemize
+Some support packages that are available on CRAN.
+\end_layout
+
+\begin_layout Itemize
+Some knowledge of Markdown, LaTeX, or HTML (we will use Markdown).
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+What is 
+\family typewriter
+knitr
+\family default
+ good for?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Manuals.
+\end_layout
+
+\begin_layout Itemize
+Short/medium-length technical documents.
+\end_layout
+
+\begin_layout Itemize
+Tutorials.
+\end_layout
+
+\begin_layout Itemize
+Reports (especially if generated periodically).
+\end_layout
+
+\begin_layout Itemize
+Data pre-processing documents/summaries.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+What is 
+\family typewriter
+knitr
+\family default
+ not good for?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Very long research articles.
+\end_layout
+
+\begin_layout Itemize
+Complex, time-consuming computations.
+\end_layout
+
+\begin_layout Itemize
+Documents that require precise formatting.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To run 
+\family typewriter
+knitr
+\family default
+ in R (not RStudio):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(knitr)
+\end_layout
+
+\begin_layout Plain Layout
+
+setwd("dir_name")
+\end_layout
+
+\begin_layout Plain Layout
+
+knit2html("document.Rmd")
+\end_layout
+
+\begin_layout Plain Layout
+
+browseURL("document.html")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A few notes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+knitr
+\family default
+ will fill a new document with filler text - delete it!
+\end_layout
+
+\begin_layout Itemize
+Code chunks begin with 
+\family typewriter
+```{r}
+\family default
+ and end with 
+\family typewriter
+```
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+All R code goes in between these markers.
+\end_layout
+
+\begin_layout Itemize
+Code chunks can have names, which is useful when we start making graphics.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+```{r firstchunk, echo=FALSE}
+\end_layout
+
+\begin_layout Plain Layout
+
+## R code goes here
+\end_layout
+
+\begin_layout Plain Layout
+
+```
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+echo=FALSE
+\family default
+ means that the code won't be echoed in the output document, only the result
+ will be.
+\end_layout
+
+\begin_layout Itemize
+Set 
+\family typewriter
+results=
+\begin_inset Quotes eld
+\end_inset
+
+hide
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+ to hide the results.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+By default, code in a code chunk is echoed, as are any results of a computation.
+\end_layout
+
+\begin_layout Itemize
+Don't edit or save the .md or .html documents produced by 
+\family typewriter
+knitr
+\family default
+ until you are finished!
+\end_layout
+
+\begin_layout Itemize
+Can add code directly into a sentence.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: 
+\family typewriter
+The current time is `r time`.
+ My favorite random number is `r rand`.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Adjust figure height: 
+\family typewriter
+```{r scatterplot, fig.height=4}
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+knitr
+\family default
+ embeds the figures in the HTML.
+\end_layout
+
+\begin_layout Itemize
+Making tables with 
+\family typewriter
+xtable
+\family default
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+```{r fitmodel}
+\end_layout
+
+\begin_layout Plain Layout
+
+library(datasets)
+\end_layout
+
+\begin_layout Plain Layout
+
+data(airquality)
+\end_layout
+
+\begin_layout Plain Layout
+
+fit <- lm(Ozone ~ Wind + Temp + Solar.R, data = airquality)
+\end_layout
+
+\begin_layout Plain Layout
+
+```
+\end_layout
+
+\begin_layout Plain Layout
+
+Here is a table of regression coefficients.
+\end_layout
+
+\begin_layout Plain Layout
+
+```{r showtable, results="asis"}
+\end_layout
+
+\begin_layout Plain Layout
+
+library(xtable)
+\end_layout
+
+\begin_layout Plain Layout
+
+xt <- xtable(summary(fit))
+\end_layout
+
+\begin_layout Plain Layout
+
+print(xt, type="html")
+\end_layout
+
+\begin_layout Plain Layout
+
+```
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Setting global options (for the entire document).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For example, we may want to suppress all code echoing and results output.
+\end_layout
+
+\begin_layout Itemize
+To do this, create a separate code chunk at the beginning of the document
+ and use the 
+\family typewriter
+opts_chunk
+\family default
+ function.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+```{r setoptions, echo=FALSE}
+\end_layout
+
+\begin_layout Plain Layout
+
+opts_chunk$set(echo = FALSE, results = "hide")
+\end_layout
+
+\begin_layout Plain Layout
+
+```
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+You can override the global options on a chunk-by-chunk basis.
+\end_layout
+
+\begin_layout Itemize
+Some common options:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+results: 
+\begin_inset Quotes eld
+\end_inset
+
+asis
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+hide
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+echo: TRUE, FALSE
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+fig.height: numeric
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+fig.width: numeric
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Caching computations
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What if one chunk takes a long time to run?
+\end_layout
+
+\begin_layout Itemize
+All chunks have to be re-computed every time you re-knit the file.
+\end_layout
+
+\begin_layout Itemize
+The 
+\family typewriter
+cache=TRUE
+\family default
+ option can be set on a chunk-by-chunk basis to store results of a computation.
+\end_layout
+
+\begin_layout Itemize
+After the first run, the results for that chunk will be loaded from a cache
+ (as long as nothing has changed).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Caching caveats
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If the data, code, or anything external changes, you have to re-run the
+ cached code chunks.
+\end_layout
+
+\begin_layout Itemize
+Dependencies are not checked explicitly.
+\end_layout
+
+\begin_layout Itemize
+Chunks with significant side effects may not be cacheable (for example,
+ if the code has some effect outside of the document).
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
