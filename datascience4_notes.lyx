@@ -1689,7 +1689,7 @@ y <- x + f - (f * x) + rnorm(100, sd=0.5)
 
 \begin_layout Plain Layout
 
-f <- fator(f, labels = c("Group 1","Group 2"))
+f <- factor(f, labels = c("Group 1","Group 2"))
 \end_layout
 
 \begin_layout Plain Layout
