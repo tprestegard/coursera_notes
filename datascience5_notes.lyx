@@ -1819,5 +1819,741 @@ Chunks with significant side effects may not be cacheable (for example,
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Communicating results
+\end_layout
+
+\begin_layout Itemize
+Hierarchy of information: research paper
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Title/author list
+\end_layout
+
+\begin_layout Itemize
+Abstract
+\end_layout
+
+\begin_layout Itemize
+Body/results
+\end_layout
+
+\begin_layout Itemize
+Supplementary materials/gory details
+\end_layout
+
+\begin_layout Itemize
+Code/data/really gory details
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Hierarchy of information: e-mail presentation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Subject line/sender information
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+At a minimum, at least include one.
+\end_layout
+
+\begin_layout Itemize
+Can you summarize your findings in one sentence?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+E-mail body
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A description of the problem in 1-2 paragraphs.
+\end_layout
+
+\begin_layout Itemize
+If action needs to be taken as a result of this presentation, suggest some
+ options and make them as concrete as possible.
+\end_layout
+
+\begin_layout Itemize
+If questions need to be addressed, try to make them yes/no questions.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Attachments
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+R Markdown file, knitr report, etc.
+\end_layout
+
+\begin_layout Itemize
+Stay concise, don't spit out pages of code.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Links to supplementary materials
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Code/software/data
+\end_layout
+
+\begin_layout Itemize
+GitHub repository/project website
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+RPubs
+\end_layout
+
+\begin_layout Itemize
+RPubs.com, brought to you by RStudio.
+\end_layout
+
+\begin_layout Itemize
+Easy web publishing from R, useful to share with other people or with the
+ general public.
+\end_layout
+
+\begin_layout Itemize
+Need to create an account.
+\end_layout
+
+\begin_layout Itemize
+Can publish your documents directly from RStudio.
+\end_layout
+
+\begin_layout Subsection*
+Reproducible research checklist
+\end_layout
+
+\begin_layout Itemize
+DO: start with good science.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Garbage in = garbage out.
+\end_layout
+
+\begin_layout Itemize
+A coherent, focused question simplifies many problems.
+\end_layout
+
+\begin_layout Itemize
+Working with good collaborators reinforces good practices.
+\end_layout
+
+\begin_layout Itemize
+Something that's interesting to you will motivate good habits.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+DON'T: do things by hand.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Editing spreadsheets of data to clean it up.
+\end_layout
+
+\begin_layout Itemize
+Editing tables or figures (rounding, formatting, etc.).
+\end_layout
+
+\begin_layout Itemize
+Downloading data from a website by clicking links in a web browser.
+\end_layout
+
+\begin_layout Itemize
+Moving data around on your computer, splitting/reformatting data files.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+We're just going to do this once...
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Things done by hand need to be precisely documented.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+DON'T: point and click.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Many data processing/statistical analysis packages have GUIs.
+\end_layout
+
+\begin_layout Itemize
+GUIs are convenient/intuitive, but the actions you take in them can be difficult
+ to reproduce.
+\end_layout
+
+\begin_layout Itemize
+Some GUIs produce a log file or script which includes equivalent commands;
+ these can be saved for later examination.
+\end_layout
+
+\begin_layout Itemize
+In general, be careful with data analysis software that is highly interactive;
+ ease of use can sometimes lead to non-reproducible results.
+\end_layout
+
+\begin_layout Itemize
+Other interactive software, like text editors, are usually fine.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+DO: teach a computer.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If something needs to be done as a part of your analysis/investigation,
+ try to automate it.
+\end_layout
+
+\begin_layout Itemize
+In order to give your computer instructions, you need to write down exactly
+ what you want to do and how it should be done.
+\end_layout
+
+\begin_layout Itemize
+Teaching a computer almost guarantees reproducibility.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+DO: use version control.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Slow things down.
+\end_layout
+
+\begin_layout Itemize
+Add changes in small chunks (don't just do one massive commit).
+\end_layout
+
+\begin_layout Itemize
+Track/tag snapshots; revert to old versions.
+\end_layout
+
+\begin_layout Itemize
+Software like GitHub, BitBucket, or SourceForge make it easy to publish
+ results.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+DO: keep track of your software environment.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If you work on a complex project involving many tools/datasets, the software
+ and computing environment can be critical for reproducing your analysis.
+\end_layout
+
+\begin_layout Itemize
+Computer architecture: CPU, GPUs.
+\end_layout
+
+\begin_layout Itemize
+Operating system: Windows, Mac, Linux/Unix.
+\end_layout
+
+\begin_layout Itemize
+Software toolchain: compilers, interpreters, command shell, programming
+ languages, database backends, data analysis software.
+\end_layout
+
+\begin_layout Itemize
+Supporting software/infrastructure: libraries, packages, dependencies.
+\end_layout
+
+\begin_layout Itemize
+External dependencies: web sites, data repositories, remote databases, software
+ repositories.
+\end_layout
+
+\begin_layout Itemize
+Version numbers: ideally, for everything (if available).
+\end_layout
+
+\begin_layout Itemize
+Can use R function 
+\family typewriter
+sessionInfo()
+\family default
+ to get a lot of this information.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+DON'T: save output.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Avoid saving data analysis output (tables, figures, processed data, etc.)
+ except temporarily for efficiency purposes.
+\end_layout
+
+\begin_layout Itemize
+If a stray output file cannot easily be connected with the means by which
+ it was created, then it is not reproducible.
+\end_layout
+
+\begin_layout Itemize
+Save the data and code that generated the output rather than the output
+ itself.
+\end_layout
+
+\begin_layout Itemize
+Intermediate files are OK as long as there is clear documentation of how
+ they were created.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+DO: set your seed.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Random number generators generate pseudo-random numbers based on an initial
+ seed.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In R, you can use the 
+\family typewriter
+set.seed()
+\family default
+ function to set the seed and specify the random number generator to use.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Setting the seed allows for the stream of random numbers to be exactly reproduci
+ble.
+\end_layout
+
+\begin_layout Itemize
+Whenever you generate random numbers for a non-trivial purpose, always set
+ the seed!
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+DO: think about the entire pipeline.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Data analysis is a lengthy process; it is not just tables/figures/reports.
+\end_layout
+
+\begin_layout Itemize
+Raw data -> processed data -> analysis -> report.
+\end_layout
+
+\begin_layout Itemize
+How you got the data is just as important as the end result.
+\end_layout
+
+\begin_layout Itemize
+The more of the data analysis pipeline you can make reproducible, the better
+ for everyone.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Evidence-based data analysis
+\end_layout
+
+\begin_layout Itemize
+Replication
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Focuses on the validity of a scientific claim - is this claim true?
+\end_layout
+
+\begin_layout Itemize
+The ultimate standard for strengthening scientific evidence.
+\end_layout
+
+\begin_layout Itemize
+New investigators, data analytical methods, laboratories, instruments, etc.
+\end_layout
+
+\begin_layout Itemize
+Particularly important in studies that can impact broad policy or regulatory
+ decisions.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reproducibility
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Focuses on the validity of the data analysis - can we trust this analysis?
+\end_layout
+
+\begin_layout Itemize
+Arguably a minimum standard for any scientific study.
+\end_layout
+
+\begin_layout Itemize
+New investigators, same data, same methods.
+\end_layout
+
+\begin_layout Itemize
+Important when replication is impossible.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Background and underlying trends
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Some studies cannot be replicated due to lack of money, time, or opportunity.
+\end_layout
+
+\begin_layout Itemize
+Technology is increasing data collection throughput; data are more complex
+ and high-dimensional.
+\end_layout
+
+\begin_layout Itemize
+Existing databases can be merged to become bigger databases.
+\end_layout
+
+\begin_layout Itemize
+Computing power allows more sophisticated analyses, even on 
+\begin_inset Quotes eld
+\end_inset
+
+small
+\begin_inset Quotes erd
+\end_inset
+
+ data.
+\end_layout
+
+\begin_layout Itemize
+For every field 
+\begin_inset Quotes eld
+\end_inset
+
+X
+\begin_inset Quotes erd
+\end_inset
+
+, there is a 
+\begin_inset Quotes eld
+\end_inset
+
+Computational X
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The result?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Even basic analyses are difficult to describe.
+\end_layout
+
+\begin_layout Itemize
+Heavy computational requirements are thrust upon people without adequate
+ training in statistics and computing.
+\end_layout
+
+\begin_layout Itemize
+Errors are more easily introduced into long analysis pipelines.
+\end_layout
+
+\begin_layout Itemize
+Knowledge transfer is inhibited.
+\end_layout
+
+\begin_layout Itemize
+Results are difficult to replicate or reproduce.
+\end_layout
+
+\begin_layout Itemize
+Complicated analyses can be hard to trust.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+What problem does reproducibility solve?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What we get:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Transparency
+\end_layout
+
+\begin_layout Itemize
+Data availability
+\end_layout
+
+\begin_layout Itemize
+Software/methods availability
+\end_layout
+
+\begin_layout Itemize
+Improved transfer of knowledge
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+What we do not get:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Validity/correctness of the analysis.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+An analysis can be reproducible but still WRONG.
+\end_layout
+
+\begin_layout Itemize
+We really want to know if we can trust an analysis.
+\end_layout
+
+\begin_layout Itemize
+Does requiring reproducibility deter bad analyses?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Problems with reproducibility
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The premise of reproducible research is that with data/code available, people
+ can check each other and the whole system is self-correcting.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This addresses the most 
+\begin_inset Quotes eld
+\end_inset
+
+downstream
+\begin_inset Quotes erd
+\end_inset
+
+ aspect of the research process - post-publication.
+\end_layout
+
+\begin_layout Itemize
+Assumes that everyone plays by the same rules and wants to achieve the same
+ goals (scientific discovery).
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Who reproduces research?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For reproducibility to be effective as a means to check validity, someone
+ needs to do something!
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Re-run the analysis, check that results match.
+\end_layout
+
+\begin_layout Itemize
+Check the code for bugs/errors.
+\end_layout
+
+\begin_layout Itemize
+Try alternative approaches, check sensitivity.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The need for someone to do something is inherited from the traditional notion
+ of replication.
+\end_layout
+
+\begin_layout Itemize
+Who is 
+\begin_inset Quotes eld
+\end_inset
+
+someone
+\begin_inset Quotes erd
+\end_inset
+
+ and what are their goals?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The story so far:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Reproducibility brings transparency and increased transfer of knowledge.
+\end_layout
+
+\begin_layout Itemize
+A lot of discussion about how to get people to share data.
+\end_layout
+
+\begin_layout Itemize
+Key question of 
+\begin_inset Quotes eld
+\end_inset
+
+can we trust this analysis?
+\begin_inset Quotes erd
+\end_inset
+
+ is not addressed by reproducibility.
+\end_layout
+
+\begin_layout Itemize
+Reproducibility addresses potential problems long after they've occurred
+ (
+\begin_inset Quotes eld
+\end_inset
+
+downstream
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Secondary analyses are inevitably colored by the interests/motivations of
+ others.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Evidence-based data analysis
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Most data analyses involve stringing together many different tools and methods.
+\end_layout
+
+\begin_layout Itemize
+Some methods may be standard for a given field, but often others are applied
+ ad hoc.
+\end_layout
+
+\begin_layout Itemize
+We should apply thoroughly studied methods that are mutually agreed upon
+ to analyze data whenever possible.
+\end_layout
+
+\begin_layout Itemize
+There should be evidence to justify the application of a given method.
+\end_layout
+
+\begin_layout Itemize
+Create analytic pipelines from evidence-based components - standardize it.
+\end_layout
+
+\begin_layout Itemize
+Once an evidence-based analytic pipeline is established, we shouldn't mess
+ with it.
+\end_layout
+
+\begin_layout Itemize
+Analysis with a 
+\begin_inset Quotes eld
+\end_inset
+
+transparent box.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Reduce the 
+\begin_inset Quotes eld
+\end_inset
+
+researcher degrees of freedom.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Analogous to a pre-specified clinical trial protocol.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
