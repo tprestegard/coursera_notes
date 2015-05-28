@@ -380,12 +380,7 @@ red
 \end_layout
 
 \begin_layout Itemize
-Example: multiple histograms.
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
+Example: multiple histograms: 
 \family typewriter
 hist(subset(pollution, region == 
 \begin_inset Quotes eld
@@ -403,13 +398,7 @@ green
 \begin_inset Quotes erd
 \end_inset
 
-)
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-hist(subset(pollution, region == 
+); hist(subset(pollution, region == 
 \begin_inset Quotes eld
 \end_inset
 
@@ -428,7 +417,6 @@ green
 )
 \end_layout
 
-\end_deeper
 \end_deeper
 \begin_layout Itemize
 Scatter plots
