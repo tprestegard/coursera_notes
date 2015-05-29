@@ -2555,5 +2555,220 @@ Analogous to a pre-specified clinical trial protocol.
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Caching computations
+\end_layout
+
+\begin_layout Itemize
+The 
+\family typewriter
+cacher
+\family default
+ package - add-on package for R
+\end_layout
+
+\begin_layout Itemize
+Evaluates code written in files and stores intermediate results in a key-value
+ database.
+\end_layout
+
+\begin_layout Itemize
+R expressions are given SHA-1 hash values so that changes can be tracked
+ and code reevaluated if necessary.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Cacher packages
+\begin_inset Quotes erd
+\end_inset
+
+ can be built for distribution.
+\end_layout
+
+\begin_layout Itemize
+Others can 
+\begin_inset Quotes eld
+\end_inset
+
+clone
+\begin_inset Quotes erd
+\end_inset
+
+ an analysis and evaluate subsets of code or inspect data objects.
+\end_layout
+
+\begin_layout Itemize
+Using 
+\family typewriter
+cacher
+\family default
+ as an author
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+cachepackage
+\family default
+ function creates a 
+\family typewriter
+cacher
+\family default
+ package storing the source file, cached data objects, and metadata.
+\end_layout
+
+\begin_layout Itemize
+The file is zipped and can be distributed.
+\end_layout
+
+\begin_layout Itemize
+Readers can unzip the file and immediately investigate its contents using
+ the 
+\family typewriter
+cacher
+\family default
+ package.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using 
+\family typewriter
+cacher
+\family default
+ as a reader
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+library(cacher)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+clonecache(id=sha1_string)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+showfiles()
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cloning an analysis
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Local directories are created.
+\end_layout
+
+\begin_layout Itemize
+Source code files and metadata are downloaded.
+\end_layout
+
+\begin_layout Itemize
+Data objects are not downloaded by default.
+\end_layout
+
+\begin_layout Itemize
+References to data objects are loaded and corresponding data can be 
+\begin_inset Quotes eld
+\end_inset
+
+lazy-loaded
+\begin_inset Quotes erd
+\end_inset
+
+ on demand.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Tracing code backwards: 
+\family typewriter
+objectcode(
+\begin_inset Quotes eld
+\end_inset
+
+objectname
+\begin_inset Quotes erd
+\end_inset
+
+)
+\family default
+.
+ (must be in quotes)
+\end_layout
+
+\begin_layout Itemize
+Running code
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+runcode
+\family default
+ function executes code in the source file.
+\end_layout
+
+\begin_layout Itemize
+By defaults, expressions that result in an object being created are not
+ run, and the resulting objects are lazy-loaded into the workspace.
+\end_layout
+
+\begin_layout Itemize
+Expressions not resulting in objects are evaluated.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Checking code and objects
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+checkcode
+\family default
+ function evaluates all expressions from scratch (no lazy-loading).
+\end_layout
+
+\begin_layout Itemize
+Results of the evaluation are checked against stored results to see if the
+ results are the same as what the author calculated.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Setting RNG seeds is critical for this to work.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The integrity of the data objects can be verified with the 
+\family typewriter
+checkobjects
+\family default
+ function to check for possible data corruption.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\end_layout
+
 \end_body
 \end_document
