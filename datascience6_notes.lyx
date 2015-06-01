@@ -1,0 +1,829 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Statistical Inference - Notes
+\end_layout
+
+\begin_layout Author
+Tanner Prestegard
+\end_layout
+
+\begin_layout Date
+Course taken from 6/1/2015 - 6/28/2015
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+
+\series bold
+Introduction
+\end_layout
+
+\begin_layout Itemize
+Statistical inference: generating conclusions about a population from a
+ noisy sample.
+\end_layout
+
+\begin_layout Subsection*
+Probability
+\end_layout
+
+\begin_layout Itemize
+Given a random experiement, a probability meausre is a population quantity
+ that summarizes the randomness.
+\end_layout
+
+\begin_layout Itemize
+Specifically, probability takes a possible outcome from the experiment and:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assigns it a number betwee 0 and 1.
+\end_layout
+
+\begin_layout Itemize
+The probability that something happens should be 1.
+\end_layout
+
+\begin_layout Itemize
+The probability of the union of any two sets of outcomes that are mutually
+ exclusive is the sum of their respective probabilities.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $P(A\cup B)=P(A)+P(B)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Rules that probability must follow:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The probability that nothing occurs is 0.
+\end_layout
+
+\begin_layout Itemize
+The probability that something occurs is 1.
+\end_layout
+
+\begin_layout Itemize
+The probability of something is 1 minus the probability that the opposite
+ occurs.
+\end_layout
+
+\begin_layout Itemize
+The probability of at least one of two or more things that cannot simultaneously
+ occur is the sum of their respective probabilities.
+\end_layout
+
+\begin_layout Itemize
+If an event A implies the occurrence of event B, then the probability of
+ A occurring is less than the probability of event B.
+\end_layout
+
+\begin_layout Itemize
+For any two events, the probability that at least one occurs is the sum
+ of their probabilities minus the sum of their intersection.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $P(A\cup B)=P(A)+P(B)-P(A\cap B)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Probability densities and mass functions for random variables are useful
+ for modeling and thinking about probabilities for the numeric outcome of
+ experiments.
+\end_layout
+
+\begin_layout Itemize
+A random variable is the numerical outcome of an experiment.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can be discrete or continuous.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Probability mass function: a probability mass function evaluated at a value
+ corresponds to the probability that a random variable takes that value.
+ To be a valid PMF, a function must satisfy:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+It must always be larger than or equal to zero.
+\end_layout
+
+\begin_layout Itemize
+The sum of the probabilities for all possible values of the random variable
+ has to add up to one
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: Bernoulli distribution for a coin flip
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+X = 0 represents tails and X = 1 represents heads.
+ Probability of getting heads is 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $p\left(x\right)=\theta^{x}\left(1-\theta\right)^{1-x}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A probability density function (PDF) is a function associated with a continuous
+ random variable.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Must be larger than or equal to zero.
+\end_layout
+
+\begin_layout Itemize
+The total area under it must be one.
+\end_layout
+
+\begin_layout Itemize
+Areas under PDFs correspond to probabilities for that random variable.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+CDF and survival function.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The cumulative distribution function of a random variable X returns the
+ probability that the random variable is less than or equal to the value
+ x.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $F\left(x\right)=P\left(X\leq x\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The survival function is just 
+\begin_inset Formula $1-F\left(x\right)$
+\end_inset
+
+ and gives the probability that X is larger than or equal to x.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Quantiles
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sample quantiles - 95th percentile means that 95% people did worse and 5%
+ did better.
+\end_layout
+
+\begin_layout Itemize
+Population quantiles: The 
+\begin_inset Formula $\alpha$
+\end_inset
+
+th quantile of a distribution with CDF 
+\begin_inset Formula $F\left(x\right)$
+\end_inset
+
+ is the point 
+\begin_inset Formula $x_{\alpha}$
+\end_inset
+
+ such that 
+\begin_inset Formula $F\left(x_{\alpha}\right)=\alpha$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+A percentile is simple a quantile with the quantile expressed as a percent.
+\end_layout
+
+\begin_layout Itemize
+The median is the 50th percentile.
+\end_layout
+
+\begin_layout Itemize
+R can approximate quantiles for you for common distributions.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use the 
+\begin_inset Quotes eld
+\end_inset
+
+q
+\begin_inset Quotes erd
+\end_inset
+
+ commands: 
+\family typewriter
+qbeta, qnorm, qpois
+\family default
+, etc.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+Conditional probability
+\end_layout
+
+\begin_layout Itemize
+Let B be an event such that 
+\begin_inset Formula $P\left(B\right)>0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Then the conditional probability of an event A occurring is 
+\begin_inset Formula $P\left(A|B\right)=\frac{P\left(A\cap B\right)}{P(B)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If A and B are independent, 
+\begin_inset Formula $P\left(A|B\right)=P\left(A\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Bayes' theorem: 
+\begin_inset Formula $P\left(A|B\right)P\left(B\right)=P\left(B|A\right)P\left(A\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Definitions: consider an example where B means you have a disease and A
+ is a positive test result.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sensitivity: 
+\begin_inset Formula $P\left(A|B\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Specificity: 
+\begin_inset Formula $P\left(\text{not A}|\text{not B}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Positive predictive value: 
+\begin_inset Formula $P\left(B|A\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Negative predictive value: 
+\begin_inset Formula $P\left(\text{not B}|\text{not A}\right)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using Bayes' theorem: 
+\begin_inset Formula $P\left(A|B\right)=\frac{P\left(B|A\right)P\left(A\right)}{P\left(B\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Independence: event A is independent of event B if 
+\begin_inset Formula $P\left(A\cap B\right)=P\left(A\right)P\left(B\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IID random variables: independent and identically distributed.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Independent: statistically unrelated from one to another.
+\end_layout
+
+\begin_layout Itemize
+Identically distributed: all having been drawn from the same population
+ model.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Expected values
+\end_layout
+
+\begin_layout Itemize
+The mean is a characterization of the center of a distribution.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $E\left[X\right]=\sum_{x}xp\left(x\right)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The variance and standard deviation are characteristics of how spread out
+ a distribution is.
+\end_layout
+
+\begin_layout Itemize
+For a continuous random variable, the expected value is again exactly the
+ center of mass of the density.
+\end_layout
+
+\begin_layout Itemize
+The average of random variables is itself a random variable and its associated
+ distribution has an expected value, but the center of this distribution
+ is the same as that of the original distribution.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The sample mean is 
+\series bold
+unbiased
+\series default
+ because its distribution is centered at what it's trying to estimate.
+\end_layout
+
+\begin_layout Itemize
+To put it another way: the distribution of averages of samples will have
+ the same mean as that of the random variable sample itself.
+\end_layout
+
+\begin_layout Itemize
+The more data that goes into the sample mean, the more concentrated its
+ density will be around the population mean.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Introduction to variability
+\end_layout
+
+\begin_layout Itemize
+Variance is a measure of the spread of a distribution.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Var\left(X\right)=E\left[\left(X-\mu\right)^{2}\right]=E\left[X^{2}\right]-E\left[X\right]^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The square root of the variance is the standard deviation.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Sample variance: average squared distance of the observations from the sample
+ mean
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $S^{2}=\frac{\sum_{i-1}\left(X_{i}-\bar{X}\right)^{2}}{n-1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The expected value of the sample variance is the population variance.
+\end_layout
+
+\begin_layout Itemize
+Dividing by 
+\begin_inset Formula $n-1$
+\end_inset
+
+ instead of 
+\begin_inset Formula $n$
+\end_inset
+
+ is what makes this an unbiased estimate of the population variance.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Standard error on the mean
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Recall that the average of random samples from a population is itself a
+ random variable.
+\end_layout
+
+\begin_layout Itemize
+Expected value of sample mean: 
+\begin_inset Formula $E\left[\bar{X}\right]=\mu$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Variance of sample mean: 
+\begin_inset Formula $Var\left(\bar{X}\right)=\sigma^{2}/n$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The standard deviation talks about how variable the population is.
+\end_layout
+
+\begin_layout Itemize
+The standard error 
+\begin_inset Formula $S/\sqrt{n}$
+\end_inset
+
+ talks about how variable averages of random samples of size 
+\begin_inset Formula $n$
+\end_inset
+
+ from the population are.
+\end_layout
+
+\begin_layout Subsection*
+Some common distributions
+\end_layout
+
+\begin_layout Itemize
+Binomial distribution
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Comes from the Bernoulli distribution - result of a binary outcome like
+ a coin flip.
+ 
+\begin_inset Formula $P\left(X=x\right)=p^{x}\left(1-p\right)^{1-x}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+A binomial variable is the sum of many IID Bernoulli trials.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+With 
+\begin_inset Formula $n$
+\end_inset
+
+ trials, 
+\begin_inset Formula $P\left(X=x\right)=\frac{n!}{x!\left(n-x\right)!}p^{x}\left(1-p\right)^{1-x}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Normal distribution
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+With expected value 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and variance 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+, the distribution is given by: 
+\begin_inset Formula $\left(2\pi\sigma^{2}\right)^{_{1/2}}e^{-\left(x-\mu\right)^{2}/2\sigma^{2}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Standard normal distribution has 
+\begin_inset Formula $\mu=0$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma^{2}=1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+We can convert to a standard normal distribution from another distribution
+ by taking 
+\begin_inset Formula $X\rightarrow\frac{X-\mu}{\sigma}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+We can go the other way by taking 
+\begin_inset Formula $X\rightarrow\mu+\sigma X$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Poisson distribution
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Used to model counts, event time data, survival data, contingency tables,
+ and more.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $P\left(X=x;\lambda\right)=\frac{\lambda^{x}e^{-\lambda}}{x!}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Mean = variance = 
+\begin_inset Formula $\lambda$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Poisson approximation to the binomial:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $X\sim Binomial(n,p)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\lambda=np$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $n$
+\end_inset
+
+ gets large, 
+\begin_inset Formula $p$
+\end_inset
+
+ gets small.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+Asymptotics
+\end_layout
+
+\begin_layout Itemize
+Term for the behavior of statistics as the sample size or some other relevant
+ quantity goes to infinity or zero.
+\end_layout
+
+\begin_layout Itemize
+Very useful for simple statistical inference and approximations.
+\end_layout
+
+\begin_layout Itemize
+Also form the basis for frequency interpretation of probabilities (the long
+ run proportion of times an event occurs).
+\end_layout
+
+\begin_layout Itemize
+The Law of Large Numbers (LLN)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The sample mean converges to the population mean in the limit of infinite
+ trials.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+An estimator is 
+\series bold
+consistent
+\series default
+ if it converges to what you want to estimate.
+\end_layout
+
+\begin_layout Itemize
+The LLN says that the sample mean of iid samples is consistent for the populatio
+n mean.
+\end_layout
+
+\begin_layout Itemize
+Typically, good estimators are consistent - we should expect to get the
+ right answer if we collect infinite data.
+\end_layout
+
+\begin_layout Itemize
+The Central Limit Theorem (CLT)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The distribution of averages of iid variables (properly normalized) becomes
+ that of a standard normal distribution as the sample size increases.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\frac{\bar{X}_{n}-\mu}{\sigma/\sqrt{n}}=\frac{\text{Estimate - Mean of estimate}}{\text{Std. Err. of estimate}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The useful way to think about the CLT is that 
+\begin_inset Formula $\bar{X}_{n}$
+\end_inset
+
+ is approximately 
+\begin_inset Formula $N\left(\mu,\sigma^{2}/n\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+
+\end_layout
+
+\end_deeper
+\end_body
+\end_document
