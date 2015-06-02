@@ -821,9 +821,65 @@ The useful way to think about the CLT is that
 \end_layout
 
 \begin_layout Itemize
+Standard deviation is equal to the standard error on the mean.
+\end_layout
+
+\begin_layout Itemize
+No guarantee that 
+\begin_inset Formula $n$
+\end_inset
+
+ is 
+\begin_inset Quotes eld
+\end_inset
+
+big enough.
+\begin_inset Quotes erd
+\end_inset
+
 
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Confidence intervals
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For a sample mean of a normally distributed random variable, 
+\begin_inset Formula $\bar{X}\pm2\sigma/\sqrt{n}$
+\end_inset
+
+ is called a 95% confidence interval for 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Sometimes, if your number of trials isn't large enough for the CLT to be
+ applicable, you can form the interval with 
+\begin_inset Formula $\left(X+2\right)/\left(n+4\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Taking the mean and adding and subtracting the relevant normal quantile
+ times the standard error yields a confidence interval for the mean.
+\end_layout
+
+\begin_layout Itemize
+Confidence intervals get wider as the coverage increases.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+
+\end_layout
+
 \end_body
 \end_document
