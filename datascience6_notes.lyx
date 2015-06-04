@@ -1165,5 +1165,149 @@ In general, if you fail to reject the one-sided test, you should fail to
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+P-values
+\end_layout
+
+\begin_layout Itemize
+Most common measure of statistical significance.
+\end_layout
+
+\begin_layout Itemize
+Somewhat controversial among statisticians because they are used often and
+ are commonly misinterpreted.
+\end_layout
+
+\begin_layout Itemize
+What is a p-value?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assume that nothing is going on (null hypothesis) - how unusual is the result
+ we got?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Approach:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Define the hypothetical distribution of a statistic when 
+\begin_inset Quotes eld
+\end_inset
+
+nothing
+\begin_inset Quotes erd
+\end_inset
+
+ is going on (null distribution).
+\end_layout
+
+\begin_layout Itemize
+Calculate the statistic with the data we have (test statistic).
+\end_layout
+
+\begin_layout Itemize
+Compare what we calculated to our hypothetical distribution and see if the
+ value is 
+\begin_inset Quotes eld
+\end_inset
+
+extreme
+\begin_inset Quotes erd
+\end_inset
+
+ (p-value).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Formal definition: probability under the null hypothesis of obtaining evidence
+ as extreme or more extreme than that obtained.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If the p-value is small, then either 
+\begin_inset Formula $H_{0}$
+\end_inset
+
+ is true and we have observed a rare event, or 
+\begin_inset Formula $H_{0}$
+\end_inset
+
+ is false.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: getting a T statistic of 2.5 for 15 degrees of freedom.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What's the probability of getting a T statistic as large as 2.5?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+pt(2.5, 15, lower.tail=FALSE)
+\family default
+ gives 0.01225.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Can also think of the p-value as the 
+\begin_inset Quotes eld
+\end_inset
+
+attained significance level.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Smallest value of 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ for which we would reject the null hypothesis.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+By reporting a p-value, the reader can perform the hypothesis test at whatever
+ 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ level they want.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If the p-value is less than 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, you reject the null hypothesis.
+\end_layout
+
+\begin_layout Itemize
+For a two-sided hypothesis test, double the smaller of the two one-sided
+ hypothesis test p-values.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
