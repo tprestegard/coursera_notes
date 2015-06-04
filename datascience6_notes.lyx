@@ -877,9 +877,293 @@ Confidence intervals get wider as the coverage increases.
 \end_layout
 
 \end_deeper
-\begin_layout Standard
+\begin_layout Subsection*
+T confidence intervals
+\end_layout
+
+\begin_layout Itemize
+Using T quantiles rather than Z quantiles.
+\end_layout
+
+\begin_layout Itemize
+Tails will be a little wider than for Z intervals.
+\end_layout
+
+\begin_layout Itemize
+T intervals are useful for small sample sizes, will become like the Z intervals
+ in the limit of lots of data.
+\end_layout
+
+\begin_layout Itemize
+The T distribution is indexed by the degrees of freedom; it gets more like
+ a standard normal as df gets larger.
+\end_layout
+
+\begin_layout Itemize
+The T distribution assumes that the underlying data are IID Gaussian with
+ the result that 
+\begin_inset Formula $\frac{\bar{X}-\mu}{S/\sqrt{n}}$
+\end_inset
+
+ follows Gosset's T distribution with 
+\begin_inset Formula $n-1$
+\end_inset
+
+ degrees of freedom.
+\end_layout
+
+\begin_layout Itemize
+The T intervals are 
+\begin_inset Formula $\bar{X}\pm t_{n-1}S/\sqrt{n}$
+\end_inset
+
+, where 
+\begin_inset Formula $t_{n-1}$
+\end_inset
+
+ is the relevant quantile.
+\end_layout
+
+\begin_layout Itemize
+This distribution works well whenever the distribution of the data is roughly
+ symmetric and mound-shaped.
+\end_layout
+
+\begin_layout Itemize
+Paired observations are often analyzed using the T interval by taking difference
+s.
+\end_layout
+
+\begin_layout Itemize
+The spirit of the T interval assumptions are violated for skewed distributions.
+\end_layout
+
+\begin_layout Itemize
+Other intervals are more useful for highly discrete data.
+\end_layout
+
+\begin_layout Itemize
+Independent group T confidence intervals - comparing means between two different
+ groups in a randomized trial.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can't use a paired T test because the groups are independent and may have
+ different sample sizes.
+\end_layout
+
+\begin_layout Itemize
+Standard confidence interval to use in this situation: 
+\begin_inset Formula $\bar{Y}-\bar{X}\pm t_{n_{x}+n_{y}-2,1-\alpha/2}S_{p}\left(\frac{1}{n_{x}}+\frac{1}{n_{y}}\right)^{1/2}$
+\end_inset
+
 
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $t_{n_{x}+n_{y}-2,1-\alpha/2}$
+\end_inset
+
+ is the relevant T quantile, where 
+\begin_inset Formula $n_{i}$
+\end_inset
+
+ is the number of observations in group 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\left(\frac{1}{n_{x}}+\frac{1}{n_{y}}\right)^{1/2}$
+\end_inset
+
+ is the standard error of the difference.
+ Gets smaller as we collect more data.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $S_{p}^{2}$
+\end_inset
+
+ is the 
+\begin_inset Quotes eld
+\end_inset
+
+pooled variance.
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Formula $S_{p}^{2}=\left[\left(n_{x}-1\right)S_{x}^{2}+\left(n_{y}-1\right)S_{y}^{2}\right]/\left(n_{x}+n_{y}-2\right)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+This interval assumes a constant variance across the two groups!
+\end_layout
+
+\begin_layout Itemize
+If there is some doubt, there is a method for using a different variance
+ per group, which we will discuss later.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Unequal variances: 
+\begin_inset Formula $\bar{Y}-\bar{X}\pm t_{df}\left(\frac{s_{x}^{2}}{n_{x}}+\frac{s_{y}^{2}}{n_{y}}\right)^{1/2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In this case, the distribution does not actually follow a T distribution!
+\end_layout
+
+\begin_layout Itemize
+We can approximate it with a T distribution with degrees of freedom 
+\begin_inset Formula $df=\frac{\left(S_{x}^{2}/n_{x}+S_{y}^{2}/n_{y}\right)^{2}}{\left(\frac{S_{x}^{2}}{n_{x}}\right)^{2}/\left(n_{x}-1\right)+\left(\frac{S_{y}^{2}}{n_{y}}\right)^{2}/\left(n_{y}-1\right)}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Degrees of freedom may be fractional, but it's OK.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To do this in R, use 
+\family typewriter
+t.test()
+\family default
+, but set 
+\family typewriter
+var.equal=FALSE
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Hypothesis testing
+\end_layout
+
+\begin_layout Itemize
+Hypothesis testing is concerned with making decisions using data.
+\end_layout
+
+\begin_layout Itemize
+A null hypothesis is specified that represents the status quo, usually labeled
+ 
+\begin_inset Formula $H_{0}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The null hypothesis is assumed to be true and statistical evidence is required
+ to reject it in favor or a research or alternative hypothesis, 
+\begin_inset Formula $H_{a}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+There are four possible outcomes of our statistical decision process:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Correctly accept null.
+\end_layout
+
+\begin_layout Itemize
+Type I error: select 
+\begin_inset Formula $H_{a}$
+\end_inset
+
+ when the null hypothesis is true.
+\end_layout
+
+\begin_layout Itemize
+Correctly reject null.
+\end_layout
+
+\begin_layout Itemize
+Type II error: select null hypothesis when 
+\begin_inset Formula $H_{a}$
+\end_inset
+
+ is true.
+\end_layout
+
+\begin_layout Itemize
+As the type I error rate increases, the type II error rate decreases, and
+ vice versa.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Typical way to do decision making: reject the null hypothesis if 
+\begin_inset Formula $\bar{X}$
+\end_inset
+
+ is larger than some constant 
+\begin_inset Formula $C$
+\end_inset
+
+, chosen such that the probability of the type I error is 0.05.
+\end_layout
+
+\begin_layout Itemize
+Two-sided tests
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose that we would reject the null hypothesis if in fact the mean was
+ too large or too small.
+\end_layout
+
+\begin_layout Itemize
+We will reject if the test statistic is either too large or too small.
+\end_layout
+
+\begin_layout Itemize
+Then we want the probability of rejecting the null hypothesis to be 5%,
+ split equally as 2.5% in the upper tail and 2.5% in the lower tail.
+\end_layout
+
+\begin_layout Itemize
+Thus, we reject if our test statistic if larger than 
+\family typewriter
+qt(0.975)
+\family default
+ or smaller than 
+\family typewriter
+qt(0.025)
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+In general, if you fail to reject the one-sided test, you should fail to
+ reject the two-sided test as well.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
