@@ -1,0 +1,523 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Regression Models - Notes
+\end_layout
+
+\begin_layout Author
+Tanner Prestegard
+\end_layout
+
+\begin_layout Date
+Course taken from 6/1/2015 - 6/28/2015
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+
+\series bold
+Introduction
+\end_layout
+
+\begin_layout Itemize
+Questions we may want to answer for this class (considering an example of
+ children's heights and their parents' heights):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use the parents' heights to predict children's heights.
+\end_layout
+
+\begin_layout Itemize
+To try to find an easily described mean relationship between parent and
+ children heights.
+\end_layout
+
+\begin_layout Itemize
+To investigate the variation in children's heights that appears unrelated
+ to parents' heights (residual variation).
+\end_layout
+
+\begin_layout Itemize
+To quantify what impact genotype information has beyond parental height
+ in explaining child height.
+\end_layout
+
+\begin_layout Itemize
+To figure out how and what assumptions are needed to generalize findings
+ beyond the data in question.
+\end_layout
+
+\begin_layout Itemize
+Why do children of very tall parents tend to be tall, but a little shorter
+ than their parents, and why do children of very short parents tend to be
+ short, but a little taller than their parents? (regression to the mean)
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Background and notation
+\end_layout
+
+\begin_layout Itemize
+Define the empirical (sample) mean as: 
+\begin_inset Formula $\bar{X}=\frac{1}{n}\sum_{i=1}^{n}X_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If we subtract the mean from all data points, we are 
+\series bold
+centering
+\series default
+ the random variables: 
+\begin_inset Formula $\tilde{X}_{i}=X_{i}-\bar{X}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The mean of 
+\begin_inset Formula $\tilde{X}_{i}$
+\end_inset
+
+ is zero.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The empirical (sample) variance is: 
+\begin_inset Formula $S^{2}=\frac{1}{n-1}\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}=\frac{1}{n-1}$
+\end_inset
+
+
+\begin_inset Formula $\left(\sum_{i=1}^{n}X_{i}^{2}-n\bar{X}^{2}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The data defined by 
+\begin_inset Formula $X_{i}/S$
+\end_inset
+
+ have empirical standard deviation 1.
+ This is called 
+\begin_inset Quotes eld
+\end_inset
+
+scaling
+\begin_inset Quotes erd
+\end_inset
+
+ the data.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Normalization: centering and scaling the data to have empirical mean 0 and
+ empirical standard deviation 1.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Z_{i}=\frac{X_{i}-\bar{X}}{S}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Normalized data have units equal to standard deviations of the original
+ data.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Empirical covariance
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Consider a pair of data 
+\begin_inset Formula $\left(X_{i},Y_{i}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Their covariance is 
+\begin_inset Formula $Cov\left(X,Y\right)=\frac{1}{n-1}\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)\left(Y_{i}-\bar{Y}\right)=\frac{1}{n-1}\left(\sum_{i=1}^{n}X_{i}Y_{i}-n\bar{X}\bar{Y}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Their correlation is defined as 
+\begin_inset Formula $Cor\left(X,Y\right)=\frac{Cov\left(X,Y\right)}{S_{x}S_{y}}$
+\end_inset
+
+, where 
+\begin_inset Formula $S_{i}$
+\end_inset
+
+ is the estimate of the standard deviation for variable 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $Cor\left(X,Y\right)=Cor\left(Y,X\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $-1\leq Cor\left(X,Y\right)\leq1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $Cor\left(X,Y\right)=1$
+\end_inset
+
+ and 
+\begin_inset Formula $Cor\left(X,Y\right)=-1$
+\end_inset
+
+ only when the observations fall perfectly on a positively or negatively
+ sloped line, respectively.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $Cor\left(X,Y\right)$
+\end_inset
+
+ measures the strength of the linear relationship between the 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ data, with stronger relationships as 
+\begin_inset Formula $Cor\left(X,Y\right)$
+\end_inset
+
+ goes to -1 or +1.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $Cor\left(X,Y\right)$
+\end_inset
+
+ implies no linear relationship.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Basic least squares
+\end_layout
+
+\begin_layout Itemize
+Example using children's and parents' heights.
+\end_layout
+
+\begin_layout Itemize
+Consider only the children's heights - how could one describe the 
+\begin_inset Quotes eld
+\end_inset
+
+middle
+\begin_inset Quotes erd
+\end_inset
+
+?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+One definition: let 
+\begin_inset Formula $Y_{i}$
+\end_inset
+
+ be the height of child 
+\begin_inset Formula $i$
+\end_inset
+
+, for 
+\begin_inset Formula $i=1,..,n$
+\end_inset
+
+ , then define the middle as the value of 
+\begin_inset Formula $\mu$
+\end_inset
+
+ that minimizes 
+\begin_inset Formula $\sum_{i=1}^{n}\left(Y_{i}-\mu\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+This is the physical 
+\begin_inset Quotes eld
+\end_inset
+
+center of mass
+\begin_inset Quotes erd
+\end_inset
+
+ of the histogram.
+\end_layout
+
+\begin_layout Itemize
+The end result is 
+\begin_inset Formula $\mu=\bar{Y}$
+\end_inset
+
+, the mean (and we can do a proof of this).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Regression through the origin:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose the 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ are the parents' heights.
+\end_layout
+
+\begin_layout Itemize
+Consider picking the slope 
+\begin_inset Formula $\beta$
+\end_inset
+
+ that minimizes 
+\begin_inset Formula $\sum_{i=1}^{n}\left(Y_{i}-X_{i}\beta\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Linear least squares
+\end_layout
+
+\begin_layout Itemize
+Let 
+\begin_inset Formula $Y_{i}$
+\end_inset
+
+ be the 
+\begin_inset Formula $i$
+\end_inset
+
+th child's height and 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ be the 
+\begin_inset Formula $i$
+\end_inset
+
+th (average over the pair of) parents' heights.
+\end_layout
+
+\begin_layout Itemize
+Consider finding the 
+\begin_inset Quotes eld
+\end_inset
+
+best
+\begin_inset Quotes erd
+\end_inset
+
+ line: child's height = 
+\begin_inset Formula $\beta_{0}$
+\end_inset
+
+ + (parent's height)*
+\begin_inset Formula $\beta_{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Use least squares:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\sum_{i=1}^{n}\left[Y_{i}-\left(\beta_{0}+\beta_{1}X_{i}\right)\right]^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\hat{\beta}_{1}=Cor\left(Y,X\right)\frac{S_{y}}{S_{x}}$
+\end_inset
+
+ (hat indicates that it is an estimator)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\hat{\beta}_{1}$
+\end_inset
+
+ has units of 
+\begin_inset Formula $Y/X$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Formula $\hat{\beta}_{0}=\bar{Y}-\hat{\beta}_{1}\bar{X}$
+\end_inset
+
+ (hat indicates that it is an estimator)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\hat{\beta}_{0}$
+\end_inset
+
+ has units of 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The line passes through the point 
+\begin_inset Formula $\left(\bar{X},\bar{Y}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The slope is the same as what you would get if you centered the data and
+ did regression through the origin.
+\end_layout
+
+\begin_layout Itemize
+If you normalized the data, the slope is 
+\begin_inset Formula $Cor\left(Y,X\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_body
+\end_document
