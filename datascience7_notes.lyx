@@ -400,6 +400,13 @@ Consider picking the slope
 .
 \end_layout
 
+\begin_layout Itemize
+\begin_inset Formula $\beta=\frac{\sum_{i=1}^{n}X_{i}Y_{i}}{\sum_{i=1}^{n}X_{i}^{2}}$
+\end_inset
+
+
+\end_layout
+
 \end_deeper
 \begin_layout Subsection*
 Linear least squares
@@ -516,6 +523,735 @@ If you normalized the data, the slope is
 \end_inset
 
 .
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Regression to the mean
+\end_layout
+
+\begin_layout Itemize
+Examples:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Why are children of tall parents tall, but usually not as tall as their
+ parents?
+\end_layout
+
+\begin_layout Itemize
+Why do the best-performing athletes from last year usually not perform quite
+ as well this year?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Imagine simulated pairs of random normal variables.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The largest first ones would be the largest by chance, and the probability
+ that there are smaller ones for the second simulation is high.
+\end_layout
+
+\begin_layout Itemize
+In other words, 
+\begin_inset Formula $P\left(Y<x|X=X\right)$
+\end_inset
+
+ gets bigger as 
+\begin_inset Formula $x$
+\end_inset
+
+ heads into the very large values.
+\end_layout
+
+\begin_layout Itemize
+Similarly, 
+\begin_inset Formula $P\left(Y>x|X=x\right)$
+\end_inset
+
+ gets bigger as 
+\begin_inset Formula $x$
+\end_inset
+
+ heads to very small values.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Suppose that we normalize 
+\begin_inset Formula $X$
+\end_inset
+
+ (child's height) and 
+\begin_inset Formula $Y$
+\end_inset
+
+ (parent's height) so that they both have mean 0 and variance 1.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Recall that our regression line will pass through 
+\begin_inset Formula $\left(0,0\right)$
+\end_inset
+
+, the mean of 
+\begin_inset Formula $X$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The slope of the gression line is 
+\begin_inset Formula $Cor\left(Y,X\right)$
+\end_inset
+
+, regardless of which variable is the outcome.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Statistical linear regression models
+\end_layout
+
+\begin_layout Itemize
+Basic regression model with additive Gaussian errors:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Least squares is an estimation tool, how do we do inference?
+\end_layout
+
+\begin_layout Itemize
+Consider developing a probabilistic model for linear regression: 
+\begin_inset Formula $Y_{i}=\beta_{0}+\beta_{1}X_{i}+\epsilon_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\epsilon_{i}$
+\end_inset
+
+ are random Gaussian errors, which are assumed to be IID and drawn from
+ 
+\begin_inset Formula $N\left(0,\sigma^{2}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Note: 
+\begin_inset Formula $E\left[Y_{i}|X_{i}=x_{i}\right]=\mu_{i}=\beta_{0}+\beta_{1}x_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Note: 
+\begin_inset Formula $Var\left(Y_{i}|X_{i}=x_{i}\right)=\sigma^{2}$
+\end_inset
+
+.
+ This is the variance around the regression line.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Interpreting regression coefficients:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\beta_{0}$
+\end_inset
+
+ is the expected value of the response when the predictor is 0.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $E\left[Y|X=0\right]=\beta_{0}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Note: this isn't always of interest, for example when 
+\begin_inset Formula $X=0$
+\end_inset
+
+ is far outside the range of the data, or physically impossible (X is height,
+ blood pressure, etc.).
+\end_layout
+
+\begin_layout Itemize
+However, you can shift your 
+\begin_inset Formula $X$
+\end_inset
+
+ values by some factor 
+\begin_inset Formula $a$
+\end_inset
+
+; this will change the intercept, but not the slope.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Y_{i}=\beta_{0}+\beta_{1}X_{i}+\epsilon_{i}=\beta_{0}+a\beta_{1}+\beta_{1}\left(X_{i}-a\right)+\epsilon_{i}=\tilde{\beta}_{0}+\beta_{1}\left(X_{i}-a\right)+\epsilon_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Often, 
+\begin_inset Formula $a$
+\end_inset
+
+ is set to 
+\begin_inset Formula $\bar{X}$
+\end_inset
+
+ so that the intercept is interpreted as the expected response at the average
+ 
+\begin_inset Formula $X$
+\end_inset
+
+ value.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+\begin_inset Formula $\beta_{1}$
+\end_inset
+
+ is the expected change in response for a 1 unit change in the predictor.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $E\left[Y|X=x+1\right]-E\left[Y|X=x\right]=\beta_{0}+\beta_{1}\left(x+1\right)-\left(\beta_{0}+\beta_{1}x\right)=\beta_{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Consider the impact of changing the units of 
+\begin_inset Formula $X$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Y_{i}=\beta_{0}+\beta_{1}X_{i}+\epsilon_{i}=\beta_{0}+\frac{\beta_{1}}{a}\left(X_{i}a\right)+\epsilon_{i}=\beta_{0}+\tilde{\beta}_{1}\left(X_{i}a\right)+\epsilon_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Multiplication of 
+\begin_inset Formula $X$
+\end_inset
+
+ by a factor 
+\begin_inset Formula $a$
+\end_inset
+
+ results in dividing the slope by a factor of 
+\begin_inset Formula $a$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+R code for regression
+\end_layout
+
+\begin_layout Itemize
+Linear regression: 
+\family typewriter
+fit <- lm(outcome ~ predictor, data = name_of_data_frame)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+To just get the coefficients: 
+\family typewriter
+coef(fit)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Plotting a fit in ggplot: 
+\family typewriter
+g + geom_smooth(method=
+\begin_inset Quotes eld
+\end_inset
+
+lm
+\begin_inset Quotes erd
+\end_inset
+
+, color=
+\begin_inset Quotes eld
+\end_inset
+
+black
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+If you want to do arithmetic operations inside the 
+\family typewriter
+lm
+\family default
+ function, use the 
+\family typewriter
+I()
+\family default
+ function:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+fit2 <- lm(outcome ~ I(predictor - mean(predictor)), data=name_of_data_frame)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Using a fit to do a prediction: 
+\family typewriter
+predict(fit, newdata=data.frame(carat=newx))
+\end_layout
+
+\begin_layout Subsection*
+Residuals
+\end_layout
+
+\begin_layout Itemize
+Examples here are using the 
+\family typewriter
+diamond
+\family default
+ dataset from 
+\family typewriter
+UsingR
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+Variation around a regression line is called 
+\series bold
+residual variation
+\series default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Residuals are just the difference between the actual data point values and
+ those predicted by a regression line.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Model 
+\begin_inset Formula $Y_{i}=\beta_{0}+\beta_{1}X_{i}+\epsilon_{i}$
+\end_inset
+
+, where 
+\begin_inset Formula $\epsilon_{i}\sim N\left(0,\sigma^{2}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Observed outcome at predictor value 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ is 
+\begin_inset Formula $Y_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Predicted outcome is 
+\begin_inset Formula $\hat{Y}_{i}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The residual is the difference between the observed and predicted outcomes:
+ 
+\begin_inset Formula $e_{i}=Y_{i}-\hat{Y}_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Least squares minimizes 
+\begin_inset Formula $\sum_{i=1}^{n}e_{i}^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset Formula $e_{i}$
+\end_inset
+
+ can be thought of as estimates of the 
+\begin_inset Formula $\epsilon_{i}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Properties of the residuals
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $E\left[e_{i}\right]=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If an intercept is included, 
+\begin_inset Formula $\sum_{i=1}^{n}e_{i}=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If a regressor variable, 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+, is included in the model, 
+\begin_inset Formula $\sum_{i=1}^{n}e_{i}X_{i}=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Residuals can be thought of as the outcome 
+\begin_inset Formula $Y$
+\end_inset
+
+, with the linear association of the predictor 
+\begin_inset Formula $X$
+\end_inset
+
+ removed.
+\end_layout
+
+\begin_layout Itemize
+There is a difference between 
+\series bold
+residual variation
+\series default
+ (variation after removing the predictor) from 
+\series bold
+systematic variation
+\series default
+ (variation explained by the regression model).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To get residuals in R, use 
+\family typewriter
+resid(fit)
+\family default
+, where 
+\family typewriter
+fit
+\family default
+ is the result of a regression function like 
+\family typewriter
+lm
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+When you plot residuals, you shouldn't see any type of pattern, they should
+ look mostly random.
+ If there is a pattern, there may be some systematic error in your analysis
+ or the assumptions you have made.
+\end_layout
+
+\begin_layout Itemize
+Estimating residual variation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The maximum likelihood estimate of 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+ is 
+\begin_inset Formula $\frac{1}{n}\sum_{i=1}^{n}e_{i}^{2}$
+\end_inset
+
+, the average squared residual.
+\end_layout
+
+\begin_layout Itemize
+Most people use 
+\begin_inset Formula $\hat{\sigma}^{2}=\frac{1}{n-2}\sum_{i=1}^{n}e_{i}^{2}$
+\end_inset
+
+ (you lose two degrees of freedom since you have an intercept and a slope
+ in your fit).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The 
+\begin_inset Formula $n-2$
+\end_inset
+
+ instead of 
+\begin_inset Formula $n$
+\end_inset
+
+ is so that 
+\begin_inset Formula $E\left[\hat{\sigma}^{2}\right]=\sigma^{2}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+\begin_inset Formula $R^{2}=\frac{\sum_{i=1}^{n}\left(\hat{Y}_{i}-\bar{Y}\right)^{2}}{\sum_{i=1}^{n}\left(Y_{i}-\bar{Y}\right)^{2}}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Percentage of total variability that is explained by the linear relationship
+ with the predictor.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $0\leq R^{2}\leq1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ is the sample correlation squared.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ can be a misleading summary of model fit.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Deleting data can inflate 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Adding terms to a regression model always increases 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+Inference in regression
+\end_layout
+
+\begin_layout Itemize
+Our model is 
+\begin_inset Formula $Y_{i}=\beta_{0}+,\beta_{1}X_{i}+\epsilon_{i}$
+\end_inset
+
+, where 
+\begin_inset Formula $\epsilon\sim N\left(0,\sigma^{2}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We assume that the true model is known.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Statistics like 
+\begin_inset Formula $\frac{\hat{\theta}-\theta}{\hat{\sigma}_{\theta}}$
+\end_inset
+
+ have the following properties:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Normally distributed and have a Student's T distribution if the estimated
+ variance is replaced with a sample estimate (under normality assumptions).
+\end_layout
+
+\begin_layout Itemize
+Can be used to test 
+\begin_inset Formula $H_{0}:\theta=\theta_{0}$
+\end_inset
+
+ versus 
+\begin_inset Formula $H_{a}:\theta>,<,\neq\theta_{0}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Can be used to create a confidence interval for 
+\begin_inset Formula $\theta$
+\end_inset
+
+ via 
+\begin_inset Formula $\hat{\theta}\pm Q_{1-\alpha/2}\hat{\sigma}_{\theta}$
+\end_inset
+
+, where 
+\begin_inset Formula $Q_{1-\alpha/2}$
+\end_inset
+
+ is the relevant quantile from either a normal or a T distribution.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+In the case of regression with IID sampling assumption and normal errors,
+ our inferences will look similar to what we covered in the statistical
+ inference class.
+\end_layout
+
+\begin_layout Itemize
+Variance of the regression slope:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\sigma_{\hat{\beta}_{1}}^{2}=Var\left(\hat{\beta}_{1}\right)=\sigma^{2}/\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}$
+\end_inset
+
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Variance of the intercept:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\sigma_{\hat{\beta}_{0}}^{2}=Var\left(\beta_{0}\right)=\left(\frac{1}{n}+\frac{\bar{X}^{2}}{\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}}\right)\sigma^{2}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+In practice, 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ can be replaced by its estimate in the above two equations.
+\end_layout
+
+\begin_layout Itemize
+It's probably not surprising that under IID Gaussian errors, 
+\begin_inset Formula $\frac{\hat{\beta}_{j}-\beta_{j}}{\hat{\sigma}_{\hat{\beta}_{j}}}$
+\end_inset
+
+ follows a T distribution with 
+\begin_inset Formula $n-2$
+\end_inset
+
+ degrees of freedom and a normal distribution for large 
+\begin_inset Formula $n$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This can be used to create confidence intervals and perform hypothesis tests.
 \end_layout
 
 \end_deeper
