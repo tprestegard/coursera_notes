@@ -1134,7 +1134,7 @@ Inference in regression
 
 \begin_layout Itemize
 Our model is 
-\begin_inset Formula $Y_{i}=\beta_{0}+,\beta_{1}X_{i}+\epsilon_{i}$
+\begin_inset Formula $Y_{i}=\beta_{0}+\beta_{1}X_{i}+\epsilon_{i}$
 \end_inset
 
 , where 
@@ -1192,6 +1192,17 @@ Can be used to create a confidence interval for
  is the relevant quantile from either a normal or a T distribution.
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+I think you use 
+\begin_inset Formula $n-2$
+\end_inset
+
+ degrees of freqedom for a T distribution in this case.
+ Not totally sure, though.
+\end_layout
+
+\end_deeper
 \end_deeper
 \begin_layout Itemize
 In the case of regression with IID sampling assumption and normal errors,
@@ -1230,7 +1241,11 @@ In practice,
 \begin_inset Formula $\sigma$
 \end_inset
 
- can be replaced by its estimate in the above two equations.
+ can be replaced by its estimate in the above two equations (
+\begin_inset Formula $\frac{\sum_{i=1}^{n}e_{i}^{2}}{n-2}$
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Itemize
@@ -1252,6 +1267,575 @@ It's probably not surprising that under IID Gaussian errors,
 \begin_deeper
 \begin_layout Itemize
 This can be used to create confidence intervals and perform hypothesis tests.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Prediction of outcomes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Consider predicting 
+\begin_inset Formula $Y$
+\end_inset
+
+ at a value 
+\begin_inset Formula $X$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The obvious estimate for a prediction at point 
+\begin_inset Formula $x_{0}$
+\end_inset
+
+ is 
+\begin_inset Formula $\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+A standard error is needed to create a prediction interval.
+\end_layout
+
+\begin_layout Itemize
+There is a distinction between intervals for the regression line at a particular
+ point 
+\begin_inset Formula $x_{0}$
+\end_inset
+
+ and intervals for the prediction of a 
+\begin_inset Formula $y$
+\end_inset
+
+ value at a point 
+\begin_inset Formula $x_{0}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Line at 
+\begin_inset Formula $x_{0}$
+\end_inset
+
+ standard error: 
+\begin_inset Formula $\hat{\sigma}\sqrt{\frac{1}{n}+\frac{\left(x_{0}-\bar{X}\right)^{2}}{\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Prediction interval standard error at 
+\begin_inset Formula $x_{0}$
+\end_inset
+
+: 
+\begin_inset Formula $\hat{\sigma}\sqrt{1+\frac{1}{n}+\frac{\left(x_{0}-\bar{X}\right)^{2}}{\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}}}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Code example
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(UsingR); data(diamond)
+\end_layout
+
+\begin_layout Plain Layout
+
+y <- diamond$price; x <- diamond$carat; n <- length(y)
+\end_layout
+
+\begin_layout Plain Layout
+
+beta1 <- cor(x,y)*sd(y)/sd(x);
+\end_layout
+
+\begin_layout Plain Layout
+
+beta0 <- mean(y) - beta1*mean(x);
+\end_layout
+
+\begin_layout Plain Layout
+
+e <- y - beta0 - beta1*x;
+\end_layout
+
+\begin_layout Plain Layout
+
+sigma <- sqrt(sum(e^2)/(n-2))
+\end_layout
+
+\begin_layout Plain Layout
+
+ssx <- sum((x-mean(x))^2) ## this is also equal to var(x)*(n-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+seBeta0 <- sqrt(1/n + mean(x)^2/ssx)*sigma
+\end_layout
+
+\begin_layout Plain Layout
+
+seBeta1 <- sigma/sqrt(ssx)
+\end_layout
+
+\begin_layout Plain Layout
+
+tBeta0 <- beta0/seBeta0;
+\end_layout
+
+\begin_layout Plain Layout
+
+tBeta1 <- beta1/seBeta1;
+\end_layout
+
+\begin_layout Plain Layout
+
+pBeta0 <- 2*pt(abs(tBeta0), df=n-2, lower.tail=FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+pBeta1 <- 2*pt(abs(tBeta1), df=n-2, lower.tail=FALSE)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Multivariable regression
+\end_layout
+
+\begin_layout Itemize
+Sometimes there are several variables which may affect a predictor, or hidden
+ variables affecting the outcome.
+\end_layout
+
+\begin_layout Itemize
+Multivariable analyses attempt to account for other variables that may explain
+ a relationship.
+\end_layout
+
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+An insurance company is interested in how last year's claims can predict
+ a person's time in the hospital this year.
+\end_layout
+
+\begin_layout Itemize
+They want to use an enormous amount of data contained in claims to predict
+ a single number.
+\end_layout
+
+\begin_layout Itemize
+Simple linear regression is not equipped to handle more than one predictor.
+\end_layout
+
+\begin_layout Itemize
+How can one generalize simple linear regression to incorporate lots of regressor
+s for the purpose of prediction?
+\end_layout
+
+\begin_layout Itemize
+What are the consequences of adding lots of regressors?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+There must be consequences to adding variables that are unrelated to the
+ outcome.
+\end_layout
+
+\begin_layout Itemize
+There must be consequences to omitting variables that are related to the
+ outcome.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+The linear model for multivariate regression:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Y_{i}=\beta_{1}X_{1i}+\beta_{2}X_{2i}+...+\beta_{p}X_{pi}+\epsilon_{i}=\sum_{k=1}^{p}X_{ki}\beta_{k}+\epsilon_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Here, 
+\begin_inset Formula $X_{1i}$
+\end_inset
+
+ is typically 1 so that an intercept is included.
+\end_layout
+
+\begin_layout Itemize
+Least squares (and hence ML estimates, under IID Gaussianity of the errors)
+ minimizes 
+\begin_inset Formula $\sum_{i=1}^{n}\left(Y_{i}-\sum_{k=1}^{p}X_{ki}\beta_{k}\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Note: the important linearity here is the linearity in the coefficients!
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: 
+\begin_inset Formula $Y_{i}=\beta_{1}X_{1i}^{2}+...\beta_{p}X_{pi}^{2}+\epsilon_{i}$
+\end_inset
+
+ is still a linear model, we've just squared the elements of the predictor
+ variables.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+How to get estimates
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Recall that the least squares estimate for regression through the origin,
+ 
+\begin_inset Formula $E\left[Y_{i}\right]=X_{1i}\beta_{1}$
+\end_inset
+
+ was 
+\begin_inset Formula $\sum_{i}X_{i}Y_{i}/\sum_{i}X_{i}^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Let's consider two regressors, 
+\begin_inset Formula $E\left[Y_{i}\right]=X_{1i}\beta_{1}+X_{2i}\beta_{2}=\mu_{i}$
+\end_inset
+
+ .
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Recall that if 
+\begin_inset Formula $\hat{\mu}_{i}$
+\end_inset
+
+ satisfies 
+\begin_inset Formula $\sum_{i=1}^{n}\left(Y_{i}-\hat{\mu}_{i}\right)\left(\hat{\mu}_{i}-\mu_{i}\right)=0$
+\end_inset
+
+, then we've found the least squares estimates.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\hat{\beta}_{1}=\frac{\sum_{i=1}^{n}e_{i,Y|X_{2}}e_{i,X_{1}|X_{2}}}{\sum_{i=1}^{n}e_{i,x_{1}|X_{2}}^{2}}$
+\end_inset
+
+: the regression esimate for 
+\begin_inset Formula $\beta_{1}$
+\end_inset
+
+ is the regression through the origin estimate, having regressed 
+\begin_inset Formula $X_{2}$
+\end_inset
+
+ out of both the response and the predictor.
+\end_layout
+
+\begin_layout Itemize
+Similarly, the regression estimate for 
+\begin_inset Formula $\beta_{2}$
+\end_inset
+
+ is the regression through the origin estimate, having regressed 
+\begin_inset Formula $X_{1}$
+\end_inset
+
+ out of both the response and the predictor.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Generally, multivariate regression estimates are exactly those having removed
+ the linear relationship of the other variables from both the regressor
+ and the response.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example with two variables, simple linear regression
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Y_{i}=\beta_{1}X_{1i}+\beta_{2}X_{2i}$
+\end_inset
+
+, where 
+\begin_inset Formula $X_{2i}=1$
+\end_inset
+
+ is an intercept term.
+\end_layout
+
+\begin_layout Itemize
+Then 
+\begin_inset Formula $\frac{\sum_{j}X_{2j}X_{1j}}{\sum_{j}X_{2j}^{2}}X_{2i}=\frac{\sum_{j}X_{1j}}{n}=\bar{X}_{1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Thus, 
+\begin_inset Formula $e_{i,X_{1}|X_{2}}=X_{1i}-\bar{X}_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $e_{i,Y|X_{2}}=Y_{i}-\bar{Y}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\hat{\beta}_{1}=\frac{\sum_{i=1}^{n}e_{i,Y|X_{2}}e_{i,X_{1}|X_{2}}}{\sum_{i=1}^{n}e_{i,X_{1}|X_{2}}^{2}}=\frac{\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)\left(Y_{i}-\bar{Y}\right)}{\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}}=Cor\left(X,Y\right)\frac{Sd\left(Y\right)}{Sd\left(X\right)}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Extending to the general case:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Least square solution to minimize: 
+\begin_inset Formula $\sum_{i=1}^{n}\left(Y_{i}-X_{1i}\beta_{1}-...-X_{pi}\beta_{p}\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Solving this solution yields the least squares estimates.
+\end_layout
+
+\begin_layout Itemize
+Obtaining a good, fast, and general solution usually requires linear algebra.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The least squares estimate for the coefficient of a multivariate regression
+ model is exactly regression through the origin with the linear relationship
+ with the other regressors removed from both the regressor and outcome by
+ taking residuals.
+\end_layout
+
+\begin_layout Itemize
+In this sense, multivariate regression 
+\begin_inset Quotes eld
+\end_inset
+
+adjusts
+\begin_inset Quotes erd
+\end_inset
+
+ a coefficient for the linear impact of the other variables.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Interpretation of the coefficients
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $E\left[Y|X_{1}=x_{1},...,X_{p}=x_{p}\right]=\sum_{k=1}^{p}x_{k}\beta_{k}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+What if one variable 
+\begin_inset Formula $x_{1}$
+\end_inset
+
+ is incremented by one?
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $E\left[Y|X_{1}=x_{1}+1,...,X_{p}=x_{p}\right]-E\left[Y|X_{1}=x_{1},...,X_{p}=x_{p}\right]=\beta_{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+So the intepretation of a multivariate regression coefficient is the expected
+ change in the response per unit change in the regressor, holding all of
+ the other regressors fixed.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Fitted values, residuals, and residual variation - all of our simple linear
+ regression quantities can be extended to multivariate linear models.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Model: 
+\begin_inset Formula $Y_{i}=\sum_{k=1}^{p}X_{ik}\beta_{k}+\epsilon_{i}$
+\end_inset
+
+ where 
+\begin_inset Formula $\epsilon_{i}\sim N\left(0,\sigma^{2}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Fitted responses: 
+\begin_inset Formula $\hat{Y}_{i}=\sum_{k=1}^{p}X_{ik}\hat{\beta}_{k}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Residuals: 
+\begin_inset Formula $e_{i}=Y_{i}-\hat{Y}_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Variance estimate: 
+\begin_inset Formula $\hat{\sigma}^{2}=\frac{1}{n-p}\sum_{i=1}^{n}e_{i}^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+To get predicted responses at new values 
+\begin_inset Formula $x_{1},...,x_{p}$
+\end_inset
+
+, simply plug these values into the linear model 
+\begin_inset Formula $\sum_{k=1}^{p}x_{k}\hat{\beta}_{k}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Our coefficients have standard errors 
+\begin_inset Formula $\hat{\sigma}_{\hat{\beta}_{k}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\frac{\hat{\beta}_{k}-\beta_{k}}{\hat{\sigma}_{\hat{\beta}_{k}}}$
+\end_inset
+
+ follows a T distribution with 
+\begin_inset Formula $n-p$
+\end_inset
+
+ degrees of freedom.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Predicted responses have standard errors and we can calculate predicted
+ and expected response intervals.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Linear models are the single most important applied statistical and machine
+ learning technique 
+\series bold
+by far
+\series default
+.
+\end_layout
+
+\begin_layout Itemize
+Some amazing things that you can accomplish with linear models:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Decompose a signal into its harmonics.
+\end_layout
+
+\begin_layout Itemize
+Flexibly fit complicated functions.
+\end_layout
+
+\begin_layout Itemize
+Fit factor variables as predictors.
+\end_layout
+
+\begin_layout Itemize
+Uncover complex multivariate relationship with the response.
+\end_layout
+
+\begin_layout Itemize
+Build accurate prediction models.
 \end_layout
 
 \end_deeper
