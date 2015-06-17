@@ -1839,5 +1839,109 @@ Build accurate prediction models.
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Dummy variables
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Consider the linear model 
+\begin_inset Formula $Y_{i}=\beta_{0}+X_{i1}\beta_{1}+\epsilon_{i}$
+\end_inset
+
+ where each 
+\begin_inset Formula $X_{i1}$
+\end_inset
+
+ is binary so that it is 1 if measurement 
+\begin_inset Formula $i$
+\end_inset
+
+ is in a group and 0 otherwise.
+\end_layout
+
+\begin_layout Itemize
+Then for people in the group, 
+\begin_inset Formula $E\left[Y_{i}\right]=\beta_{0}+\beta_{1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+For people not in the group, 
+\begin_inset Formula $E\left[Y_{i}\right]=\beta_{0}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\beta_{1}$
+\end_inset
+
+ is interpreted as the increase or decrease in the mean comparing those
+ in the group to those who are not.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Consider a multi-level factor level.
+ Let's say a three-level factor based on political party affiliation (Republican
+, Democrat, Independent).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Y_{i}=\beta_{0}+X_{i1}\beta_{1}+X_{i2}\beta_{2}+\epsilon_{i}$
+\end_inset
+
+ where 
+\begin_inset Formula $X_{i1}$
+\end_inset
+
+ is 1 for Republicans and 0 otherwise and 
+\begin_inset Formula $X_{i2}$
+\end_inset
+
+ is 1 for Democrats and 0 otherwise.
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $i$
+\end_inset
+
+ is Republican, Democrat, or Independent, 
+\begin_inset Formula $E\left[Y\right]=\beta_{0}+\beta_{1}$
+\end_inset
+
+, 
+\begin_inset Formula $\beta_{0}+\beta_{2}$
+\end_inset
+
+, or 
+\begin_inset Formula $\beta_{0}$
+\end_inset
+
+, respectively.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\beta_{1}$
+\end_inset
+
+ compares Republicans to Independents, 
+\begin_inset Formula $\beta_{2}$
+\end_inset
+
+ compares Democrats to Independents, and 
+\begin_inset Formula $\beta_{1}-\beta_{2}$
+\end_inset
+
+ compares Republicans to Democrats.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document

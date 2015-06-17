@@ -575,7 +575,7 @@ Expected value of sample mean:
 
 \begin_layout Itemize
 Variance of sample mean: 
-\begin_inset Formula $Var\left(\bar{X}\right)=\sigma^{2}/n$
+\begin_inset Formula $Var\left(\bar{X}\right)=Var\left(\frac{1}{n}\sum_{i}X_{i}\right)=\frac{1}{n^{2}}Var\left(\sum_{i}X_{i}\right)=\frac{1}{n^{2}}\sum_{i}\sigma^{2}=\sigma^{2}/n$
 \end_inset
 
 
@@ -598,6 +598,53 @@ The standard error
  from the population are.
 \end_layout
 
+\begin_layout Itemize
+The variance of a sample mean is 
+\begin_inset Formula $\sigma^{2}/n$
+\end_inset
+
+, and we estimate it with 
+\begin_inset Formula $S^{2}/n$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The standard error of the sample mean is 
+\begin_inset Formula $s/\sqrt{n}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Chebyshev's inequality: the probability that a random variable 
+\begin_inset Formula $X$
+\end_inset
+
+ is at least 
+\begin_inset Formula $k$
+\end_inset
+
+ standard deviations from its mean is less than 
+\begin_inset Formula $1/k^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Pr\left(\left|X-\mu\right|\ge k\sigma\right)\le\frac{1}{k^{2}}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
 \begin_layout Subsection*
 Some common distributions
 \end_layout
