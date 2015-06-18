@@ -1333,6 +1333,34 @@ Line at
 
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+This is usually referred to as a confidence interval.
+\end_layout
+
+\begin_layout Itemize
+R code: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cr <- sigma*sqrt(1/n+(x0-mean(x))^2/ssx)
+\end_layout
+
+\begin_layout Plain Layout
+
+y0 + c(-1,1)*qt(0.975,df=n-2)*cr
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
 \begin_layout Itemize
 Prediction interval standard error at 
 \begin_inset Formula $x_{0}$
@@ -1340,6 +1368,32 @@ Prediction interval standard error at
 
 : 
 \begin_inset Formula $\hat{\sigma}\sqrt{1+\frac{1}{n}+\frac{\left(x_{0}-\bar{X}\right)^{2}}{\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}}}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is usually referred to as a prediction interval.
+\end_layout
+
+\begin_layout Itemize
+R code:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pr <- sigma*sqrt(1+1/n+(x0-mean(x))^2/ssx)
+\end_layout
+
+\begin_layout Plain Layout
+
+y0 + c(-1,1)*qt(0.975,df=n-2)*pr
+\end_layout
+
 \end_inset
 
 
