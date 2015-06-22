@@ -1356,5 +1356,67 @@ For a two-sided hypothesis test, double the smaller of the two one-sided
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Power
+\end_layout
+
+\begin_layout Itemize
+Power is the probability of rejecting the null hypothesis when it is false.
+ Power is a good thing!
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Comes into play more when you fail to reject the null hypothesis.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A type II error is failing to reject the null hypothesis when it is false.
+ The probability of a type II error is usually called 
+\begin_inset Formula $\beta$
+\end_inset
+
+, and power is calculated as 
+\begin_inset Formula $Power=1-\beta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $H_{0}:\mu=30$
+\end_inset
+
+ vs.
+ 
+\begin_inset Formula $H_{a}:\mu>30$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+T-statistic: 
+\begin_inset Formula $\frac{\bar{X}-30}{s\sqrt{n}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Power: 
+\begin_inset Formula $P\left(\frac{\bar{X}-30}{s\sqrt{n}}>t_{1-\alpha,n-1};\mu=\mu_{a}\right)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
