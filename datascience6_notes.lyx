@@ -1403,7 +1403,7 @@ Example:
 
 \begin_layout Itemize
 T-statistic: 
-\begin_inset Formula $\frac{\bar{X}-30}{s\sqrt{n}}$
+\begin_inset Formula $\frac{\bar{X}-30}{s/\sqrt{n}}$
 \end_inset
 
 
@@ -1411,9 +1411,292 @@ T-statistic:
 
 \begin_layout Itemize
 Power: 
-\begin_inset Formula $P\left(\frac{\bar{X}-30}{s\sqrt{n}}>t_{1-\alpha,n-1};\mu=\mu_{a}\right)$
+\begin_inset Formula $P\left(\frac{\bar{X}-30}{s/\sqrt{n}}>t_{1-\alpha,n-1};\mu=\mu_{a}\right)$
 \end_inset
 
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is equal to 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ for 
+\begin_inset Formula $\mu_{a}=30$
+\end_inset
+
+ (null hypothesis).
+\end_layout
+
+\begin_layout Itemize
+It's not equal to 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ for 
+\begin_inset Formula $\mu_{a}>30$
+\end_inset
+
+, but it approaches 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ as 
+\begin_inset Formula $\mu_{a}$
+\end_inset
+
+ goes to 30.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+We assume the statistic follows a t-distribution under the null hypothesis.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+If we calculate a power of 0.64 for a mean of 32 when the null hypothesis
+ is 30, that means we have a 64% chance of detecting a mean as large as
+ 32.
+\end_layout
+
+\begin_layout Itemize
+Calculating power for Gaussian data
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We reject if 
+\begin_inset Formula $\frac{\bar{X}-30}{\sigma/\sqrt{n}}h>z_{1-\alpha}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Equivalently, we reject if 
+\begin_inset Formula $\bar{X}>30+Z_{1-\alpha}\frac{\sigma}{\sqrt{n}}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Under 
+\begin_inset Formula $H_{0}$
+\end_inset
+
+: 
+\begin_inset Formula $\bar{X}\sim N\left(\mu_{0},\sigma^{2}/n\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Under 
+\begin_inset Formula $H_{a}$
+\end_inset
+
+: 
+\begin_inset Formula $\bar{X}\sim N\left(\mu_{a},\sigma^{2}/n\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+R code: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+z <- qnorm(1-alpha)
+\end_layout
+
+\begin_layout Plain Layout
+
+pnorm(mu0 + z*sigma/sqrt(n), mean=mua, sd=sigma/sqrt(n), lower.tail=false)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+When testing the alternative hypothesis, notice that if power is 
+\begin_inset Formula $1-\beta$
+\end_inset
+
+, then 
+\begin_inset Formula $1-\beta=P\left(\bar{X}>\mu_{0}+z_{1-\alpha}\frac{\sigma}{\sqrt{n}};\mu=\mu_{a}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+where 
+\begin_inset Formula $\bar{X}\sim N\left(\mu_{a},\sigma^{2}/n\right).$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Unknowns: 
+\begin_inset Formula $\mu_{a},\sigma,n,\beta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Knowns: 
+\begin_inset Formula $\mu_{0},\alpha$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Specify any 3 of the unknowns and you can solve for the remaining one.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Other notes
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The calculation for 
+\begin_inset Formula $H_{a}:\mu<\mu_{0}$
+\end_inset
+
+ is similar to what we've already done.
+\end_layout
+
+\begin_layout Itemize
+For 
+\begin_inset Formula $H_{a}:\mu\neq\mu_{0}$
+\end_inset
+
+, calculate the one-sided power using 
+\begin_inset Formula $\alpha/2$
+\end_inset
+
+ (this is only approximately right, it excludes the possibility of getting
+ a large t-statistic in the opposite direction of the truth, but this is
+ only meaningful if 
+\begin_inset Formula $\mu_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mu_{a}$
+\end_inset
+
+ are close to each other).
+\end_layout
+
+\begin_layout Itemize
+Power goes up as 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ gets larger.
+\end_layout
+
+\begin_layout Itemize
+Power of a one-sided test is greater than the power of the associated two-sided
+ test.
+\end_layout
+
+\begin_layout Itemize
+Power goes up as 
+\begin_inset Formula $\mu_{a}$
+\end_inset
+
+ gets further away from 
+\begin_inset Formula $\mu_{0}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Power goes up as 
+\begin_inset Formula $n$
+\end_inset
+
+ goes up.
+\end_layout
+
+\begin_layout Itemize
+Power doesn't need 
+\begin_inset Formula $\mu_{a},\sigma,n$
+\end_inset
+
+; instead it only needs 
+\begin_inset Formula $\frac{\sqrt{n}\left(\mu_{a}-\mu_{0}\right)}{\sigma}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The quantity 
+\begin_inset Formula $\frac{\mu_{a}-\mu_{0}}{\sigma}$
+\end_inset
+
+ is called the effect size, the difference in the means in units of standard
+ deviation.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+T-test power
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The power is 
+\begin_inset Formula $P\left(\frac{\bar{X}-\mu_{0}}{S/\sqrt{n}}>t_{1-\alpha,n-1};\mu=\mu_{a}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Calculating this requires the non-central t-distribution.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+power.t.test
+\family default
+ does this very well.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If you omit one of the arguments, it will solve for it.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
 
 \end_layout
 
