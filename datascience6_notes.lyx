@@ -1696,7 +1696,64 @@ If you omit one of the arguments, it will solve for it.
 \end_layout
 
 \end_deeper
+\end_deeper
 \begin_layout Itemize
+T-test power example
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+Calculating power:
+\lang english
+
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+power.t.test(n=16, delta=2/4, sd=1, type="one.sample", alt="one.sided")$power
+\end_layout
+
+\begin_layout Plain Layout
+
+power.t.test(n=16, delta=2, sd=4, type="one.sample", alt="one.sided")$power
+\end_layout
+
+\begin_layout Plain Layout
+
+power.t.text(n=16, delta=100, sd=200, type="one.sample", alt="one.sided")$power
+\end_layout
+
+\begin_layout Plain Layout
+
+## all examples give the same result
+\end_layout
+
+\begin_layout Plain Layout
+
+## this is because they all have the same ratio of delta to sd.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Calculating sample size when we give power:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+power.t.test(power=0.8, delta=2/4, sd=1, type="one.sample", alt="one.sided")$n
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
