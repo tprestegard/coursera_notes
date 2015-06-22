@@ -1899,6 +1899,21 @@ Dummy variables
 
 \begin_deeper
 \begin_layout Itemize
+The equation for representing the relationship between a particular outcome
+ and several factors contains binary variables, one for each factor.
+ These are called 
+\begin_inset Quotes eld
+\end_inset
+
+dummy variables
+\begin_inset Quotes erd
+\end_inset
+
+ and each indicates if a particular outcome is associated with a specific
+ factor or category.
+\end_layout
+
+\begin_layout Itemize
 Consider the linear model 
 \begin_inset Formula $Y_{i}=\beta_{0}+X_{i1}\beta_{1}+\epsilon_{i}$
 \end_inset
@@ -1938,7 +1953,6 @@ For people not in the group,
  in the group to those who are not.
 \end_layout
 
-\end_deeper
 \begin_layout Itemize
 Consider a multi-level factor level.
  Let's say a three-level factor based on political party affiliation (Republican
@@ -1994,6 +2008,1109 @@ If
 \end_inset
 
  compares Republicans to Democrats.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The first entry in the Estimate column is labeled as "(Intercept)".
+ That is because sprayA is the first in the alphabetical list of the levels
+ of the factor, and R by default uses the first level as the reference against
+ which the other levels or groups are compared when doing its t-tests (shown
+ in the third column).
+\end_layout
+
+\begin_layout Itemize
+The estimates in this case are the coefficients of the binary or dummy variables.
+ The Intercept is the mean of the reference group, and the other Estimates
+ are the distances of the other groups' means from the reference mean.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If we do an lm(y ~ x-1), this will remove the intercept.
+ Then sprayA will be shown and all of the Estimates (and other quantities)
+ will be absolute, instead of being computed relative to sprayA.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To choose the reference group, you can use the 
+\family typewriter
+relevel()
+\family default
+ function to re-order the factor.
+\end_layout
+
+\begin_layout Itemize
+To get t-values relative to the reference group, take 
+\family typewriter
+(fit$coef[2]-fit$coef[3])/standard error
+\family default
+.
+ The standard error is usually obtained from the one-on-one regressions.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Multivariable regression - notes from swirl()
+\end_layout
+
+\begin_layout Itemize
+In this lesson we'll illustrate that regression in many variables amounts
+ to a series of regressions in one.
+\end_layout
+
+\begin_layout Itemize
+Using regression in one variable, we'll show how to eliminate any chosen
+ regressor, thus reducing a regression in N variables, to a regression in
+ N-1.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Hence, if we know how to do a regression in 1 variable, we can do a regression
+ in 2.
+\end_layout
+
+\begin_layout Itemize
+Once we know how to do a regression in 2 variables, we can do a regression
+ in 3, and so on.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+We begin with the galton data and a review of eliminating the intercept
+ by subtracting the means.
+\end_layout
+
+\begin_layout Itemize
+When we perform a regression in one variable, such as lm(child ~ parent,
+ galton), we get two coefficients, a slope and an intercept.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The intercept is really the coefficient of a special regressor which has
+ the same value, 1, at every sample.
+ The function, lm, includes this regressor by default.
+\end_layout
+
+\begin_layout Itemize
+In earlier lessons we demonstrated that the regression line given by lm(child
+ ~ parent, galton) goes through the point x=mean(parent), y=mean(child).
+\end_layout
+
+\begin_layout Itemize
+We also showed that if we subtract the mean from each variable, the regression
+ line goes through the origin, x=0, y=0, hence its intercept is zero.
+\end_layout
+
+\begin_layout Itemize
+Thus, by subtracting the means, we eliminate one of the two regressors,
+ the constant, leaving just one, parent.
+ The coefficient of the remaining regressor is the slope.
+\end_layout
+
+\begin_layout Itemize
+Subtracting the means to eliminate the intercept is a special case of a
+ general technique which is sometimes called Gaussian Elimination.
+\end_layout
+
+\begin_layout Itemize
+As it applies here, the general technique is to pick one regressor and to
+ 
+\series bold
+replace all other variables by the residuals of their regressions against
+ that one
+\series default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example with swiss dataset:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+First, use the R function lm to generate the linear model "all" in which
+ Fertility is the variable dependent on all the others.
+ Use the R shorthand "." to represent the five independent variables in the
+ formula passed to lm.
+ Remember the data is "swiss".
+\end_layout
+
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+all <- lm(Fertility ~ ., data=swiss)
+\end_layout
+
+\begin_layout Plain Layout
+
+summary(all)
+\end_layout
+
+\begin_layout Plain Layout
+
+Call: lm(formula = Fertility ~ ., data = swiss)
+\end_layout
+
+\begin_layout Plain Layout
+
+Residuals:      Min       1Q   Median       3Q      Max  -15.2743  -5.2617
+   0.5032   4.1198  15.3213 
+\end_layout
+
+\begin_layout Plain Layout
+
+Coefficients:
+\end_layout
+
+\begin_layout Plain Layout
+
+				  Estimate  Std.
+ Error  t value Pr(>|t|)
+\end_layout
+
+\begin_layout Plain Layout
+
+(Intercept)      66.91518   10.70604   6.250  1.91e-07
+\end_layout
+
+\begin_layout Plain Layout
+
+Agriculture      -0.17211    0.07030  -2.448  0.01873
+\end_layout
+
+\begin_layout Plain Layout
+
+Examination      -0.25801    0.25388  -1.016  0.31546
+\end_layout
+
+\begin_layout Plain Layout
+
+Education        -0.87094    0.18303  -4.758 2.43e-05
+\end_layout
+
+\begin_layout Plain Layout
+
+Catholic          0.10412    0.03526   2.953  0.00519
+\end_layout
+
+\begin_layout Plain Layout
+
+Infant.Mortality  1.07705    0.38172   2.822  0.00734
+\end_layout
+
+\begin_layout Plain Layout
+
+--- Signif.
+ codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+\end_layout
+
+\begin_layout Plain Layout
+
+Residual standard error: 7.165 on 41 degrees of freedom Multiple R-squared:
+  0.7067,	Adjusted R-squared:  0.671  F-statistic: 19.76 on 5 and 41 DF,  p-value:
+ 5.594e-10
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Recall that the Estimates are the coefficients of the independent variables
+ of the linear model (all of which are percentages) and they reflect an
+ estimated change in the dependent variable (fertility) when the corresponding
+ independent variable changes.
+ So, for every 1% increase in percent of males involved in agriculture as
+ an occupation we expect a .17% decrease in fertility, holding all the other
+ variables constant; for every 1% increase in Catholicism, we expect a .10%
+ increase in fertility, holding all other variables constant.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Interactions
+\end_layout
+
+\begin_layout Itemize
+Example: hunger data.
+\end_layout
+
+\begin_layout Itemize
+Linear model: 
+\begin_inset Formula $Hu_{i}=b_{0}+b_{1}Y_{i}+e_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Hu_{i}$
+\end_inset
+
+: percent of hungry children.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b_{0}$
+\end_inset
+
+: percent hungry at year 0.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b_{1}$
+\end_inset
+
+: decrease in percent hungry per year.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $e_{i}$
+\end_inset
+
+: everything we didn't measure.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+If we consider a model with two lines:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Females: 
+\begin_inset Formula $HuF_{i}=bf_{0}+bf_{1}YF_{i}+ef_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $bf_{0}$
+\end_inset
+
+: percent of girls hungry at year 0.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $bf_{1}$
+\end_inset
+
+: decrease in percent of girls hungry per year.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $ef_{i}$
+\end_inset
+
+: everything we didn't measure.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Males: 
+\begin_inset Formula $HuM_{i}=bm_{0}-bm_{1}YM_{i}+em_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $bm_{0}$
+\end_inset
+
+: percent of boys hungry at year 0.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $bn_{1}$
+\end_inset
+
+: decrease in percent of boys hungry per year.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $em_{i}$
+\end_inset
+
+: everything we didn't measure.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+When we stratify by gender, the slopes and intercepts and residual variances
+ are different for each gender.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Two lines, same slope, different intercept: 
+\begin_inset Formula $Hu_{i}=b_{0}+b_{1}1\left(Sex_{i}="Male"\right)+b_{2}Y_{i}+e_{i}^{*}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $b_{0}$
+\end_inset
+
+: percent hungry at year zero for females.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b_{0}+b_{1}$
+\end_inset
+
+: percent hungry at year zero for males.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b_{2}$
+\end_inset
+
+: change in percent hungry (for either males or females) in one year.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $e_{i}^{*}$
+\end_inset
+
+: everything we didn't measure.
+\end_layout
+
+\begin_layout Itemize
+How to do this in R:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+lmBoth <-lm(Numeric ~ Year + Sex, data=hunger)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+This says that our slope variable, Year, does not interact with Sex.
+ So only the intercepts will be different.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Two lines, different slopes (interactions): 
+\begin_inset Formula $Hu_{i}=b_{0}+b_{1}1\left(Sex_{i}="Male"\right)+b_{2}Y_{i}+b_{3}1\left(Sex_{i}="Male"\right)Y_{i}+e_{i}^{+}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $b_{0}$
+\end_inset
+
+: percent hungry at year 0 for females.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b_{0}+b_{1}$
+\end_inset
+
+: percent hungry at year zero for males.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b_{2}$
+\end_inset
+
+: change in percent hungry (females) in one year.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b_{2}+b_{3}$
+\end_inset
+
+: change in percent hungry (males) in one year.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $e_{i}^{+}$
+\end_inset
+
+: everything we didn't measure.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $E\left[H\right]=b_{0}+b_{1}+\left(b_{2}+b_{3}\right)Y$
+\end_inset
+
+ for males.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $E\left[H\right]=b_{0}+b_{2}Y$
+\end_inset
+
+ for females.
+\end_layout
+
+\begin_layout Itemize
+How to do this in R: 
+\family typewriter
+lmInter <- lm(Numeric ~ Year + Sex + Sex*Year, data=hunger)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Interpreting a continuous interaction:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $E\left[Y_{i}|X_{1i}=x_{1},X_{2i}=x_{2}\right]=\beta_{0}+\beta_{1}x_{1}+\beta_{2}x_{2}+\beta_{3}x_{1}x_{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The last term here is the interaction term.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Holding 
+\begin_inset Formula $X_{2}$
+\end_inset
+
+constant, we have: 
+\begin_inset Formula $E\left[Y_{i}|X_{1i}=x_{1}+1,X_{2i}=x_{2}\right]-E\left[Y_{i}|X_{1i}=x_{1},X_{2i}=x_{2}\right]=\beta_{1}+\beta_{3}x_{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Thus, the expected change in 
+\begin_inset Formula $Y$
+\end_inset
+
+ per unit 
+\begin_inset Formula $X_{1}$
+\end_inset
+
+ holding all else constant is not constant.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\beta_{1}$
+\end_inset
+
+ is the slope when 
+\begin_inset Formula $x_{2}=0$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+We can do the same kind of thing to see what happens when both variables
+ change:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+End result: 
+\begin_inset Formula $\beta_{3}$
+\end_inset
+
+ is the expected change in 
+\begin_inset Formula $Y$
+\end_inset
+
+ per unit change in 
+\begin_inset Formula $X_{1}$
+\end_inset
+
+, per unit change in 
+\begin_inset Formula $X_{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+We can also think of it as the change in the slope relating 
+\begin_inset Formula $X_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $Y$
+\end_inset
+
+ per unit change in 
+\begin_inset Formula $X_{2}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+To investigate residual relationships:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can plot 
+\family typewriter
+resid(lm(y ~ x2))
+\family default
+ vs.
+ 
+\family typewriter
+resid(lm(y ~ x1))
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Residuals and diagnostics
+\end_layout
+
+\begin_layout Itemize
+Residuals are defined as 
+\begin_inset Formula $e_{i}=Y_{i}-\hat{Y}_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Our estimate of residual variation is 
+\begin_inset Formula $\hat{\sigma}^{2}=\frac{\sum_{i=1}^{n}e_{i}^{2}}{n-p}$
+\end_inset
+
+ where 
+\begin_inset Formula $n-p$
+\end_inset
+
+ is chosen such that 
+\begin_inset Formula $E\left[\hat{\sigma}^{2}\right]=\sigma^{2}$
+\end_inset
+
+, i.e., the estimator is unbiased.
+\end_layout
+
+\begin_layout Itemize
+Influential, high leverage, and outlying points
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Calling a point an outlier is 
+\series bold
+vague
+\series default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Outliers can be the result of spurious or real processes (example: data
+ entry error or a statistical fluctuation).
+\end_layout
+
+\begin_layout Itemize
+Outliers can have varying degrees of influence.
+\end_layout
+
+\begin_layout Itemize
+Outliers can conform to the regression relationship (i.e., being marginally
+ outlying in 
+\begin_inset Formula $X$
+\end_inset
+
+ or 
+\begin_inset Formula $Y$
+\end_inset
+
+, but not outlying given the regression relationship).
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Measures of influence
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Do 
+\family typewriter
+?influence.measures
+\family default
+ to see the full suite of influence measures in stats.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+rstandard
+\family default
+: standardized residuals (residuals divided by their standard deviations).
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+rstudent
+\family default
+: standardized residuals where the 
+\begin_inset Formula $i$
+\end_inset
+
+th data point was deleted in the calculation of the standard deviation for
+ the residual to follow a t-distribution.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+hatvalues
+\family default
+: measures of leverage.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dffits
+\family default
+: change in the predicted response when the 
+\begin_inset Formula $i$
+\end_inset
+
+th point is deleted in fitting the model.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+dfbetas
+\family default
+: change in the individual coefficients when the 
+\begin_inset Formula $i$
+\end_inset
+
+th point is deleted in fitting the model.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+cooks.distance
+\family default
+: overall change in the coefficients when the 
+\begin_inset Formula $i$
+\end_inset
+
+th point is deleted.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+resid
+\family default
+: returns the ordinary residuals.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+resid(fit)/(1-hatvalues(fit))
+\family default
+: returns the PRESS residuals, i.e., the 
+\begin_inset Quotes eld
+\end_inset
+
+leave-one-out
+\begin_inset Quotes erd
+\end_inset
+
+ cross-validation residuals - the difference in the response and the predicted
+ response at data point 
+\begin_inset Formula $i$
+\end_inset
+
+, where it was not included in the model fitting.
+ Here 
+\family typewriter
+fit
+\family default
+ is the linear model.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How to use these:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Be wary of simplistic rules for diagnostic plots and measures.
+ The use of these tools is context-specific.
+\end_layout
+
+\begin_layout Itemize
+Not all of the measures have meaningful absolute scales.
+ You can look at them relative to the values across the data.
+\end_layout
+
+\begin_layout Itemize
+They probe your data in different ways to diagnose different problems.
+\end_layout
+
+\begin_layout Itemize
+Patterns in your residual plots generally indicate some poor aspect of model
+ fit, including:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Heteroskedasticity (non-constant variance).
+\end_layout
+
+\begin_layout Itemize
+Missing model terms.
+\end_layout
+
+\begin_layout Itemize
+Temporal patterns (plot residuals vs.
+ collection order of data points).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Residual QQ plots investigate normality of the errors.
+\end_layout
+
+\begin_layout Itemize
+Leverage measures (hat values) can be useful for diagnosing data entry errors.
+\end_layout
+
+\begin_layout Itemize
+Influence measures get to the bottom line - how does deleting or including
+ this point impact a particular aspect of the model?
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+Model selection
+\end_layout
+
+\begin_layout Itemize
+Choosing a model when you have multiple predictors
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Machine learning class focuses on prediction, so we'll focus on modeling.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Prediction has a different set of criteria, needs for interpretability and
+ standard for generalizability.
+\end_layout
+
+\begin_layout Itemize
+In modeling, we want to make a parsimonious, interpretable representation
+ of the data that enhances our understanding of the phenomena under study.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Under this philosophy, what's the right model? Whatever model connects the
+ data to a true, parsimonious statement abotu what you're studying.
+\end_layout
+
+\begin_layout Itemize
+Good modeling decisions are context-dependent.
+\end_layout
+
+\begin_layout Itemize
+We'll focus on variable inclusion and exclusion.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Rumsfeldian triplet
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Known knowns: regressors that we know we should include in the model and
+ have included.
+\end_layout
+
+\begin_layout Itemize
+Known unknowns: regressors that we would like to include in the model but
+ we don't have them.
+\end_layout
+
+\begin_layout Itemize
+Unknown unknowns: regressors that we don't even know about that we should
+ have included in the model.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+General rules
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Omitting variables tends to result in bias unless their regressors are uncorrela
+ted with the omitted ones.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is why we randomize treatments - it attempts to uncorrelate our treatment
+ indicator with variables that we don't have and can't include in the model.
+\end_layout
+
+\begin_layout Itemize
+If there are too many unobserved confounding variables, even randomization
+ won't help us.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Including variables that we shouldn't have increases standard errors of
+ the regression variables.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Thus, we don't want to idly throw new variables into the model.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The model must tend toward perfect fit as the number of non-redundant regressors
+ approaches the number of measurements.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ increases monotonically as more regressors are added.
+\end_layout
+
+\begin_layout Itemize
+The sum of the squared errors decreases monotonically as more regressors
+ are included.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Variance inflation: variance of model tends to increase as you add uncorrelated
+ predictors (i.e., variables that aren't relevant and you shouldn't add).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If the regressors you add are correlated to other regressors, then your
+ variance will become even more inflated!
+\end_layout
+
+\begin_layout Itemize
+Note: we don't actually know 
+\begin_inset Formula $\sigma$
+\end_inset
+
+, so we can only estimate the increase in the actual standard error of the
+ coefficients for including a regressor.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+However, 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ drops out of the relative standard errors.
+ If you sequentially add variables, you can check the variance inflation
+ for including each one.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+When the other regressors are actually orthogonal to the regressor of interest,
+ then there is no variance inflation.
+\end_layout
+
+\begin_layout Itemize
+The variance inflation factor (VIF) is the increase in the variance for
+ the 
+\begin_inset Formula $i$
+\end_inset
+
+th regressor compared to the ideal setting where it is orthogonal to the
+ other regressors.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use the 
+\family typewriter
+vif(fit)
+\family default
+ function in R to get this.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Note: variance inflation is only part of the picture.
+ We may still want to include certain variables, even if they dramatically
+ inflate our variance.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+What about residual variance estimation?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assuming that the model is linear with additive IID errors (with finite
+ variance), we can mathematically describe the impact of omitting necessary
+ variables or including unnecessary ones.
+\end_layout
+
+\begin_layout Itemize
+If we underfit the model, the variance estimate is biased.
+\end_layout
+
+\begin_layout Itemize
+If we correctly fit or overfit the model, including all necessary covariates
+ and/or uncessary covariates, the variance estimate is biased (
+\begin_inset Formula $E\left[\hat{\sigma}^{2}\right]=\sigma^{2}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+However, the variance of the variance is larger if we include unncessary
+ variables (
+\begin_inset Formula $Var\left(\hat{\sigma}_{unnecessary}^{2}\right)\geq Var\left(\hat{\sigma}_{necessary}^{2}\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Covariate model selection
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Principal components or factor analysis models on covariates are often useful
+ for reducing complex covariate spaces.
+\end_layout
+
+\begin_layout Itemize
+Good design can often eliminate the need for complex model searches.
+\end_layout
+
+\begin_layout Itemize
+If the models of interest are nested and without lots of parameters differentiat
+ing them, it's fairly uncontroversial to use nested likelihood ratio tests.
+\end_layout
+
+\begin_layout Itemize
+Suggested approach: given a coefficient of interest, use covariate adjustment
+ and multiple models to probe that effect to evaluate it for robustness
+ and to see what other covariates knock it out.
+ This isn't terribly systematic, but it does tend to teach you a lot about
+ the data.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How to do nested model testing in R
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+fit1 <- lm(Fertility ~ Agriculture, data=swiss)
+\end_layout
+
+\begin_layout Plain Layout
+
+fit2 <- update(fit, Fertility ~ Agriculture + Examination + Education)
+\end_layout
+
+\begin_layout Plain Layout
+
+fit5 <- update(fit, Fertility ~ Agriculture + Examination + Education +
+ Catholic + Infant.Mortality)
+\end_layout
+
+\begin_layout Plain Layout
+
+anova(fit1, fit3, fit5) ## creates a series of likelihood ratio tests.
+ Output compares each model to the previous one.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_deeper
