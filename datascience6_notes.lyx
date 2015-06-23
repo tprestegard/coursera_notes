@@ -981,6 +981,36 @@ Paired observations are often analyzed using the T interval by taking difference
 s.
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Get mean of differences: 
+\begin_inset Formula $\bar{Z}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Get sigma of differences: 
+\begin_inset Formula $s^{2}=\sum_{i=1}^{n}\frac{\left(Z_{i}-\bar{Z}\right)^{2}}{n-1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+T statistic: 
+\begin_inset Formula $\frac{\bar{Z}-H_{a}}{s/\sqrt{n}}$
+\end_inset
+
+, where 
+\begin_inset Formula $H_{a}$
+\end_inset
+
+ is the hypothesis (taken to be 0 for the null hypothesis).
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 The spirit of the T interval assumptions are violated for skewed distributions.
 \end_layout
@@ -1101,6 +1131,28 @@ var.equal=FALSE
 .
 \end_layout
 
+\begin_layout Itemize
+T-statistic: 
+\begin_inset Formula $t=\frac{\bar{Y}-\bar{X}}{\sqrt{S_{x}^{2}/n_{x}+S_{y}^{2}/n_{y}}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Calculate p-value: 
+\family typewriter
+pt(t, df=df, lower.tail=FALSE)
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Multiply by 2 if doing a two-sided test.
+\end_layout
+
+\end_deeper
 \end_deeper
 \begin_layout Subsection*
 Hypothesis testing
@@ -2236,5 +2288,539 @@ Cons: allows for more false positives, may behave strangely under dependence.
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Adjusted p-values
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+One approach is to adjust the threshold 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, but another approach is to calculate 
+\begin_inset Quotes eld
+\end_inset
+
+adjusted p-values.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In this case, they are not technically p-values any more, so they don't
+ have the same properties of classically defined p-values.
+\end_layout
+
+\begin_layout Itemize
+But they can be used to control error parameters directly without adjust
+ 
+\begin_inset Formula $\alpha$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose p-values are 
+\begin_inset Formula $p_{1},...,p_{m}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+You could adjust them by taking 
+\begin_inset Formula $p_{i}^{FWER}=max\left(m\cdot p_{i},1\right)$
+\end_inset
+
+, for each p-value.
+\end_layout
+
+\begin_layout Itemize
+Then if you call all 
+\begin_inset Formula $p_{i}^{FWER}<\alpha$
+\end_inset
+
+ significant, you will control the FWER.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+R examples:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+p.adjust(pValues, method=
+\begin_inset Quotes erd
+\end_inset
+
+Bonferroni
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+p.adjust(pValues, method=
+\begin_inset Quotes erd
+\end_inset
+
+BH
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Note: if there is strong dependence between different tests, there may be
+ problems.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can try 
+\family typewriter
+method=
+\begin_inset Quotes erd
+\end_inset
+
+BY
+\begin_inset Quotes erd
+\end_inset
+
+
+\family default
+ if this is the case.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Bootstrapping
+\end_layout
+
+\begin_layout Itemize
+The bootstrap is a tremendously useful tool for constructing confidence
+ intervals and calculating standard errors for difficult statistics.
+\end_layout
+
+\begin_layout Itemize
+Example: how would you derive a confidence interval for the median?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can do complicated math, but a bootstrap is an easier solution.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: rolling a dice 50 times and calculating the average roll.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What if we only have one sample (of 50 rolls)?
+\end_layout
+
+\begin_layout Itemize
+How can we get a distribution of averages for 50 rolls if we only have one
+ sample of 50 rolls?
+\end_layout
+
+\begin_layout Itemize
+Bootstrapping says that we should take our one sample of 50 rolls and use
+ the distribution of single dice rolls to generate a population of averages
+ of 50 rolls.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Using our observed data to construct an 
+\series bold
+estimated
+\series default
+ population distribution.
+\end_layout
+
+\begin_layout Itemize
+Using that population distribution to simulate the statistic we are interested
+ in.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+The bootstrap principle
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If you have a statistic that estimates some population parameter, but don't
+ know its sampling distribution, then you can use the distribution defined
+ by the data to approximate its sampling distribution.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The bootstrap in practice:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Always carried out using simulation.
+\end_layout
+
+\begin_layout Itemize
+Procedure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Simulate complete data sets from the observed data (with replacement).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is approximately drawing from the sampling distribution of that statistic,
+ at least as far as the data is able to approximate the true population
+ distribution.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Calculate the statistic for each simulated data set.
+\end_layout
+
+\begin_layout Itemize
+Use the simulated statistics to either define a confidence interval or take
+ the standard deviation to calculate a standard error.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Example: calculating confidence interval for the median of a data set of
+ 
+\begin_inset Formula $n$
+\end_inset
+
+ observations.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sample 
+\begin_inset Formula $n$
+\end_inset
+
+ observations 
+\series bold
+with replacement
+\series default
+ from the observed data resulting in one simulated complete data set.
+\end_layout
+
+\begin_layout Itemize
+Take the median of the simulated data set.
+\end_layout
+
+\begin_layout Itemize
+Repeat these steps 
+\begin_inset Formula $B$
+\end_inset
+
+ times, resulting in 
+\begin_inset Formula $B$
+\end_inset
+
+ simulated medians.
+ (
+\begin_inset Formula $B$
+\end_inset
+
+ should be large.)
+\end_layout
+
+\begin_layout Itemize
+These medians are approximately drawn from the sampling distribution of
+ the median of 
+\begin_inset Formula $n$
+\end_inset
+
+ observations; therefore we can:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Make a histogram of them.
+\end_layout
+
+\begin_layout Itemize
+Calculate their standard deviation to estimate the standard error of the
+ median.
+\end_layout
+
+\begin_layout Itemize
+Take the 2.5th and 97.5th percentiles as a confidence interval for the median.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Example code:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(UsingR)
+\end_layout
+
+\begin_layout Plain Layout
+
+data(father.son)
+\end_layout
+
+\begin_layout Plain Layout
+
+x <- father.son$sheight
+\end_layout
+
+\begin_layout Plain Layout
+
+n <- length(x)
+\end_layout
+
+\begin_layout Plain Layout
+
+B <- 10000
+\end_layout
+
+\begin_layout Plain Layout
+
+## Make a matrix where each row is a sample with n observations.
+\end_layout
+
+\begin_layout Plain Layout
+
+resamples <- matrix(sample(x, n*B, replace=TRUE), B, n)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Take the median of each row.
+\end_layout
+
+\begin_layout Plain Layout
+
+medians <- apply(resamples, 1, median)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Estimated standard error on the median.
+\end_layout
+
+\begin_layout Plain Layout
+
+sd(medians)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Estimate a confidence interval for the median.
+\end_layout
+
+\begin_layout Plain Layout
+
+quantile(medians, c(0.025, 0.975))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The bootstrap is non-parametric: it makes no assumptions about the probability
+ distributions of the variables being assessed.
+\end_layout
+
+\begin_layout Itemize
+Better percentile bootstrap confidence intervals correct for bias.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use the 
+\begin_inset Quotes eld
+\end_inset
+
+BCA
+\begin_inset Quotes erd
+\end_inset
+
+ interval instead.
+ (???)
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Permutation tests
+\end_layout
+
+\begin_layout Itemize
+Used for group comparisons.
+\end_layout
+
+\begin_layout Itemize
+Permutation tests are very powerful and there are several variations:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Rank sum test, Fisher's exact test, etc.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Permutation tests work very well in multivariate settings.
+\end_layout
+
+\begin_layout Itemize
+Example: consider comparing two independent groups using InsectSprays data
+ set.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Consider the null hypothesis - that the distribution of the observations
+ from each group is the same.
+\end_layout
+
+\begin_layout Itemize
+Consider a data frame with count and spray.
+\end_layout
+
+\begin_layout Itemize
+Permute the spray (group) labels and recalculate the statistic.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Mean difference in counts.
+\end_layout
+
+\begin_layout Itemize
+Geometric means.
+\end_layout
+
+\begin_layout Itemize
+T-statistic.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Calculate the percentage of simulations where the simulated statistic was
+ more extreme (toward the alternative) than the observed.
+\end_layout
+
+\begin_layout Itemize
+This yields a permutation-based p-value.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Code example:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+subdata <- InsectSprays[InsectSprays$spray %in% c("B","C"),]
+\end_layout
+
+\begin_layout Plain Layout
+
+y <- subdata$count
+\end_layout
+
+\begin_layout Plain Layout
+
+group <- as.character(subdata$spray)
+\end_layout
+
+\begin_layout Plain Layout
+
+testStat <- function(w, g) mean(w[g=="B"])- mean(w[g=="C"])
+\end_layout
+
+\begin_layout Plain Layout
+
+observedStat <- testStat(y, group)
+\end_layout
+
+\begin_layout Plain Layout
+
+permutations <- sapply(1:10000, function(i) testStat(y, sample(group)))
+\end_layout
+
+\begin_layout Plain Layout
+
+observedStat
+\end_layout
+
+\begin_layout Plain Layout
+
+## [1] 13.25
+\end_layout
+
+\begin_layout Plain Layout
+
+mean(permutations > observedStat)
+\end_layout
+
+\begin_layout Plain Layout
+
+## [1] 0
+\end_layout
+
+\begin_layout Plain Layout
+
+## Using 10000 permutations, we couldn't find a reconfiguration of the group
+ labels
+\end_layout
+
+\begin_layout Plain Layout
+
+## that led to such an extreme difference.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
