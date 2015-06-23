@@ -1703,10 +1703,7 @@ T-test power example
 
 \begin_deeper
 \begin_layout Itemize
-
 Calculating power:
-\lang english
-
 \begin_inset listings
 inline false
 status open
@@ -1755,6 +1752,487 @@ power.t.test(power=0.8, delta=2/4, sd=1, type="one.sample", alt="one.sided")$n
 \end_inset
 
 
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Multiple testing
+\end_layout
+
+\begin_layout Itemize
+Key ideas:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Hypothesis testing and significance analysis are commonly overuse.
+\end_layout
+
+\begin_layout Itemize
+Correcting for multiple testing avoids false positives or discoveries.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: do two tests for p-values on the same experiment but only report
+ the smallest.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Two key components:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Error measure
+\end_layout
+
+\begin_layout Itemize
+Correction
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Main reason for multiple testing: lots of data!
+\end_layout
+
+\begin_layout Itemize
+Why correct for multiple tests?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A p-value of 0.05 doesn't mean much if you did 20 different tests!
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Types of errors
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose you are testing a hypothesis that a parameter 
+\begin_inset Formula $\beta$
+\end_inset
+
+ equals zero versus the alternative (not equal to zero).
+\end_layout
+
+\begin_layout Itemize
+The possible outcomes are:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\beta=0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\beta\neq0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Hypotheses
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Claim 
+\begin_inset Formula $\beta=0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+U
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+T
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $m-R$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Claim 
+\begin_inset Formula $\beta\neq0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+V
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+S
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $R$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Claims
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $m_{0}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $m-m_{0}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $m$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Type I error (false positive, V): say that the parameter is not equal to
+ zero when it really is (false alarm rate).
+\end_layout
+
+\begin_layout Itemize
+Type II error (false negative, T): say that the parameter is zero when it
+ isn't (false dismissal rate).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Error rates:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+False positive rate: the rate at which false results (
+\begin_inset Formula $\beta=0$
+\end_inset
+
+) are called significant.
+ 
+\begin_inset Formula $E\left[\frac{V}{m_{0}}\right]$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is closely related to the type I error rate.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Family-wise error rate (FWER): probability of at least one false positive.
+ 
+\begin_inset Formula $Pr\left(V\geq1\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+False discovery rate (FDR): the rate at which claims of significance are
+ false.
+ 
+\begin_inset Formula $E\left[\frac{V}{R}\right]$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Controlling the false positive rate
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If p-values are correctly calculated, calling all 
+\begin_inset Formula $P<\alpha$
+\end_inset
+
+ significant will control the false positive rate at level 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ on average.
+\end_layout
+
+\begin_layout Itemize
+Problem: suppose that you perform 10000 tests and 
+\begin_inset Formula $\beta=0$
+\end_inset
+
+ for all of them.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If you call 
+\begin_inset Formula $P<0.05$
+\end_inset
+
+ significant, the expected number of false positives is 500.
+\end_layout
+
+\begin_layout Itemize
+How do we avoid so many false positives?
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Controlling the family-wise error rate
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The Bonferroni correction is the oldest multiple testing correction.
+\end_layout
+
+\begin_layout Itemize
+Basic idea:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose you do 
+\begin_inset Formula $m$
+\end_inset
+
+ tests.
+\end_layout
+
+\begin_layout Itemize
+You want to control FWER at level 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ such that 
+\begin_inset Formula $Pr\left(V\geq1\right)<\alpha$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Calculate p-values normally.
+\end_layout
+
+\begin_layout Itemize
+Set 
+\begin_inset Formula $\alpha_{FWER}=\alpha/m$
+\end_inset
+
+ and call all p-values less than 
+\begin_inset Formula $\alpha_{FWER}$
+\end_inset
+
+ significant.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Pros: easy to calculate, conservative.
+\end_layout
+
+\begin_layout Itemize
+Cons: may be very conservative!
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Controlling the false discovery rate
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is the most popular correction when performing lots of tests.
+\end_layout
+
+\begin_layout Itemize
+Basic idea:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose you do 
+\begin_inset Formula $m$
+\end_inset
+
+ tests.
+\end_layout
+
+\begin_layout Itemize
+You want to control FDR at level 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ so 
+\begin_inset Formula $E\left[\frac{V}{R}\right]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Calculate p-values normally.
+\end_layout
+
+\begin_layout Itemize
+Order the p-values from smallest to largest.
+\end_layout
+
+\begin_layout Itemize
+Call any 
+\begin_inset Formula $p_{i}\leq\alpha\frac{i}{m}$
+\end_inset
+
+ significant.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Pros: easy to calculate, less conservative.
+\end_layout
+
+\begin_layout Itemize
+Cons: allows for more false positives, may behave strangely under dependence.
 \end_layout
 
 \end_deeper
