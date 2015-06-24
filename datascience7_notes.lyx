@@ -3114,5 +3114,417 @@ anova(fit1, fit3, fit5) ## creates a series of likelihood ratio tests.
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Generalized linear models
+\end_layout
+
+\begin_layout Itemize
+Linear models are one of the most useful applied statistical techniques,
+ but they do have limitations.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Additive response models don't make much sense if the response is discrete
+ or strictly positive.
+\end_layout
+
+\begin_layout Itemize
+Additive error models often don't make sense.
+ Example: if the outcome has to be positive.
+\end_layout
+
+\begin_layout Itemize
+Transformations are often hard to interpret.
+\end_layout
+
+\begin_layout Itemize
+There is value in modeling the data on the scale with which it was collected.
+\end_layout
+
+\begin_layout Itemize
+Particularly interpretable transformations, specifically natural logarithms,
+ aren't applicable for negative or zero values.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Generalized linear models (GLMs) involve three components:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+An exponential family model for the response.
+\end_layout
+
+\begin_layout Itemize
+A systematic component via a linear predictor.
+\end_layout
+
+\begin_layout Itemize
+A link function that connects the means of the response to the linear predictor.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assume that 
+\begin_inset Formula $Y_{i}\sim N\left(\mu_{i},\sigma^{2}\right)$
+\end_inset
+
+ (the Gaussian distribution is an exponential family distribution).
+\end_layout
+
+\begin_layout Itemize
+Define the linear predictor to be 
+\begin_inset Formula $\eta_{i}=\sum_{k=1}^{p}X_{ik}\beta_{k}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The link function is 
+\begin_inset Formula $g\left(\mu\right)=\eta$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For linear models, 
+\begin_inset Formula $g\left(\mu\right)=\mu$
+\end_inset
+
+ such that 
+\begin_inset Formula $\mu_{i}=\eta_{i}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+This yields the same likelihood model as our additive error Gausisan linear
+ model 
+\begin_inset Formula $Y_{i}=\sum_{k=1}^{p}X_{ik}\beta_{k}+\epsilon_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+As usual, 
+\begin_inset Formula $\epsilon_{i}\sim N\left(0,\sigma^{2}\right)$
+\end_inset
+
+ and are assumed to be IID.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Example: logistic regression.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assume that 
+\begin_inset Formula $Y_{i}\sim Bernoulli\left(\mu_{i}\right)$
+\end_inset
+
+ such that 
+\begin_inset Formula $E\left[Y_{i}\right]=\mu_{i}$
+\end_inset
+
+ where 
+\begin_inset Formula $0\leq\mu_{i}\leq1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Linear predictor: 
+\begin_inset Formula $\eta_{i}=\sum_{k=1}^{p}X_{ik}\beta_{k}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Link function: 
+\begin_inset Formula $g\left(\mu\right)=\eta=\log\left(\frac{\mu}{1-\mu}\right)$
+\end_inset
+
+ is the natural log of the odds, referred to as the logit.
+\end_layout
+
+\begin_layout Itemize
+Note that we an invert the logit function as 
+\begin_inset Formula $\mu_{i}=\frac{\exp\left(\eta_{i}\right)}{1+\exp\left(\eta_{i}\right)}$
+\end_inset
+
+ and 
+\begin_inset Formula $1-\mu_{i}=\frac{1}{1+\exp\left(\eta_{i}\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Thus, the likelihood is 
+\begin_inset Formula $\prod_{i=1}^{n}\mu_{i}^{y_{i}}\left(1-\mu_{i}\right)^{1-y_{i}}=\exp\left(\sum_{i=1}^{n}y_{i}\eta_{i}\right)\prod_{i=1}^{n}\left(1+\eta_{i}\right)^{-1}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: Poisson regression.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assume that 
+\begin_inset Formula $Y_{i}\sim Poisson\left(\mu_{i}\right)$
+\end_inset
+
+ such that 
+\begin_inset Formula $E\left[Y_{i}\right]=\mu_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Linear predictor: 
+\begin_inset Formula $\eta_{i}=\sum_{k=1}^{p}X_{ik}\beta_{k}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Link function: 
+\begin_inset Formula $g\left(\mu\right)=\eta=\log\left(\mu\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Recall that 
+\begin_inset Formula $e^{x}$
+\end_inset
+
+ is the inverse of 
+\begin_inset Formula $\log\left(x\right)$
+\end_inset
+
+ so that 
+\begin_inset Formula $\mu_{i}=e^{\eta_{i}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Thus, the likelihood is 
+\begin_inset Formula $\prod_{i=1}^{n}\left(y_{i}!\right)^{-1}\mu_{i}^{y_{i}}e^{-\mu_{i}}\propto\exp\left(\sum_{i=1}^{n}y_{i}\eta_{i}-\sum_{i=1}^{n}\mu_{i}\right)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+In each case, the only way in which the likelihood depends on the data is
+ through 
+\begin_inset Formula $\sum_{i=1}^{n}y_{i}\eta_{i}=\sum_{i=1}^{n}y_{i}\sum_{k=1}^{p}X_{ik}\beta_{k}=\sum_{k=1}^{p}\beta_{k}\sum_{i=1}^{n}X_{ik}y_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Thus, we don't really need the full data, only 
+\begin_inset Formula $\sum_{i=1}^{n}X_{ik}y_{i}$
+\end_inset
+
+.
+ This simplification is a consequence of choosing so-called 
+\begin_inset Quotes eld
+\end_inset
+
+canonical
+\begin_inset Quotes erd
+\end_inset
+
+ link functions.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+All models achieve their maximum at the root of the so-called normal equations:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $0=\sum_{i=1}^{n}\frac{\left(Y_{i}-\mu_{i}\right)}{Var\left(Y_{i}\right)}W_{i}$
+\end_inset
+
+, where 
+\begin_inset Formula $W_{i}$
+\end_inset
+
+ are the derivatives of the inverse of the link function.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Variances
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For the linear model: 
+\begin_inset Formula $Var\left(Y_{i}\right)=\sigma^{2}$
+\end_inset
+
+ is constant.
+\end_layout
+
+\begin_layout Itemize
+For the binomial case: 
+\begin_inset Formula $Var\left(Y_{i}\right)=\mu_{i}\left(1-\mu\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+For the Poisson case: 
+\begin_inset Formula $Var\left(Y_{i}\right)=\mu_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+In the latter cases, it is often relevant to have a more flexible variance
+ model, even if it doesn't correspond to an actual likelhiood.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $0=\sum_{i=1}^{n}\frac{\left(Y_{i}-\mu_{i}\right)}{\phi\mu_{i}\left(1-\mu_{i}\right)}W_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $0=\sum_{i=1}^{n}\frac{\left(Y_{i}-\mu_{i}\right)}{\phi\mu_{i}}W_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+These are called 'quasi-likelihood' normal equations.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\phi$
+\end_inset
+
+ is an extra parameter used to calculate the variance (doesn't depend on
+ 
+\begin_inset Formula $i$
+\end_inset
+
+).
+ It can help when there are complicated variance restrictions.
+\end_layout
+
+\begin_layout Itemize
+The purpose is to relax the very strict assumptions about the relationships
+ between the means and variances in the models.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Odds and ends
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The normal equations have to be solved iteratively.
+ Results are 
+\begin_inset Formula $\hat{\beta}_{k}$
+\end_inset
+
+ and 
+\begin_inset Formula $\phi$
+\end_inset
+
+ (if included).
+\end_layout
+
+\begin_layout Itemize
+Predicted linear predictor responses can be obtained as 
+\begin_inset Formula $\hat{\eta}=\sum_{k=1}^{p}X_{k}\hat{\beta}_{k}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Predicted mean responses are given by 
+\begin_inset Formula $\hat{\mu}=g^{-1}\left(\hat{\eta}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Coefficients are interpreted as 
+\begin_inset Formula $g\left(E\left[Y|X_{k}=x_{k}+1,X_{\sim k}=x_{\sim k}\right]\right)-g\left(E\left[Y|X_{k}=x_{k},X_{\sim k}=x_{\sim k}\right]\right)=\beta_{k}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Difference in a one-unit increase in a particular coefficient, holding the
+ other constant.
+\end_layout
+
+\begin_layout Itemize
+Done on the link function scale.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Variations on the Newton-Raphson method are used to solve iteratively.
+\end_layout
+
+\begin_layout Itemize
+Asymptotics are used for inference usually.
+\end_layout
+
+\begin_layout Itemize
+Many of the ideas from linear models can be brough over to GLMs.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
