@@ -3077,7 +3077,7 @@ Suggested approach: given a coefficient of interest, use covariate adjustment
 
 \end_deeper
 \begin_layout Itemize
-How to do nested model testing in R
+How to do nested model testing in R:
 \end_layout
 
 \begin_deeper
@@ -3522,7 +3522,370 @@ Asymptotics are used for inference usually.
 \end_layout
 
 \begin_layout Itemize
-Many of the ideas from linear models can be brough over to GLMs.
+Many of the ideas from linear models can be brought over to GLMs.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+More on odds
+\end_layout
+
+\begin_layout Itemize
+Using ANOVA: 
+\family typewriter
+anova(logRegRavens, test=
+\begin_inset Quotes erd
+\end_inset
+
+Chisq
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Want to do this with nested models.
+\end_layout
+
+\begin_layout Itemize
+Deviance: measure of model fit compared to the previous model.
+\end_layout
+
+\begin_layout Itemize
+To compare deviances, take a smaller model and subtract the larger model
+ from it.
+\end_layout
+
+\begin_layout Itemize
+The deviance residuals can be compared to a chi-squared distribution with
+ degrees of freedom equal to that of the difference in degrees of freedom
+ between the two models.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Interpreting odds ratios
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+They are NOT probabilities!
+\end_layout
+
+\begin_layout Itemize
+Odds ratio of 1 = log odds ratio of 0 = no difference in odds.
+\end_layout
+
+\begin_layout Itemize
+Odds ratio < 0.5 or > 2 commonly called a 
+\begin_inset Quotes eld
+\end_inset
+
+moderate effect.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Relative risk 
+\begin_inset Formula $\frac{Pr\left(W_{i}|S_{i}=10\right)}{Pr\left(W_{i}|S_{i}=0\right)}$
+\end_inset
+
+ is often easier to interpret but harder to estimate.
+\end_layout
+
+\begin_layout Itemize
+For small probabilities, RR 
+\begin_inset Formula $\approx$
+\end_inset
+
+ OR, but they are not the same!
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Poisson regression
+\end_layout
+
+\begin_layout Itemize
+Key ideas:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+May data take the form of counts: calls to a call center, number of flu
+ cases in an area, number of cars that cross a bridge, etc.
+\end_layout
+
+\begin_layout Itemize
+Data may also be in the form of rates: percent of children passing a test,
+ percent of hits to a website from a particular country, etc.
+\end_layout
+
+\begin_layout Itemize
+Linear regression with transformation is an option.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Uses of the Poisson distribution: counts and rates
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Examples: web traffic hits, incidence rates, contingency table data, approximati
+ng binomial probabilities with small 
+\begin_inset Formula $p$
+\end_inset
+
+ and large 
+\begin_inset Formula $n$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The Poisson mass function
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $P\left(X=x\right)=\frac{\left(t\lambda\right)^{x}e^{-t\lambda}}{x!}$
+\end_inset
+
+ for 
+\begin_inset Formula $x=0,1,2,...$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $E\left[X\right]=Var\left(X\right)=t\lambda$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The Poisson distribution tends to a normal distribution as 
+\begin_inset Formula $t\lambda$
+\end_inset
+
+ gets large.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: number of hits per day on a website
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can model as linear regression: 
+\begin_inset Formula $H_{i}=b_{0}+b_{1}D_{i}+e_{i}$
+\end_inset
+
+, 
+\family typewriter
+lm1 <- lm(visits ~ date)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $b_{0}$
+\end_inset
+
+: number of hits on Julian day 0.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b_{1}$
+\end_inset
+
+: increase in number of hits per day.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $H_{i}$
+\end_inset
+
+: number of hits.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $D_{i}$
+\end_inset
+
+: Julian day.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Taking the log of the outcome has a specific interpretation: 
+\begin_inset Formula $\log\left(H_{i}\right)=b_{0}+b_{1}D_{i}+e_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $b_{0}$
+\end_inset
+
+: log number of hits on Julian day 0.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b_{1}$
+\end_inset
+
+: increase in log number of hits per day.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Poisson/log-linear: 
+\begin_inset Formula $\log\left(E\left[H_{i}|D_{i},b_{0,}b_{1}\right]\right)=b_{0}+b_{1}D_{i}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Multiplicative differences: 
+\begin_inset Formula $E\left[H_{i}|D_{i},b_{0},b_{1}\right]=\exp\left(b_{0}+b_{1}D_{i}\right)=\exp\left(b_{0}\right)\exp\left(b_{1}D_{i}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $D_{i}$
+\end_inset
+
+ is increased by one unit, 
+\begin_inset Formula $E\left[H_{i}|D_{i},b_{0},b_{1}\right]$
+\end_inset
+
+ is multiplied by 
+\begin_inset Formula $\exp\left(b_{1}\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Exponentiating coefficients
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\exp\left(E\left[\log\left(Y\right)\right]\right)$
+\end_inset
+
+ is the geometric mean of 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+When you take the natural log of outcomes and fit a regression model, your
+ exponentiated coefficients estimate things about geometric means.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $e^{\beta_{0}}$
+\end_inset
+
+ estimates the geometric mean hits on day 0.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $e^{\beta_{1}}$
+\end_inset
+
+ estimates relative increase or decrease in geometric mean hits per day.
+\end_layout
+
+\begin_layout Itemize
+There is a problem with logs when you have zero counts, but you can add
+ a constant without affecting your results.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Poisson regression in R
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+glm1 <- glm(visits ~ julianDay, family="poisson")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plotting the fit
+\end_layout
+
+\begin_layout Plain Layout
+
+lines(julianDay, glm1$fitted)
+\end_layout
+
+\begin_layout Plain Layout
+
+## confidence intervals
+\end_layout
+
+\begin_layout Plain Layout
+
+confint(glm1)
+\end_layout
+
+\begin_layout Plain Layout
+
+## agnostic confidence intervals
+\end_layout
+
+\begin_layout Plain Layout
+
+confint.agnostic(glm1)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Modeling rates
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In 
+\family typewriter
+glm()
+\family default
+, use an offset like 
+\family typewriter
+offset=log(visits+1)
 \end_layout
 
 \end_deeper
