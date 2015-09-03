@@ -506,5 +506,342 @@ You can also try to balance by features, but this is tricky.
 
 \end_deeper
 \end_deeper
+\begin_layout Subsection*
+Types of errors
+\end_layout
+
+\begin_layout Itemize
+Positive = identified, negative = rejected.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+True positive (TP): correctly identified signal.
+\end_layout
+
+\begin_layout Itemize
+False positive (FP): incorrectly identified noise as signal.
+\end_layout
+
+\begin_layout Itemize
+True negative (TN): correctly rejected noise.
+\end_layout
+
+\begin_layout Itemize
+False negative (FN): incorrectly rejected signal as noise.
+\end_layout
+
+\begin_layout Itemize
+Sensitivity: Pr(positive test | sick person) = TP / (TP+FN)
+\end_layout
+
+\begin_layout Itemize
+Specificity: Pr(negative test | healthy person) = TN / (FP + TN)
+\end_layout
+
+\begin_layout Itemize
+Positive predictive value: Pr(sick person | positive test) = TP / (TP +
+ FP)
+\end_layout
+
+\begin_layout Itemize
+Negative predictive value: Pr(healthy person | negative test) = TN / (FN
+ + TN)
+\end_layout
+
+\begin_layout Itemize
+Accuracy: Pr(correct outcome) = (TP + TN) / (TP + FP + FN + TN)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+For continuous data, there are a few ways to handle this.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Mean squared error (MSE): 
+\begin_inset Formula $MSE=\frac{1}{n}\sum_{i=1}^{n}\left(Prediction_{i}-Truth_{i}\right)^{2}$
+\end_inset
+
+ or root mean square error (RMSE): 
+\begin_inset Formula $RMSE=\sqrt{MSE}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Continuous data, sensitive to outliers (outliers may raise the mean significantl
+y).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Median absolute deviation.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Continuous data, often more robust.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Sensitivity: if you want few positives called negatives.
+\end_layout
+
+\begin_layout Itemize
+Specificity: if you want few negatives called positives.
+\end_layout
+
+\begin_layout Itemize
+Accuracy: weights false positives and negatives equally.
+\end_layout
+
+\begin_layout Itemize
+Concordance.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Receiver operating characteristic (ROC) curves
+\end_layout
+
+\begin_layout Itemize
+Why a curve?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In binary classification you are predicting one of two categories.
+\end_layout
+
+\begin_layout Itemize
+But your predictions are ofen quantitative: probability of this or that.
+\end_layout
+
+\begin_layout Itemize
+The 
+\emph on
+cutoff
+\emph default
+ you choose gives different results.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+ROC curves:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+X-axis: 1 - specificity, or probability of being a false positive.
+\end_layout
+
+\begin_layout Itemize
+Y-axis: probability of being a true positive.
+\end_layout
+
+\begin_layout Itemize
+To compare different curves, you can calculate the total area under each
+ curve (more area generally means a better predictor).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Area under curve = 0.5 is equivalent to random guessing.
+\end_layout
+
+\begin_layout Itemize
+Area under curve = 1 is a perfect classifier.
+\end_layout
+
+\begin_layout Itemize
+In general, if your area under the curve is more than 0.8, that is considered
+ 
+\begin_inset Quotes eld
+\end_inset
+
+good.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+Cross-validation
+\end_layout
+
+\begin_layout Itemize
+Key ideas:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Accuracy on the training set (resubstitution accuracy) is optimistic.
+\end_layout
+
+\begin_layout Itemize
+A better estimate comes from an independent dataset (test set accuracy).
+\end_layout
+
+\begin_layout Itemize
+But we can't use the test set when building the model or it becomes part
+ of the training set.
+\end_layout
+
+\begin_layout Itemize
+So we estimate the test set accuracy with the training set.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cross-validation approach:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use the training set.
+\end_layout
+
+\begin_layout Itemize
+Split it into training/test sets.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use random subsampling to do this.
+\end_layout
+
+\begin_layout Itemize
+Can also do 
+\begin_inset Quotes eld
+\end_inset
+
+K-fold
+\begin_inset Quotes erd
+\end_inset
+
+ cross-validation.
+\end_layout
+
+\begin_layout Itemize
+Another option: 
+\begin_inset Quotes eld
+\end_inset
+
+leave one out
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Use only one sample for test dataset and the rest for training; repeat
+ with all samples.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Build a model on the training set.
+\end_layout
+
+\begin_layout Itemize
+Evaluate on the test set.
+\end_layout
+
+\begin_layout Itemize
+Repeat and average the estimated errors.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Useful for:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Picking variables to include in the model.
+\end_layout
+
+\begin_layout Itemize
+Picking the type of prediction function to use.
+\end_layout
+
+\begin_layout Itemize
+Picking the parameters in the prediction function.
+\end_layout
+
+\begin_layout Itemize
+Comparing different predictors.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Considerations:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For time-series data, you must use chunks of data.
+\end_layout
+
+\begin_layout Itemize
+For K-fold cross-validation.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Larger K: less bias, more variance.
+\end_layout
+
+\begin_layout Itemize
+Smaller K: more bias, less variance.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Random sampling must be done without replacement.
+\end_layout
+
+\begin_layout Itemize
+Random sampling with replacement is called 
+\emph on
+bootstrapping.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Underestimates the error.
+\end_layout
+
+\begin_layout Itemize
+Can be corrected, but it's complicated (0.632 Bootstrap).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+If you cross-validate to pick predictors, you must estimate errors on independen
+t data.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+What data should you use?
+\end_layout
+
+\begin_layout Itemize
+Key idea: to predict X, use data as closely related to X as you possibly
+ can.
+ (example: Moneyball; use player performance data to predict player performance)
+\end_layout
+
+\begin_layout Itemize
+Using unrelated data is the most common mistake!
+\end_layout
+
 \end_body
 \end_document
