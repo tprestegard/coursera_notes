@@ -819,7 +819,7 @@ Underestimates the error.
 \end_layout
 
 \begin_layout Itemize
-Can be corrected, but it's complicated (0.632 Bootstrap).
+Can be corrected, but it's complicated (see 0.632 Bootstrap rule).
 \end_layout
 
 \end_deeper
@@ -843,5 +843,539 @@ Key idea: to predict X, use data as closely related to X as you possibly
 Using unrelated data is the most common mistake!
 \end_layout
 
+\begin_layout Subsection*
+The caret package
+\end_layout
+
+\begin_layout Itemize
+Short for 
+\begin_inset Quotes eld
+\end_inset
+
+Classification And REgression Training)
+\end_layout
+
+\begin_layout Itemize
+Streamlines the process for creating predictive models.
+\end_layout
+
+\begin_layout Itemize
+Functionality
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Some pre-processing/cleaning: 
+\family typewriter
+preProcess
+\end_layout
+
+\begin_layout Itemize
+Data splitting: 
+\family typewriter
+createDataPartition, createResample, createTimeSlices
+\end_layout
+
+\begin_layout Itemize
+Training/testing functions: 
+\family typewriter
+train, predict
+\end_layout
+
+\begin_layout Itemize
+Model comparison: 
+\family typewriter
+confusionMatrix
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Machine learning algorithms in R
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Linear discriminant analysis
+\end_layout
+
+\begin_layout Itemize
+Regression
+\end_layout
+
+\begin_layout Itemize
+Naive Bayes
+\end_layout
+
+\begin_layout Itemize
+Support vector machines
+\end_layout
+
+\begin_layout Itemize
+Classification and regression trees
+\end_layout
+
+\begin_layout Itemize
+Random forests
+\end_layout
+
+\begin_layout Itemize
+Boosting
+\end_layout
+
+\begin_layout Itemize
+Etc.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(caret); library(kernlab); data(spam)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Divide data into training and test sets.
+\end_layout
+
+\begin_layout Plain Layout
+
+## Split on data type, 75% training, 25% testing.
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=spam$type, p=0.75, list=FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+training <- spam[inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+testing <- spam[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Fit a model.
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(32343)
+\end_layout
+
+\begin_layout Plain Layout
+
+modelFit <- train(type ~., data=training, method="glm")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Look at final model.
+\end_layout
+
+\begin_layout Plain Layout
+
+modelFit$finalModel
+\end_layout
+
+\begin_layout Plain Layout
+
+## Test on new samples.
+\end_layout
+
+\begin_layout Plain Layout
+
+predictions <- predict(modelFit, newdata=testing)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Example: confusion matrix.
+ Useful for getting several accuracy measures.
+\end_layout
+
+\begin_layout Plain Layout
+
+confusionMatrix(predictions, testing$type)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Data slicing
+\end_layout
+
+\begin_layout Itemize
+Example: K-fold
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+set.seed(32323)
+\end_layout
+
+\begin_layout Plain Layout
+
+folds <- createFolds(y=spam$type, k=10, list=TRUE, returnTrain=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+sapply(folds, length)
+\end_layout
+
+\begin_layout Plain Layout
+
+## returnTrain=TRUE returns the training and testing sets,
+\end_layout
+
+\begin_layout Plain Layout
+
+## returnTRAIN=FALSE returns only the testing set.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Example: resampling (with replacement)
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+set.seed(32323)
+\end_layout
+
+\begin_layout Plain Layout
+
+folds <- createResample(y=spam$type, times=10, list=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+sapply(folds, length)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Example: time slices
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+set.seed(32323)
+\end_layout
+
+\begin_layout Plain Layout
+
+tme <- 1:1000
+\end_layout
+
+\begin_layout Plain Layout
+
+folds <- createTimeSlices(y=tme, initialWindow=20, horizon=10)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Training options
+\end_layout
+
+\begin_layout Itemize
+Use 
+\family typewriter
+args(train.default)
+\family default
+ to see all available options.
+\end_layout
+
+\begin_layout Itemize
+Use 
+\family typewriter
+args(trainControl)
+\family default
+ to see other options for training setup.
+\end_layout
+
+\begin_layout Itemize
+Continuous metric options:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+RMSE: root mean squared error.
+\end_layout
+
+\begin_layout Itemize
+RSquared: 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ from regression models.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Categorical outcomes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Accuracy: fraction correct.
+\end_layout
+
+\begin_layout Itemize
+Kappa: a measure of concordance.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\family typewriter
+trainControl
+\family default
+ resampling
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Method:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+boot: bootstrapping.
+\end_layout
+
+\begin_layout Itemize
+boot632: bootstrapping with adjustment.
+\end_layout
+
+\begin_layout Itemize
+cv: cross-validation.
+\end_layout
+
+\begin_layout Itemize
+repeatedcv: repeated cross-validation.
+\end_layout
+
+\begin_layout Itemize
+LOOCV: leave one out cross-validation.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Number:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For boot/cross-validation.
+\end_layout
+
+\begin_layout Itemize
+Number of subsamples to take.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Repeats:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Number of times to repeate subsampling.
+\end_layout
+
+\begin_layout Itemize
+If big, this can slow things down.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Setting the seed:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+It is often useful to set an overall seed.
+\end_layout
+
+\begin_layout Itemize
+You can also set a seed for each resample.
+\end_layout
+
+\begin_layout Itemize
+Seeding each resample is useful for parallel fits.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Plotting predictors
+\end_layout
+
+\begin_layout Itemize
+For this example, we will use the wages data (ISLR package).
+\end_layout
+
+\begin_layout Itemize
+Feature plot (from caret package): 
+\family typewriter
+featurePlot(x=training[,c(
+\begin_inset Quotes eld
+\end_inset
+
+age
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+education
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+jobclass
+\begin_inset Quotes erd
+\end_inset
+
+)], y=training$wage, plot=
+\begin_inset Quotes erd
+\end_inset
+
+pairs
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Can use ggplot to plot by category (using color), plotting regression smoothers,
+ etc.
+\end_layout
+
+\begin_layout Itemize
+Can use 
+\family typewriter
+cut2
+\family default
+ (from Hmisc package) to make factors:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+cutWage <- cut2(training$wage, g=3) ## g=3 implies 3 groups
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Another useful plot: box plots with points overlaid.
+\end_layout
+
+\begin_layout Itemize
+Tables are useful.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+prop.table()
+\family default
+ gives the proportion in each category.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Density plots are useful for continuous predictors.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: 
+\family typewriter
+qplot(wage, color=education, data=training, geom=
+\begin_inset Quotes erd
+\end_inset
+
+density
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Notes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Make your plots only with the training set!
+\end_layout
+
+\begin_layout Itemize
+Things you should be looking for:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Imbalance in outcomes/predictors.
+\end_layout
+
+\begin_layout Itemize
+Outliers.
+\end_layout
+
+\begin_layout Itemize
+Groups of points not explained by any of the predictors.
+\end_layout
+
+\begin_layout Itemize
+Skewed variables.
+\end_layout
+
+\end_deeper
+\end_deeper
 \end_body
 \end_document
