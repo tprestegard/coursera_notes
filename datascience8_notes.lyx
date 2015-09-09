@@ -1377,5 +1377,167 @@ Skewed variables.
 
 \end_deeper
 \end_deeper
+\begin_layout Subsection*
+Pre-processing
+\end_layout
+
+\begin_layout Itemize
+Why preprocess?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sometimes certain predictors may have high variances, weird skews, etc.
+\end_layout
+
+\begin_layout Itemize
+These features can cause problems for machine learning algorithms.
+\end_layout
+
+\begin_layout Itemize
+You want to simplify things; the algorithm will likely produce better results
+ this way.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Standardizing: 
+\family typewriter
+(x - mean(x))/sd(x)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Produces variables with mean 0 and standard deviation 1.
+\end_layout
+
+\begin_layout Itemize
+If we do this in the training, we have to do it to the test set, using the
+ mean and SD of the 
+\emph on
+training
+\emph default
+ set!
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+preProcess
+\family default
+ function: 
+\family typewriter
+preObj <- preProcess(training[,-58], method=c(
+\begin_inset Quotes eld
+\end_inset
+
+center
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+scale
+\begin_inset Quotes erd
+\end_inset
+
+))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can pass the 
+\family typewriter
+preProcess
+\family default
+ command directly to the 
+\family typewriter
+train()
+\family default
+ function:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+modelFit <- train(type ~., data=training, preProcess=c(
+\begin_inset Quotes eld
+\end_inset
+
+center
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Quotes erd
+\end_inset
+
+scale
+\begin_inset Quotes erd
+\end_inset
+
+), method=
+\begin_inset Quotes erd
+\end_inset
+
+glm
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Box-Cox transforms: a set of transformations which take continuous data
+ and try to make them look like normal data.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Uses MLE methods.
+\end_layout
+
+\begin_layout Itemize
+Can be used with 
+\family typewriter
+preProcess()
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Imputing data: prediction algorithms will likely fail if there is missing
+ data.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+preObj <- preProcess(training[,-58], method=
+\begin_inset Quotes erd
+\end_inset
+
+knnImpute
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Remember: the training and test datasets must be processed in the same way!
+\end_layout
+
+\begin_layout Itemize
+Also: be careful when transforming factor variables!
+\end_layout
+
 \end_body
 \end_document
