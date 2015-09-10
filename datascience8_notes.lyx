@@ -1539,5 +1539,269 @@ Remember: the training and test datasets must be processed in the same way!
 Also: be careful when transforming factor variables!
 \end_layout
 
+\begin_layout Subsection*
+Covariate creation
+\end_layout
+
+\begin_layout Itemize
+Covariates: also known as predictors or features.
+\end_layout
+
+\begin_layout Itemize
+Two levels of covariate creation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Level 1: from raw data to covariate.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Depends heavily on the application.
+\end_layout
+
+\begin_layout Itemize
+The balancing act is summarization vs.
+ information loss.
+\end_layout
+
+\begin_layout Itemize
+Examples:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Text files: frequency of words, phrases, capital letters, etc.
+\end_layout
+
+\begin_layout Itemize
+Images: edges, corners, blobs, ridges.
+\end_layout
+
+\begin_layout Itemize
+Webpages: number and type of images, position of elements, colors, videos.
+\end_layout
+
+\begin_layout Itemize
+People: height, weight, hair color, gender, country of origin.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The more knowledge of the system you have, the better job you will do.
+\end_layout
+
+\begin_layout Itemize
+When in doubt, err on the side of more features.
+\end_layout
+
+\begin_layout Itemize
+Can be automated, but use caution!
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Level 2: transforming tidy covariates.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+More necessary for some methods (regression, svms, etc.) than for others
+ (classification trees).
+\end_layout
+
+\begin_layout Itemize
+Should be done only on the training set!
+\end_layout
+
+\begin_layout Itemize
+The best approach is through exploratory analysis (plotting/tables).
+\end_layout
+
+\begin_layout Itemize
+New covariates should be added to data frames.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Common covariates to add/dummy variables:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Basic idea: convert factor variables to indicator variables.
+ (quantitative information easier for algorithms to use than qualitative)
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+dummies <- dummyVar(wage ~ jobclass, data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+head(predict(dummies, newdata=training)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Removing zero covariates: features with no variability (same for all cases)
+ are not useful.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+nsv <- nearZeroVar(training, saveMetrics=TRUE)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Spline basis - instead of fitting a linear prediction function, you can
+ use a 
+\begin_inset Quotes eld
+\end_inset
+
+curvy
+\begin_inset Quotes erd
+\end_inset
+
+ line.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(splines)
+\end_layout
+
+\begin_layout Plain Layout
+
+bsBasis <- bs(trainingage, df=3) ## degree 3 polynomial
+\end_layout
+
+\begin_layout Plain Layout
+
+# Add model
+\end_layout
+
+\begin_layout Plain Layout
+
+lm1 <- lm(wage ~ bsBasis, data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(training$age, training$wage, pch=19, cex=0.5)
+\end_layout
+
+\begin_layout Plain Layout
+
+points(training$age, predict(lm1, newdata=training), col="red", pch=19,
+ cex=0.5)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Apply to the test dataset
+\end_layout
+
+\begin_layout Plain Layout
+
+predict(bsBasis, age=testing$age)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Notes and further reading
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Level 1 feature creation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Science is key.
+ Google 
+\begin_inset Quotes eld
+\end_inset
+
+feature extraction for [data type].
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Err on overcreation of features.
+\end_layout
+
+\begin_layout Itemize
+In some applications (images, voices), automated feature creation is possible/ne
+cessary.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Level 2 feature creation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The function 
+\family typewriter
+preProcess
+\family default
+ in caret will handle some preprocessing.
+\end_layout
+
+\begin_layout Itemize
+Create new covariates if you think they will improve the fit.
+\end_layout
+
+\begin_layout Itemize
+Use exploratory analysis on the training set for creating them.
+\end_layout
+
+\begin_layout Itemize
+Be careful about overfitting.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+If you want to fite spine models, use the 
+\family typewriter
+gam
+\family default
+ method in the caret package, which allows smoothing of multiple variables.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example
+\end_layout
+
 \end_body
 \end_document
