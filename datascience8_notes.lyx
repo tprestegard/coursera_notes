@@ -1791,7 +1791,7 @@ Be careful about overfitting.
 
 \end_deeper
 \begin_layout Itemize
-If you want to fite spine models, use the 
+If you want to fit spline models, use the 
 \family typewriter
 gam
 \family default
@@ -1799,8 +1799,478 @@ gam
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Preprocessing with Principal Components Analysis (PCA)
+\end_layout
+
 \begin_layout Itemize
-Example
+Useful when many predictors are correlated.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(caret); library(kernlab); data(spam)
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=spam$type, p=0.75, list=FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+training <- spam[inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+testing <- spam[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Calculate correlation between variables.
+\end_layout
+
+\begin_layout Plain Layout
+
+M <- abs(cor(training[,-58]))
+\end_layout
+
+\begin_layout Plain Layout
+
+diag(M) <- 0 ## Ignore self-correlations.
+\end_layout
+
+\begin_layout Plain Layout
+
+which(M > 0.8, arr.ind=TRUE)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Basic PCA idea:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We might not need every predictor.
+\end_layout
+
+\begin_layout Itemize
+A weighted combination of correlated predictors might be better.
+\end_layout
+
+\begin_layout Itemize
+We should pick this combination to capture the 
+\begin_inset Quotes eld
+\end_inset
+
+most information
+\begin_inset Quotes erd
+\end_inset
+
+ possible.
+\end_layout
+
+\begin_layout Itemize
+Benefits: reduced number of predictors, reduced noise (due to averaging).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How to combine?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+You could rotate (i.e., add / subtract two variables).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Related problems:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+You have multivariate variables 
+\begin_inset Formula $X_{1},...,X_{n}$
+\end_inset
+
+ such that 
+\begin_inset Formula $X_{1}=\left(X_{11},...,X_{1m}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Find a new set of multivariate variables that are uncorrelated and explain
+ as much variance as possible.
+\end_layout
+
+\begin_layout Itemize
+If you put all the variables together in one matrix, find the best matrix
+ created with fewer variables (lower rank) that explains the original ndata.
+\end_layout
+
+\begin_layout Itemize
+The first goal is statistical and the second goal is data compression.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Related solutions:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Singular value decomposition (SVD):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If 
+\begin_inset Formula $X$
+\end_inset
+
+ is a matrix with each variable in a column and each observation in a row,
+ then the SVD is a matrix decomposition: 
+\begin_inset Formula $X=UDV^{T}$
+\end_inset
+
+, where the columns of 
+\bar under
+
+\begin_inset Formula $U$
+\end_inset
+
+
+\bar default
+ are orthogonal (left singular vectors), the columns of 
+\begin_inset Formula $V$
+\end_inset
+
+ are orthogonal (right singular vectors), and 
+\begin_inset Formula $D$
+\end_inset
+
+ is a diagonal matrix (singular values).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Principal components analysis (PCA):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The principal components are equal to the right singular values if you first
+ scale (subtract the mean, divide by the standard deviation) the variables.
+\end_layout
+
+\begin_layout Itemize
+Example:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+smallSpam <- spam[,c(34,32)]
+\end_layout
+
+\begin_layout Plain Layout
+
+prComp <- prcomp(smallSpam)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(prComp$x[,1],prComp$x[,2])
+\end_layout
+
+\begin_layout Plain Layout
+
+## Look at rotation matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+prComp$rotation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+PCA with caret package:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+preProc <- preProcess(log10(spam[,-58]+1), method="pca", pcaComp=2)
+\end_layout
+
+\begin_layout Plain Layout
+
+trainPC <- predict(preProc, log10(spam[,-58]+1))
+\end_layout
+
+\begin_layout Plain Layout
+
+modelFit <- train(training$type ~ ., method="glm", data=trainPC)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Most useful for linear-type models.
+\end_layout
+
+\begin_layout Itemize
+Can make it harder to interpret predictors.
+\end_layout
+
+\begin_layout Itemize
+Watch for outliers!
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Transform first (with logs/Box-Cox).
+\end_layout
+
+\begin_layout Itemize
+Plot predictors to identify problems.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Predicting with regression
+\end_layout
+
+\begin_layout Itemize
+Key ideas:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Fit a simple linear regression model.
+\end_layout
+
+\begin_layout Itemize
+Plug in new covariates and multiply by the coefficients.
+\end_layout
+
+\begin_layout Itemize
+Useful when the linear model is (nearly) correct.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Pros: easy to implement and interpret.
+\end_layout
+
+\begin_layout Itemize
+Cons: often poor performance in nonlinear settings.
+\end_layout
+
+\begin_layout Itemize
+Example: Old Faithful eruptions
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(caret); data(faithful); set.seed(333)
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=faithful$waiting, p=0.5, list=FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+trainFaith <- faithful[inTrain,]; testFaith <- faithful[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Fit a linear model
+\end_layout
+
+\begin_layout Plain Layout
+
+lm1 <- lm(eruption ~ waiting, data=trainFaith
+\end_layout
+
+\begin_layout Plain Layout
+
+## plot
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(trainFaith$waiting, trainFaith$eruptions, pch=19, col="blue", xlab="Waiting
+", ylab="Duration")
+\end_layout
+
+\begin_layout Plain Layout
+
+lines(trainFaith$waiting, lm1$fitted, lwd=3)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Predict a new value
+\end_layout
+
+\begin_layout Plain Layout
+
+coef(lm1)[1] + coef(lm1)[2]*80
+\end_layout
+
+\begin_layout Plain Layout
+
+## Can do this as well
+\end_layout
+
+\begin_layout Plain Layout
+
+newdata <- data.frame(waiting = 80)
+\end_layout
+
+\begin_layout Plain Layout
+
+predict(lm1,newdata)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot predictions - training and test
+\end_layout
+
+\begin_layout Plain Layout
+
+par(mfrow=c(1,2))
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(trainFaith$waiting,trainFaith$eruptions,pch=19,col="blue",xlab="Waiting",yl
+ab="Duration")
+\end_layout
+
+\begin_layout Plain Layout
+
+lines(trainFaith$waiting,predict(lm1),lwd=3)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(testFaith$waiting,testFaith$eruptions,pch=19,col="blue",xlab="Waiting",ylab
+="Duration")
+\end_layout
+
+\begin_layout Plain Layout
+
+lines(testFaith$waiting,predict(lm1,newdata=testFaith),lwd=3)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Get training set/test set errors
+\end_layout
+
+\begin_layout Plain Layout
+
+## RMSE
+\end_layout
+
+\begin_layout Plain Layout
+
+sqrt(sum((lm1$fitted-trainFaith$eruptions)^2))
+\end_layout
+
+\begin_layout Plain Layout
+
+sqrt(sum((predict(lm1,newdata=testFaith)-testFaith$eruptions)^2))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Prediction intervals
+\end_layout
+
+\begin_layout Plain Layout
+
+pred1 <- predict(lm1,newdata=testFaith, interval="prediction")
+\end_layout
+
+\begin_layout Plain Layout
+
+ord <- order(testFaith$waiting)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(testFaith$waiting,testFaith$eruptions,pch=19,col="blue")
+\end_layout
+
+\begin_layout Plain Layout
+
+matlines(testFaith$waiting[ord],pred1[ord,],type="l",col=c(1,2,2),lty=c(1,1,1),l
+wd=3)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Same process with caret
+\end_layout
+
+\begin_layout Plain Layout
+
+modFit <- train(eruptions ~ waiting, data=trainFaith, method="lm")
+\end_layout
+
+\begin_layout Plain Layout
+
+summary(modFit$finalModel)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Regression models with multiple covariates can be included.
+\end_layout
+
+\begin_layout Itemize
+Often useful in combination with other models.
 \end_layout
 
 \end_body
