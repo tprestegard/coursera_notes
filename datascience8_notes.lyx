@@ -2273,5 +2273,168 @@ Regression models with multiple covariates can be included.
 Often useful in combination with other models.
 \end_layout
 
+\begin_layout Subsection*
+Predicting with regression - multiple covariates
+\end_layout
+
+\begin_layout Itemize
+Important to decide which predictors are most useful
+\end_layout
+
+\begin_layout Itemize
+Example: wage data
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(ISLR); library(ggplot2); library(caret);
+\end_layout
+
+\begin_layout Plain Layout
+
+data(Wage); Wage <- subset(Wage, select=c(logwage))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Get training/test sets
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=Wage$wage, p=0.7, list=FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+training <- Wage[inTrain,]; testing <- Wage[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Feature plot
+\end_layout
+
+\begin_layout Plain Layout
+
+featurePlot(x=training[,c("age","education","jobclass")], y=training$wage,
+ plot="pairs")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot age vs.
+ wage
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(age, wage, data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot age vs.
+ wage, color by jobclass
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(age, wage, color=jobclass, data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot age vs.
+ wage, color by education
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(age, wage, color=education, data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Fit a linear model with multiple variables
+\end_layout
+
+\begin_layout Plain Layout
+
+modFit <- train(wage ~ age + jobclass + education, method="lm", data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+finMod <- modFit$finalModel
+\end_layout
+
+\begin_layout Plain Layout
+
+## Diagnostics
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(finMod, 1, pch=19, cex=0.5, col="#00000010")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Color by variables not used in the model
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(finMod$fitted, finMod$residuals, color=race, data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot by index
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(finMod$residuals, pch=19)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Predicted vs.
+ truth in test set
+\end_layout
+
+\begin_layout Plain Layout
+
+pred <- predict(modFit, testing)
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(wage, pred, color=year, data=testing)
+\end_layout
+
+\begin_layout Plain Layout
+
+## If you want to use all covariates
+\end_layout
+
+\begin_layout Plain Layout
+
+modFitAll <- train(wage ~ ., data=training, method="lm")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Often useful in combination with other models.
+\end_layout
+
 \end_body
 \end_document
