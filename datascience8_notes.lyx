@@ -2436,5 +2436,708 @@ modFitAll <- train(wage ~ ., data=training, method="lm")
 Often useful in combination with other models.
 \end_layout
 
+\begin_layout Subsection*
+Predicting with decision trees
+\end_layout
+
+\begin_layout Itemize
+Key ideas:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Iteratively split variables into groups.
+\end_layout
+
+\begin_layout Itemize
+Evaluate homogeneity within each group.
+\end_layout
+
+\begin_layout Itemize
+Split again if necessary.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Pros: easy to interpret, better performance in nonlinear settings.
+\end_layout
+
+\begin_layout Itemize
+Cons: without pruning/cross-validation can lead to overfitting, harder to
+ estimate uncertainty, results may be variable.
+\end_layout
+
+\begin_layout Itemize
+Basic algorithm:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Start with all variables in one group.
+\end_layout
+
+\begin_layout Itemize
+Find the variable/split that best separates the outcomes.
+\end_layout
+
+\begin_layout Itemize
+Divide the data into two groups (
+\begin_inset Quotes eld
+\end_inset
+
+leaves
+\begin_inset Quotes erd
+\end_inset
+
+) on that split/node.
+\end_layout
+
+\begin_layout Itemize
+Within each split, find the best variable/split that separates the outcomes.
+\end_layout
+
+\begin_layout Itemize
+Continue until the groups are too small or sufficiently pure to stop the
+ algorithm.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Measures of impurity:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In the 
+\begin_inset Formula $m$
+\end_inset
+
+th leaf, there are 
+\begin_inset Formula $N_{m}$
+\end_inset
+
+ total objects that we might consider.
+ You can count the number of times that class 
+\begin_inset Formula $k$
+\end_inset
+
+ appears in leaf 
+\begin_inset Formula $m$
+\end_inset
+
+: 
+\begin_inset Formula $p_{mk}=\frac{1}{N_{m}}\sum_{x_{i}\text{ in leaf }m}\mathbb{I}\left(y_{i}=k\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Misclassification error: 
+\begin_inset Formula $1-p_{mk\left(m\right)}$
+\end_inset
+
+where 
+\begin_inset Formula $k\left(m\right)$
+\end_inset
+
+ is the most common class.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+0 = perfect purity.
+\end_layout
+
+\begin_layout Itemize
+0.5 = no purity (no homogeneity).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Gini index: 
+\begin_inset Formula $1-\sum_{k=1}^{K}p_{mk}^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+0 = perfect purity.
+\end_layout
+
+\begin_layout Itemize
+0.5 = no purity.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Deviance (natural log)/information gain (log base 2): 
+\begin_inset Formula $-\sum_{k=1}^{K}\log_{2}p_{mk}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+0 = perfect purity.
+\end_layout
+
+\begin_layout Itemize
+1 = no purity.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Example: iris data
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+data(iris); library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Trying to predict species
+\end_layout
+
+\begin_layout Plain Layout
+
+table(iris$Species)
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=iris$Species, p=0.7, list=F)
+\end_layout
+
+\begin_layout Plain Layout
+
+training <- iris[inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+testing <- iris[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Exploratory plot
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(Petal.Width, Sepal.Width, color=Species, data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Fit a model with rpart (one package for classification trees)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(caret)
+\end_layout
+
+\begin_layout Plain Layout
+
+modFit <- train(Species ~ ., method="rpart", data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+print(modFit$finalModel)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot classification tree
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(modFit$finalModel, uniform=T, main="Classification Tree")
+\end_layout
+
+\begin_layout Plain Layout
+
+text(modFit$finalModel, use.n=T, all=T, cex=0.8)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Another fancy plot
+\end_layout
+
+\begin_layout Plain Layout
+
+library(rattle)
+\end_layout
+
+\begin_layout Plain Layout
+
+fancyRpartPlot(modfit$finalModel)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Predict new values
+\end_layout
+
+\begin_layout Plain Layout
+
+predict(modFit, newdata=testing)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Notes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Classification trees are non-linear models - they use interactions between
+ variables.
+\end_layout
+
+\begin_layout Itemize
+Data transformations may be less important.
+\end_layout
+
+\begin_layout Itemize
+Trees can also be used for regression problems (continuous outcome).
+\end_layout
+
+\begin_layout Itemize
+Multiple tree building options in R both in the caret package (party, rpart)
+ and outside (tree).
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Bagging (bootstrap aggregating)
+\end_layout
+
+\begin_layout Itemize
+When you fit complicated models, if you average them together, the resulting
+ smoother fit gives a better balance between bias and variance in your fit.
+\end_layout
+
+\begin_layout Itemize
+Basic idea:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Resample cases (with replacement) and recalculate predictions.
+\end_layout
+
+\begin_layout Itemize
+Average or majority vote.
+\end_layout
+
+\begin_layout Itemize
+Notes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Similar bias compared to any individual model.
+\end_layout
+
+\begin_layout Itemize
+Reduced variance.
+\end_layout
+
+\begin_layout Itemize
+Most useful for non-linear functions.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Example: ozone data
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(ElemStatLearn); data(ozone, package="ElemStatLearn")
+\end_layout
+
+\begin_layout Plain Layout
+
+ozone <- ozone[order(ozone$ozone)]
+\end_layout
+
+\begin_layout Plain Layout
+
+head(ozone)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Idea is to predict temperature as a function of ozone.
+\end_layout
+
+\begin_layout Plain Layout
+
+ll <- matrix(NA, nrow=10, ncol=155)
+\end_layout
+
+\begin_layout Plain Layout
+
+for (i in 1:10) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	## Subsample and re-order.
+\end_layout
+
+\begin_layout Plain Layout
+
+	ss <- sample(1:dim(ozone)[1], replace=T)
+\end_layout
+
+\begin_layout Plain Layout
+
+	ozone0 <- ozone[ss,]; ozone0 <- ozone0[order(ozone0$ozone),]
+\end_layout
+
+\begin_layout Plain Layout
+
+	## Fit a Loess curve, span = measure of fit smoothness.
+\end_layout
+
+\begin_layout Plain Layout
+
+	loess0 <- loess(temperature ~ ozone, data=ozone0, span=0.2)
+\end_layout
+
+\begin_layout Plain Layout
+
+	## Predict and store the results.
+\end_layout
+
+\begin_layout Plain Layout
+
+	ll[i,] <- predict(loess0, newdata=data.frame(ozone=1:155))
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(ozone$ozone, ozone$temperature, pch=19, cex=0.5
+\end_layout
+
+\begin_layout Plain Layout
+
+for (i in 1:10) {lines(1:155, ll[i,], col="gre", lwd=2)}
+\end_layout
+
+\begin_layout Plain Layout
+
+lines(1:155, apply(ll,2,mean), col="red", lwd=2)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Bagging in caret: some models perform bagging for you, in the 
+\family typewriter
+train
+\family default
+ function, consider 
+\family typewriter
+method
+\family default
+ options.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+bagEarth
+\end_layout
+
+\begin_layout Itemize
+treebag
+\end_layout
+
+\begin_layout Itemize
+bagFDA
+\end_layout
+
+\begin_layout Itemize
+Alternatively, you can bag any model you choose, using the 
+\family typewriter
+bag
+\family default
+ function.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+predictors <- data.frame(ozone=ozone$ozone)
+\end_layout
+
+\begin_layout Plain Layout
+
+temperature <- ozone$temperature
+\end_layout
+
+\begin_layout Plain Layout
+
+treebag <- bag(predictors, temperature, B=10,
+\end_layout
+
+\begin_layout Plain Layout
+
+		       bagControl = bagControl(fit = ctreeBag$fit,
+\end_layout
+
+\begin_layout Plain Layout
+
+									   predict = ctreeBag$pred,
+\end_layout
+
+\begin_layout Plain Layout
+
+									   aggregate = ctreeBag$aggregate))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Parts of bagging:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Fit: takes in data frame and otucome that we passed and uses the 
+\family typewriter
+ctree
+\family default
+ function to train a conditional regression tree.
+\end_layout
+
+\begin_layout Itemize
+Prediction: takes in the objects and a new dataset and gets a new prediction.
+\end_layout
+
+\begin_layout Itemize
+Aggregation: takes in those values and combines them in some way.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Bagging is most useful for nonlinear models.
+\end_layout
+
+\begin_layout Itemize
+Often used with trees, an extension is called 
+\begin_inset Quotes eld
+\end_inset
+
+random forests.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Several models use bagging in caret's 
+\family typewriter
+train
+\family default
+ function.
+\end_layout
+
+\begin_layout Subsection*
+Random forests
+\end_layout
+
+\begin_layout Itemize
+Basic idea:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Bootstrap samples; rebuild classification and regression trees for each
+ set of samples.
+\end_layout
+
+\begin_layout Itemize
+At each split, bootstrap variables - only a subset of variables is considered
+ at each potential split..
+\end_layout
+
+\begin_layout Itemize
+Grow multiple trees and vote.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Pros: accuracy.
+\end_layout
+
+\begin_layout Itemize
+Cons: speed, interpretability, overfitting (very important to use cross-validati
+on).
+\end_layout
+
+\begin_layout Itemize
+Example: iris data.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+data(iris); library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=iris$species, p=0.7, list=F)
+\end_layout
+
+\begin_layout Plain Layout
+
+training <- iris[inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+testing <- iris[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+library(caret)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Method rf is random forests.
+\end_layout
+
+\begin_layout Plain Layout
+
+modFit <- train(Species ~ ., data=training, method="rf", prox=T)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Getting a single tree, k specifies which tree
+\end_layout
+
+\begin_layout Plain Layout
+
+getTree(modFit$finalModel, k=2)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Class "centers"
+\end_layout
+
+\begin_layout Plain Layout
+
+irisP <- classCenter(training[,c(3,4)], training$Species, modFit$finalModel$prox
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+irisP <- as.data.frame(irisP); irisP$Species <- rownames(irisP)
+\end_layout
+
+\begin_layout Plain Layout
+
+p <- qplot(Petal.Width, Petal.Length, col=Species, data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+p + geom_point(aes(x=Petal.Width,y=Petal.Length, col=Species), size=5, shape=4,
+ data=irisP)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Predicting new values
+\end_layout
+
+\begin_layout Plain Layout
+
+pred <- predict(modFit, testing); testing$predRight <- pred==testing$Species
+\end_layout
+
+\begin_layout Plain Layout
+
+table(pred,testing$Species)
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(Petal.Width, Petal.Length, color=predRight, data=testing, main="newdata
+ Predictions")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Random forests are usually one of the two top-performing algorithsm (along
+ with boosting) in prediction contests.
+\end_layout
+
+\begin_layout Itemize
+Random forests are difficult to interpret, but often very accurate.
+\end_layout
+
+\begin_layout Itemize
+Care should be taken to avoid overfitting (see 
+\family typewriter
+rfcv
+\family default
+ function).
+\end_layout
+
 \end_body
 \end_document
