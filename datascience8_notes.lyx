@@ -3139,5 +3139,488 @@ rfcv
  function).
 \end_layout
 
+\begin_layout Subsection*
+Boosting
+\end_layout
+
+\begin_layout Itemize
+Basic idea:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Take lots of (possibly) weak predictors.
+\end_layout
+
+\begin_layout Itemize
+Weight them and add them up.
+\end_layout
+
+\begin_layout Itemize
+Get a stronger predictor.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Overview:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Start with a set of classifiers 
+\begin_inset Formula $h_{1},...,h_{k}$
+\end_inset
+
+ (example: all possible trees, all possible regression models, etc.)
+\end_layout
+
+\begin_layout Itemize
+Create a classifier that combines classification functions: 
+\begin_inset Formula $f\left(x\right)=\text{sgn }\sum_{t=1}^{T}\alpha_{t}h_{t}\left(x\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Goal is to minimize error on training set.
+\end_layout
+
+\begin_layout Itemize
+Iterative, select one 
+\begin_inset Formula $h$
+\end_inset
+
+ at each step.
+\end_layout
+
+\begin_layout Itemize
+Calculate weights based on errors.
+\end_layout
+
+\begin_layout Itemize
+Upweight missed classifications and select next 
+\begin_inset Formula $h$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Boosting in R:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can be used with any subset of classifiers.
+\end_layout
+
+\begin_layout Itemize
+One large subclass is gradient boosting.
+\end_layout
+
+\begin_layout Itemize
+Multiple libraries in R: differences include the choice of basic classification
+ functions and combination rules.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+gbm
+\family default
+: boosting with trees.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+mboost
+\family default
+: model-based boosting.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ada
+\family default
+: statistical boosting based on additive logistic regression.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+gamBoost
+\family default
+: for boosting generalized additive models.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Most of these are available in the 
+\family typewriter
+caret
+\family default
+ package.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example (wage data):
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(ISLR); data(Wage); library(ggplot2); library(caret);
+\end_layout
+
+\begin_layout Plain Layout
+
+Wage <- subset(Wage, select=-c(logwage))
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=Wage$wage, p=.07, list=F)
+\end_layout
+
+\begin_layout Plain Layout
+
+training <- Wage[inTrain,]; testing <- Wage[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Fit the model.
+\end_layout
+
+\begin_layout Plain Layout
+
+modFit <- train(wage ~ ., method="gbm", data=training, verbose=F)
+\end_layout
+
+\begin_layout Plain Layout
+
+print(modFit)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot the results.
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(predict(modFit,testing), wage, data=testing)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Model-based prediction
+\end_layout
+
+\begin_layout Itemize
+Basic idea:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assume that the data follow a probabilistic model.
+\end_layout
+
+\begin_layout Itemize
+Use Bayes' theorem to identify optimal classifiers.
+\end_layout
+
+\begin_layout Itemize
+Pros: can take advantage of the structure of the data, may be computationally
+ convenient, are reasonably accurate on real problems.
+\end_layout
+
+\begin_layout Itemize
+Cons: make additional assumptions about the data, and when the model is
+ incorrect, you may get reduced accuracy.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Model based approach:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Goal is to build a parametric model for conditional distribution 
+\begin_inset Formula $P\left(Y=k|X=x\right)$
+\end_inset
+
+ (probabily that our outcome 
+\begin_inset Formula $Y$
+\end_inset
+
+ is in some class 
+\begin_inset Formula $k$
+\end_inset
+
+ given our predictor variables 
+\begin_inset Formula $X$
+\end_inset
+
+ in a class 
+\begin_inset Formula $x$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+A typical approach is to apply Bayes' theorem:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $P\left(Y=k|X=x\right)=\frac{P\left(X=x|Y=k\right)P\left(Y=k\right)}{\sum_{l=1}^{K}P\left(X=x|Y=l\right)P\left(Y=l\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $P\left(Y=k|X=x\right)=\frac{f_{k}\left(x\right)\pi_{k}}{\sum_{l=1}^{K}f_{l}\left(x\right)\pi_{l}}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Typically, prior probabilities 
+\begin_inset Formula $\pi_{k}$
+\end_inset
+
+ are set in advance.
+\end_layout
+
+\begin_layout Itemize
+A common choice for 
+\begin_inset Formula $f_{k}\left(x\right)$
+\end_inset
+
+ is a Gaussian distribution.
+\end_layout
+
+\begin_layout Itemize
+Estimate the parameters 
+\begin_inset Formula $\left(\mu_{k,}\sigma_{k}^{2}\right)$
+\end_inset
+
+ from the data.
+\end_layout
+
+\begin_layout Itemize
+Classify to the class with the highest value of 
+\begin_inset Formula $P\left(Y=k|X=x\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Classifying using the model: a range of models use this approach.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Linear discriminant analysis assumes 
+\begin_inset Formula $f_{k}\left(x\right)$
+\end_inset
+
+ is multivariate Gaussian with the same covariances.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Discriminant function: 
+\begin_inset Formula $\delta_{k}\left(x\right)=x^{T}\Sigma^{-1}\mu_{k}-\frac{1}{2}\mu_{k}\Sigma^{-1}\mu_{k}+\log\left(\mu_{k}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Decide on class based on 
+\begin_inset Formula $\hat{Y}\left(x\right)=\text{argmax }\left(x_{k},\delta_{k}\left(x\right)\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+We usually estimate parameters with maximum likelihood.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Quadratic discriminant analysis assumes 
+\begin_inset Formula $f_{k}\left(x\right)$
+\end_inset
+
+ is multivariate Gaussian with different covariances.
+\end_layout
+
+\begin_layout Itemize
+Model based prediction assumes more complicated versions for the covariance
+ matrix.
+\end_layout
+
+\begin_layout Itemize
+Naive Bayes assumes independence between features for model building.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose we have many predictors we would want to model 
+\begin_inset Formula $P\left(Y=k|X_{1},...,X_{m}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+We could use Bayes' theorem to get 
+\begin_inset Formula $P\left(Y=k|X_{1},...,X_{m}\right)=\frac{\pi_{k}P\left(X_{1},...,X_{m}|Y=k\right)}{\sum_{l=1}^{K}P\left(X_{1},...,X_{m}|Y=k\right)\pi_{l}}\propto\pi_{k}P\left(X_{1},...,X_{m}|Y=k\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+This can be written as 
+\begin_inset Formula $\pi_{k}P\left(X_{1}|Y=k\right)P\left(X_{2}|X_{1},Y=k\right)...P\left(X_{m}|X_{1},...,X_{m-1}|Y=k\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+We could make an assumption of independence to write: 
+\begin_inset Formula $\approx\pi_{k}P\left(X_{1}|Y=k\right)P\left(X_{2}|Y=k\right)...P\left(X_{m}|Y=k\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is not a great assumption always, hence the name 
+\begin_inset Quotes eld
+\end_inset
+
+naive
+\begin_inset Quotes erd
+\end_inset
+
+ Bayes.
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Example: iris data
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+data(iris); library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+names(iris)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Make training and testing sets
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=iris$Species, p=0.7, list=F)
+\end_layout
+
+\begin_layout Plain Layout
+
+training <- iris[inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+testing <- iris[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Build predictions with LDA and NB.
+\end_layout
+
+\begin_layout Plain Layout
+
+modlda <- train(Species ~ ., data=trianing, method="lda")
+\end_layout
+
+\begin_layout Plain Layout
+
+modnb <- train(Species ~ ., data=training, method="nb")
+\end_layout
+
+\begin_layout Plain Layout
+
+plda <- predict(modlda, testing); pnb <- predict(modnb, testing)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Compare results
+\end_layout
+
+\begin_layout Plain Layout
+
+table(plda,pnb)
+\end_layout
+
+\begin_layout Plain Layout
+
+equalPredictions <- (plda == pnb)
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(Petal.Width, Sepal.Width, color=equalPredictions, data=testing)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
