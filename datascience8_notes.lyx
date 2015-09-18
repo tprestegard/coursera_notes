@@ -3613,12 +3613,382 @@ equalPredictions <- (plda == pnb)
 qplot(Petal.Width, Sepal.Width, color=equalPredictions, data=testing)
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
 
 \end_layout
 
+\begin_layout Standard
+Regularized regression
+\end_layout
+
+\begin_layout Itemize
+Basic idea: fit a regression model, then penalize or shrink large coefficients.
+\end_layout
+
+\begin_layout Itemize
+Pros: can help with the bias/variance tradeoff and can help with model selection.
+\end_layout
+
+\begin_layout Itemize
+Cons: may be computationally demanding, does not perform as well as random
+ forests or boosting.
+\end_layout
+
+\begin_layout Itemize
+A motivating example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Fit a regression example 
+\begin_inset Formula $Y=\beta_{0}+\beta_{1}X_{1}+\beta_{2}X_{2}+\epsilon$
 \end_inset
 
+
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $X_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $X_{2}$
+\end_inset
+
+ are nearly perfectly correlated (co-linear), you can approximate the model
+ by 
+\begin_inset Formula $Y=\beta_{0}+\left(\beta_{1}+\beta_{2}\right)X_{1}+\epsilon$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Itemize
+The result is:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+You will get a good estimate of 
+\begin_inset Formula $Y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The estimate of 
+\begin_inset Formula $Y$
+\end_inset
+
+ will be biased.
+\end_layout
+
+\begin_layout Itemize
+We may reduce variance in the estimate.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+A common pattern is that training error will always go down as we add predictors.
+ The testing error will go down to a certain point, but then it will start
+ going back up, due to overfitting.
+\end_layout
+
+\begin_layout Itemize
+Model selection approach: split samples
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+No better method when data/computation time permits it.
+\end_layout
+
+\begin_layout Itemize
+Approach:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Divide data into training/test/validation.
+\end_layout
+
+\begin_layout Itemize
+Treat validation as test data, train all competing models on the train data
+ and pick the best one on validation.
+\end_layout
+
+\begin_layout Itemize
+To appropriately assess performance on new data, apply it to the test set.
+\end_layout
+
+\begin_layout Itemize
+You may re-spilt and re-perform steps 1-3.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Two common problems:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Limited data, may not be able to do many subsets of data.
+\end_layout
+
+\begin_layout Itemize
+Computational complexity.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Decomposing expected prediction error
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assume 
+\begin_inset Formula $Y_{i}=f\left(X_{i}\right)+\epsilon_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Expected prediction error: 
+\begin_inset Formula $EPE\left(\lambda\right)=E\left[\left\{ Y-\hat{f}_{\lambda}\left(X\right)\right\} ^{2}\right]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Suppose 
+\begin_inset Formula $\hat{f}_{\lambda}$
+\end_inset
+
+ is the estimate from the training data and look at a new data point 
+\begin_inset Formula $X=x^{\star}$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $E\left[\left\{ Y-\hat{f}_{\lambda}\left(x^{\star}\right)\right\} ^{2}\right]=\sigma^{2}+\left\{ E\left[\hat{f}_{\lambda}\left(x^{\star}\right)\right]-f\left(x^{\star}\right)\right\} ^{2}+Var\left[\hat{f}_{\lambda}\left(x_{0}\right)\right]=\text{Irreducible error + Bias}^{2}\text{ + Variance}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Hard thresholding
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Model 
+\begin_inset Formula $Y=f\left(X\right)+\epsilon$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Set 
+\begin_inset Formula $\hat{f}_{\lambda}\left(x\right)=x'\beta$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Constrain only 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ coefficients to be nonzero.
+\end_layout
+
+\begin_layout Itemize
+Selection problem is after choosing 
+\begin_inset Formula $\lambda$
+\end_inset
+
+, figure out which 
+\begin_inset Formula $p-\lambda$
+\end_inset
+
+ coefficients to make nonzero.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Regularization for regression
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If the 
+\begin_inset Formula $\beta_{j}$
+\end_inset
+
+s are unconstrained, they can explode.
+ Hence, they are susceptible to very high variance.
+\end_layout
+
+\begin_layout Itemize
+To control variance, we might regularize/shrink the coefficients:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $PRSS\left(\beta\right)=\sum_{j=1}^{n}\left(Y_{j}-\sum_{i=1}^{m}B_{1i}X_{ij}\right)^{2}+P\left(\lambda;\beta\right)$
+\end_inset
+
+, where PRSS is a penalized form of the sum of squares.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Things that are commonly looked for:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Penalty reduces complexity.
+\end_layout
+
+\begin_layout Itemize
+Penalty reduces variance.
+\end_layout
+
+\begin_layout Itemize
+Penalty respects structure of the problem.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Ridge regression
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Solve: 
+\begin_inset Formula $\sum_{i=1}^{N}\left(y_{i}-\beta_{0}+\sum_{j=1}^{p}x_{ij}\beta_{j}\right)^{2}+\lambda\sum_{j=1}^{p}\beta_{j}^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+This is equivalent to solving 
+\begin_inset Formula $\sum_{i=1}^{N}\left(y_{i}-\beta_{0}+\sum_{j=1}^{p}x_{ij}\beta_{j}\right)^{2}$
+\end_inset
+
+ subject to 
+\begin_inset Formula $\sum_{j=1}^{p}\beta_{j}^{2}\leq s$
+\end_inset
+
+, where 
+\begin_inset Formula $s$
+\end_inset
+
+ is inversely proportional to 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Inclusion of 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ makes the problem non-singular even if 
+\begin_inset Formula $X^{T}X$
+\end_inset
+
+ is not invertible.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Tuning parameter 
+\begin_inset Formula $\lambda$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Controls the size of the coefficients.
+\end_layout
+
+\begin_layout Itemize
+Controls the amount of regularization.
+\end_layout
+
+\begin_layout Itemize
+As 
+\begin_inset Formula $\lambda\rightarrow0$
+\end_inset
+
+, we obtain the least squares solution.
+\end_layout
+
+\begin_layout Itemize
+As 
+\begin_inset Formula $\lambda\rightarrow\infty$
+\end_inset
+
+, we have 
+\begin_inset Formula $\hat{\beta}_{\lambda=\infty}^{ridge}=0$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+In 
+\family typewriter
+caret
+\family default
+ package, some methods for fitting penalized regression models are:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+ridge
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+lasso
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+relaxo
+\end_layout
+
+\end_deeper
+\begin_layout Standard
 
 \end_layout
 
