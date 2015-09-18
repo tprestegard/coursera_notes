@@ -2684,7 +2684,7 @@ library(rattle)
 
 \begin_layout Plain Layout
 
-fancyRpartPlot(modfit$finalModel)
+fancyRpartPlot(modFit$finalModel)
 \end_layout
 
 \begin_layout Plain Layout
