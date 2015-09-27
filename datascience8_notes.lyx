@@ -3288,7 +3288,7 @@ Wage <- subset(Wage, select=-c(logwage))
 
 \begin_layout Plain Layout
 
-inTrain <- createDataPartition(y=Wage$wage, p=.07, list=F)
+inTrain <- createDataPartition(y=Wage$wage, p=0.7, list=F)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4125,7 +4125,7 @@ mod1 <- train(wage ~ ., method="glm", data=training)
 \begin_layout Plain Layout
 
 mod2 <- train(wage ~ ., method="rf", data=training, trControl = trainControl(meth
-od="cv"), number=3)
+od="cv", number=3))
 \end_layout
 
 \begin_layout Plain Layout
