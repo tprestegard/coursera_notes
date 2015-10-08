@@ -3288,7 +3288,7 @@ Wage <- subset(Wage, select=-c(logwage))
 
 \begin_layout Plain Layout
 
-inTrain <- createDataPartition(y=Wage$wage, p=.07, list=F)
+inTrain <- createDataPartition(y=Wage$wage, p=0.7, list=F)
 \end_layout
 
 \begin_layout Plain Layout
@@ -3618,7 +3618,7 @@ qplot(Petal.Width, Sepal.Width, color=equalPredictions, data=testing)
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Subsection*
 Regularized regression
 \end_layout
 
@@ -3988,9 +3988,713 @@ relaxo
 \end_layout
 
 \end_deeper
-\begin_layout Standard
+\begin_layout Subsection*
+Combining predictors
+\end_layout
+
+\begin_layout Itemize
+Also known as ensembling methods.
+\end_layout
+
+\begin_layout Itemize
+Key ideas:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Combine classifiers by averaging or voting.
+ In general these can be very different classifiers.
+\end_layout
+
+\begin_layout Itemize
+Combing classifers improves accuracy, but reduces interpretability.
+\end_layout
+
+\begin_layout Itemize
+Boosting, bagging, and random forests are variants on this theme, but they
+ all average the same kinds of classifiers.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: Netflix prize 
+\begin_inset Quotes eld
+\end_inset
+
+BellKor
+\begin_inset Quotes erd
+\end_inset
+
+ combined 107 predictors.
+\end_layout
+
+\begin_layout Itemize
+Basic intuition - majority vote.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If we have 5 completely independent classifiers, and the accuracy is 70%
+ for each, 
+\begin_inset Formula $10\times0.7^{3}\times0.3^{2}+5\times0.7^{4}\times0.3+0.7^{5}=0.837$
+\end_inset
+
+ majority vote accuracy.
+\end_layout
+
+\begin_layout Itemize
+With 101 independent classifiers, we get 
+\begin_inset Formula $0.999$
+\end_inset
+
+ majority vote accuracy.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Approaches for combining classifiers:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Bagging, boosting, random forests - these all usually combine similar classifier
+s.
+\end_layout
+
+\begin_layout Itemize
+Combining different classifiers - model stacking and model ensembling.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Model stacking - example with Wage data.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(ISLR); data(Wage); library(ggplot2); library(caret);
+\end_layout
+
+\begin_layout Plain Layout
+
+Wage <- subset(Wage, select=-c(logwage))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Create a building data set and a validation data set.
+\end_layout
+
+\begin_layout Plain Layout
+
+inBuild <- createDataPartition(y=Wage$wage, p=0.7, list=F)
+\end_layout
+
+\begin_layout Plain Layout
+
+validation <- Wage[-inBuild,]; buildData <- Wage[inBuild,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Split build data into training and testing.
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=buildData$wage, p=0.7, list=F)
+\end_layout
+
+\begin_layout Plain Layout
+
+training <- buildData[inTrain,]; testing <- buildData[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Build two different models with the training set.
+\end_layout
+
+\begin_layout Plain Layout
+
+mod1 <- train(wage ~ ., method="glm", data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+mod2 <- train(wage ~ ., method="rf", data=training, trControl = trainControl(meth
+od="cv", number=3))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Predict on the testing set.
+\end_layout
+
+\begin_layout Plain Layout
+
+pred1 <- predict(mod1, testing); pred2 <- predict(mod2, testing)
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(pred1,pred2,color=wage,data=testing)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Fit a model that combines predictors.
+\end_layout
+
+\begin_layout Plain Layout
+
+predDF <- data.frame(pred1, pred2, wage=testing$wage)
+\end_layout
+
+\begin_layout Plain Layout
+
+combModFit <- train(wage ~ ., method="gam", data=predDF)
+\end_layout
+
+\begin_layout Plain Layout
+
+combPred <- predict(combModFit, predDF)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Testing errors.
+\end_layout
+
+\begin_layout Plain Layout
+
+sqrt(sum((pred1-testing$wage)^2))
+\end_layout
+
+\begin_layout Plain Layout
+
+sqrt(sum((pred2-testing$wage)^2))
+\end_layout
+
+\begin_layout Plain Layout
+
+sqrt(sum((combPred-testing$wage)^2))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Predict on validation data set.
+\end_layout
+
+\begin_layout Plain Layout
+
+pred1V <- predict(mod1, validation); pred2V <- predict(mod2, validation)
+\end_layout
+
+\begin_layout Plain Layout
+
+predVDF <- data.frame(pred1=pred1V, pred2=pred2V)
+\end_layout
+
+\begin_layout Plain Layout
+
+combPredV <- predict(combModFit, predVDF)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Evaluate on validation.
+\end_layout
+
+\begin_layout Plain Layout
+
+sqrt(sum((pred1V-validation$wage)^2))
+\end_layout
+
+\begin_layout Plain Layout
+
+sqrt(sum((pred2V-validation$wage)^2))
+\end_layout
+
+\begin_layout Plain Layout
+
+sqrt(sum((combPredV-validation$wage)^2))
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
+\begin_layout Itemize
+Even simple blending can be useful to improve accuracy.
+\end_layout
+
+\begin_layout Itemize
+Typical model for binary/multiclass data.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Build an odd number of models.
+\end_layout
+
+\begin_layout Itemize
+Predict with each model.
+\end_layout
+
+\begin_layout Itemize
+Predict the class by majority vote.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+This can get much more complicated:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Simple blending in caret: 
+\family typewriter
+caretEnsemble
+\family default
+ (use at your own risk).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Recall: scalability matters! This can be very computationally complex, hard
+ to scale up to large data sets.
+\end_layout
+
+\begin_layout Subsection*
+Forecasting
+\end_layout
+
+\begin_layout Itemize
+Forecasting is a type of prediction problem that applies to time-series
+ data (stocks, for example).
+\end_layout
+
+\begin_layout Itemize
+What is different?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Data are time-dependent.
+\end_layout
+
+\begin_layout Itemize
+Specific pattern types:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Trends - long-term increase or decrease.
+\end_layout
+
+\begin_layout Itemize
+Seasonal patterns - related to time of week, month, year, etc.
+ There is a pattern which recurs over a fixed period of time.
+\end_layout
+
+\begin_layout Itemize
+Cycles - patterns that rise and fall periodically over non-fixed periods
+ of time.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Subsampling into training/test sets is more complicated.
+\end_layout
+
+\begin_layout Itemize
+Similar issues arise in spatial data:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Dependency between nearby observations.
+\end_layout
+
+\begin_layout Itemize
+Location-specific effects.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Typically, the goal is to predict one or more observations into the future.
+\end_layout
+
+\begin_layout Itemize
+All standard predictions can be used (with caution)!
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Also common in geographic analyses.
+\end_layout
+
+\begin_layout Itemize
+Beware extrapolation!
+\end_layout
+
+\begin_layout Itemize
+Useful for forecasting: simple moving average.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Y_{t}=\frac{1}{2k+1}\sum_{j=-k}^{k}y_{t+j}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Also useful: exponential smoothing - weighting nearby points in time more
+ heavily than those which are farther away.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\hat{y}_{t+1}=\alpha y_{t}+\left(1-\alpha\right)\hat{y}_{t-1}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: Google data
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+library(quantmod)
+\end_layout
+
+\begin_layout Plain Layout
+
+from.dat <- as.Date("01/01/08", format"%m/%d/%y")
+\end_layout
+
+\begin_layout Plain Layout
+
+to.dat <- as.Date("12/31/13", format="%m/%d/%y")
+\end_layout
+
+\begin_layout Plain Layout
+
+getSymbols("GOOG", src="google", from = from.dat, to = to.dat)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Get monthly summary and store as a time-series.
+\end_layout
+
+\begin_layout Plain Layout
+
+mGoog <- to.monthly(GOOG)
+\end_layout
+
+\begin_layout Plain Layout
+
+googOpen <- Op(mGoog)
+\end_layout
+
+\begin_layout Plain Layout
+
+ts1 <- ts(googOpen, frequency=12)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(ts1, xlab="Years+1", ylab="GOOG")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Decompose a time-series into parts (trends, patterns, cycles).
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(decompose(ts1), xlab="Years+1")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Training and test sets.
+\end_layout
+
+\begin_layout Plain Layout
+
+ts1Train <- window(ts1, start=1, end=5)
+\end_layout
+
+\begin_layout Plain Layout
+
+ts1Test <- window(ts1, start=5, end=(7-0.01))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Simple moving average.
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(tst1Train)
+\end_layout
+
+\begin_layout Plain Layout
+
+lines(ma(ts1Train, order=3), col="red")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Exponential smoothing.
+\end_layout
+
+\begin_layout Plain Layout
+
+ets1 <- ets(ts1Train, model="MMM")
+\end_layout
+
+\begin_layout Plain Layout
+
+fcast <- forecast(ets1)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(fcast); lines(ts1Test, col="red")
+\end_layout
+
+\begin_layout Plain Layout
+
+## Get the accuracy.
+\end_layout
+
+\begin_layout Plain Layout
+
+accuracy(fcast, ts1Test)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Forecasting and time-series prediction is an entire field.
+\end_layout
+
+\begin_layout Itemize
+Rob Hyndman's 
+\begin_inset Quotes eld
+\end_inset
+
+Forecasting: principles and practice
+\begin_inset Quotes erd
+\end_inset
+
+ is a good place to start.
+ (free online book)
+\end_layout
+
+\begin_layout Itemize
+Cautions:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Be wary of spurious correlations.
+\end_layout
+
+\begin_layout Itemize
+Be careful about how far you predict into the future.
+\end_layout
+
+\begin_layout Itemize
+Be wary of dependencies over time.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+See the 
+\family typewriter
+quantmod
+\family default
+ or 
+\family typewriter
+quandl
+\family default
+ packages for finance-related problems.
+\end_layout
+
+\begin_layout Subsection*
+Unsupervised prediction
+\end_layout
+
+\begin_layout Itemize
+Key ideas:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sometimes you don't know the labels for prediction.
+\end_layout
+
+\begin_layout Itemize
+To build a predictor:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Create clusters that you're observed (not always obvious).
+\end_layout
+
+\begin_layout Itemize
+Add names to the clusters (i.e., how to interpret the clusters).
+\end_layout
+
+\begin_layout Itemize
+Build a predictor for clusters.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+In a new dataset, predict clusters.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: iris data ignoring species clusters.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+data(iris); library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+inTrain <- createDataPartition(y=iris#Species, p=0.7, list=F)
+\end_layout
+
+\begin_layout Plain Layout
+
+training <- iris[inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+testing <- iris[-inTrain,]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Clustering with k-means
+\end_layout
+
+\begin_layout Plain Layout
+
+kMeans1 <- kmeans(subset(training, select=-c(Species)), centers=3)
+\end_layout
+
+\begin_layout Plain Layout
+
+training$clusters <- as.factor(kMeans1$cluster)
+\end_layout
+
+\begin_layout Plain Layout
+
+qplot(Petal.Width, Petal.Length, color=clusters, data=training)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Compare to real labels.
+\end_layout
+
+\begin_layout Plain Layout
+
+table(kMean1$cluster, training$Species)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Build a predictor.
+\end_layout
+
+\begin_layout Plain Layout
+
+modFit <- train(clusters ~ ., data=subset(training, select=-c(Species)),
+ method="rpart")
+\end_layout
+
+\begin_layout Plain Layout
+
+table(predict(modFit,training), training$Species)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Apply to test dataset.
+\end_layout
+
+\begin_layout Plain Layout
+
+testClusterPred <- predict(modFit, testing)
+\end_layout
+
+\begin_layout Plain Layout
+
+table(testClusterPred, testing$Species)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Notes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The 
+\family typewriter
+cl_predict
+\family default
+ function in the 
+\family typewriter
+clue
+\family default
+ package provides similar functionality.
+\end_layout
+
+\begin_layout Itemize
+Beware over-interpretation of clusters!
+\end_layout
+
+\begin_layout Itemize
+This is one basic approach to recommendation engines.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
