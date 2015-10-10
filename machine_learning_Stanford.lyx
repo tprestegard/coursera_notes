@@ -197,5 +197,168 @@ Cocktail party problem algorithm:
 \end_layout
 
 \end_deeper
+\begin_layout Section*
+Linear regression with one variable
+\end_layout
+
+\begin_layout Subsection*
+Model and cost function
+\end_layout
+
+\begin_layout Itemize
+Regression problem: predict a (continuous output).
+\end_layout
+
+\begin_layout Itemize
+General notation for this course:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\emph on
+m
+\emph default
+: number of examples in the training dataset.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+x
+\emph default
+: input variables/features.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+y
+\emph default
+: output variable/target.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+(x,y)
+\emph default
+: denotes a single training example.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+General flow:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Training set -> learning algorithm -> hypothesis function.
+\end_layout
+
+\begin_layout Itemize
+The hypothesis function takes input (
+\emph on
+x
+\emph default
+) and predicts the outcome (
+\emph on
+y
+\emph default
+).
+ It maps from 
+\emph on
+x
+\emph default
+'s to 
+\emph on
+y
+\emph default
+'s.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How do we represent the hypothesis 
+\emph on
+h
+\emph default
+?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $h_{\theta}\left(x\right)=\theta_{0}+\theta_{1}x$
+\end_inset
+
+ for univariate linear regression, or linear regression with one variable.
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset Formula $\theta$
+\end_inset
+
+'s are the parameters of the model.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How do we choose the parameters of the model?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Find 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta_{1}$
+\end_inset
+
+ such that we minimize the sum of the squared errors: 
+\begin_inset Formula $\frac{1}{2m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Factor of 
+\begin_inset Formula $\frac{1}{2m}$
+\end_inset
+
+ doesn't affect parameter values and will make later math a bit easier.
+\end_layout
+
+\begin_layout Itemize
+This also defined as the cost function 
+\begin_inset Formula $J\left(\theta_{0},\theta_{1}\right)=\frac{1}{2m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+There are other cost functions that may work as well, but the squared error
+ cost function is the most commonly used one for linear regression.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can be useful to plot cost function in terms of the parameters 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta_{1}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
