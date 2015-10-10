@@ -360,5 +360,21 @@ Can be useful to plot cost function in terms of the parameters
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+If we assume an intercept of 0 (
+\begin_inset Formula $\theta_{0}=0$
+\end_inset
+
+), the value of 
+\begin_inset Formula $\theta_{1}$
+\end_inset
+
+ that minimizes the cost function is 
+\begin_inset Formula $\theta_{1}=\frac{\sum_{i}x^{\left(i\right)}y^{\left(i\right)}}{\sum_{i}x^{2\left(i\right)}}$
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
