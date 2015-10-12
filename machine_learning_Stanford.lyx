@@ -376,5 +376,414 @@ If we assume an intercept of 0 (
 
 \end_layout
 
+\begin_layout Itemize
+For two parameters,
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\theta_{1}=\frac{\sum_{i=1}^{m}x^{\left(i\right)}y^{\left(i\right)}-\bar{x}\bar{y}}{\sum_{i=1}^{m}x^{\left(i\right)2}-\bar{x}^{2}}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta_{0}=\bar{y}-\theta_{1}\bar{x}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Gradient descent
+\end_layout
+
+\begin_layout Itemize
+Have some cost function 
+\begin_inset Formula $J\left(\theta_{0},\theta_{1}\right)$
+\end_inset
+
+ that we want to minimize (find 
+\begin_inset Formula $\underset{\theta_{0,}\theta_{1}}{\text{min}}J\left(\theta_{0},\theta_{1}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Outline:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Start with some 
+\begin_inset Formula $\theta_{0},\theta_{1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Keep changing 
+\begin_inset Formula $\theta_{0},\theta_{1}$
+\end_inset
+
+ to reduce 
+\begin_inset Formula $J\left(\theta_{0},\theta_{1}\right)$
+\end_inset
+
+ until we hopefully end up at a minimum.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Definition of gradient descent algorithm: 
+\family typewriter
+repeat until convergence { 
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\frac{\partial}{\partial\theta_{j}}J\left(\theta_{0},\theta_{1}\right)$
+\end_inset
+
+ }.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $:=$
+\end_inset
+
+: assignment operator.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+: learning rate.
+ Controls step size.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+When actually programming this, make sure you change the parameters at the
+ same time and then update them at the same time! Otherwise you may incorrectly
+ use new values of the parameters to calculate the cost function.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Don't need to adjust 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ over time because the derivative term will get smaller as it approaches
+ a local minimum.
+\end_layout
+
+\begin_layout Itemize
+Applying gradient descent to our simple cost function:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\frac{\partial}{\partial\theta_{j}}J\left(\theta_{0},\theta_{1}\right)=\frac{\partial}{\partial\theta_{j}}\frac{1}{2m}\sum_{i=1}^{m}\left(\theta_{0}+\theta_{1}x^{\left(i\right)}-y^{\left(i\right)}\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+For 
+\begin_inset Formula $j=0$
+\end_inset
+
+: 
+\begin_inset Formula $\frac{\partial}{\partial\theta_{0}}J\left(\theta_{0},\theta_{1}\right)=\frac{1}{m}\sum_{i=1}^{m}\left(h\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+For 
+\begin_inset Formula $j=1$
+\end_inset
+
+: 
+\begin_inset Formula $\frac{\partial}{\partial\theta_{1}}J\left(\theta_{0},\theta_{1}\right)=\frac{1}{m}\sum_{i=1}^{m}\left(h\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Batch gradient descent: used in machine learning, each step of gradient
+ descent uses all of the training examples.
+\end_layout
+
+\begin_layout Subsection*
+Linear regression with multiple variables
+\end_layout
+
+\begin_layout Itemize
+Also called multivariate linear regression.
+\end_layout
+
+\begin_layout Itemize
+We now have multiple features (or predictors) that we want to use to develop
+ a hypothesis function and make a prediction.
+\end_layout
+
+\begin_layout Itemize
+Notation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $n$
+\end_inset
+
+: number of features.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $x^{\left(i\right)}$
+\end_inset
+
+: input (features) of 
+\begin_inset Formula $i$
+\end_inset
+
+th training example.
+ This is a vector of features in the 
+\begin_inset Formula $i$
+\end_inset
+
+th observation.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $x_{j}^{\left(i\right)}$
+\end_inset
+
+: value of feature 
+\begin_inset Formula $j$
+\end_inset
+
+ in 
+\begin_inset Formula $i$
+\end_inset
+
+th training example.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Hypothesis function now has a new form:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $h_{\theta}\left(x\right)=\theta_{0}+\theta_{1}x_{1}+\theta_{2}x_{2}+...+\theta_{n}x_{n}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+For convenience of notation, we can define 
+\begin_inset Formula $x_{0}^{\left(i\right)}=1$
+\end_inset
+
+ so that 
+\begin_inset Formula $h_{\theta}\left(x\right)=\sum_{i=1}^{n}\theta_{i}x_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+We can also use linear algebra:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $x=\left[x_{0},x_{1},...,x_{n}\right]\in\mathbb{R}_{n+1}$
+\end_inset
+
+ (row vector)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta=\left[\theta_{0},\theta_{1},...,\theta_{n}\right]\in\mathbb{R}_{n+1}$
+\end_inset
+
+ (row vector)
+\end_layout
+
+\begin_layout Itemize
+Then 
+\begin_inset Formula $h_{\theta}\left(x\right)=\theta x^{T}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+Gradient descent with multiple variables
+\end_layout
+
+\begin_layout Itemize
+Write set of parameters as 
+\begin_inset Formula $\theta$
+\end_inset
+
+ and cost function as 
+\begin_inset Formula $J\left(\theta\right)=\frac{1}{2m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Gradient descent: 
+\family typewriter
+repeat { 
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\frac{\partial}{\partial\theta_{j}}J\left(\theta\right)$
+\end_inset
+
+ } 
+\family default
+(simultaneously update for each 
+\begin_inset Formula $j=0,1,...,n$
+\end_inset
+
+)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Tips for gradient descent:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Feature scaling - make sure that different features taken on similar ranges
+ of values.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ideally, all features will be in the range 
+\begin_inset Formula $-1\leq x\leq1$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Mean normalization: normalize a feature to have a mean of zero.
+ When doing this, you just replace a feature 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ with 
+\begin_inset Formula $x_{i}-\mu_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Do not apply this to 
+\begin_inset Formula $x_{0}=1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Can also normalize by standard deviation: 
+\begin_inset Formula $x_{i}\rightarrow\frac{x_{i}-\mu_{i}}{s_{i}}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Making sure that gradient descent is working properly:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Plot 
+\begin_inset Formula $\underset{\theta}{\text{min}}J\left(\theta\right)$
+\end_inset
+
+ vs.
+ number of iterations.
+ It should decrease after every iteration for sufficiently small 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ (can be shown mathematically).
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is too large, you may continue overshooting the minimum and never be able
+ to actually reach it.
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is too small, convergence will happen, but very slowly.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Automatic convergence tests: algorithms that tell you whether gradient descent
+ has converged:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: declare convergence if 
+\begin_inset Formula $J\left(\theta\right)$
+\end_inset
+
+ decreases by less than some value (like 
+\begin_inset Formula $10^{-3}$
+\end_inset
+
+) in one iteration.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
