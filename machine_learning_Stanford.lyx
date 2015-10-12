@@ -524,7 +524,7 @@ Batch gradient descent: used in machine learning, each step of gradient
  descent uses all of the training examples.
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Section*
 Linear regression with multiple variables
 \end_layout
 
@@ -782,6 +782,35 @@ Example: declare convergence if
 \end_inset
 
 ) in one iteration.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Polynomial regression
+\end_layout
+
+\begin_layout Itemize
+Can create new features from existing ones.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: area = frontage * depth.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Polynomial model: 
+\begin_inset Formula $h_{\theta}\left(x\right)=\theta_{0}+\theta_{1}x+\theta_{2}x^{2}$
+\end_inset
+
+ for a quadratic function.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Important to use feature scaling since when you square or cube features,
+ the range becomes much larger.
 \end_layout
 
 \end_deeper
