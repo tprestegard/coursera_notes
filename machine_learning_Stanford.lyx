@@ -814,5 +814,189 @@ Important to use feature scaling since when you square or cube features,
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Normal equation
+\end_layout
+
+\begin_layout Itemize
+Method to solve for 
+\begin_inset Formula $\theta$
+\end_inset
+
+ analytically.
+\end_layout
+
+\begin_layout Itemize
+How to go about it:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\frac{\partial}{\partial\theta_{j}}J\left(\theta\right)=...=0$
+\end_inset
+
+, then solve for every 
+\begin_inset Formula $\theta_{j}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Linear algebra method:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Put all features into a matrix: 
+\begin_inset Formula $X=\begin{array}{ccccc}
+1 & 2104 & 5 & 1 & 45\\
+1 & 1416 & 3 & 2 & 40\\
+1 & 1534 & 3 & 2 & 30\\
+1 & 852 & 2 & 1 & 36
+\end{array}$
+\end_inset
+
+ (including a column of ones for 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Put all 
+\begin_inset Formula $y_{j}$
+\end_inset
+
+s into a vector: 
+\begin_inset Formula $Y=\begin{array}{c}
+460\\
+232\\
+315\\
+178
+\end{array}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Then, 
+\begin_inset Formula $\theta=\left(X^{T}X\right)^{-1}X^{T}Y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+In Matlab/Octave: 
+\family typewriter
+pinv(X'*X)*X'*Y
+\end_layout
+
+\begin_layout Itemize
+Feature scaling is not needed for the normal equation method.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Normal equation vs.
+ gradient descent
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Pros:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Normal equation: no need to choose 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, no need to iterate.
+\end_layout
+
+\begin_layout Itemize
+Gradient descent: works well even when the number of features is large.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cons:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Normal equation: slow if number of features is very large, need to compute
+ 
+\begin_inset Formula $\left(X^{T}X\right)^{-1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Gradient descent: need to choose 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, needs many iterations.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Normal equation non-invertibility: what if 
+\begin_inset Formula $\left(X^{T}X\right)$
+\end_inset
+
+ is non-invertible? Also known as 
+\begin_inset Quotes eld
+\end_inset
+
+singular
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+degenerate.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can occur when there are redundant features (linearly dependent) or if there
+ are too many features.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Possible solution: delete some features or use regularization.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+If you use 
+\family typewriter
+pinv
+\family default
+ in Matlab/Octave instead of 
+\family typewriter
+inv
+\family default
+, it should handle singular cases for you.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
