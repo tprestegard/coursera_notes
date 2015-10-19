@@ -998,5 +998,187 @@ inv
 \end_layout
 
 \end_deeper
+\begin_layout Section*
+Logistic Regression
+\end_layout
+
+\begin_layout Subsection*
+Classification and Representation
+\end_layout
+
+\begin_layout Itemize
+Classification: putting things into discrete categories.
+ Binary classification is when there are only two categories.
+\end_layout
+
+\begin_layout Itemize
+Linear regression is not usually a very good solution for classification
+ problems.
+ Examples where we can clearly use some sort of threshold for classification
+ make this clear.
+\end_layout
+
+\begin_layout Itemize
+Logistic regression has the property that the predictions of the hypothesis
+ function are always between 0 and 1: 
+\begin_inset Formula $0\leq h_{\theta}\left(x\right)\leq1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+For linear regression, 
+\begin_inset Formula $h_{\theta}\left(x\right)=\theta^{T}x$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+For logistic regression, 
+\begin_inset Formula $h_{\theta}\left(x\right)=g\left(\theta^{T}x\right)$
+\end_inset
+
+, where 
+\begin_inset Formula $g\left(z\right)$
+\end_inset
+
+ is the sigmoid or logistic function, 
+\begin_inset Formula $g\left(z\right)=\frac{1}{1+e^{-z}}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Thus, 
+\begin_inset Formula $h_{\theta}\left(x\right)=\frac{1}{1+\exp\left(-\theta^{T}x\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+As before, we need to fit the parameters 
+\begin_inset Formula $\theta$
+\end_inset
+
+ to our data.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Interpretation of hypothesis output:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $h_{\theta}\left(x\right)$
+\end_inset
+
+: estimated probability that 
+\begin_inset Formula $y=1$
+\end_inset
+
+ (i.e., positive result) on input 
+\begin_inset Formula $x$
+\end_inset
+
+; i.e.
+ 
+\begin_inset Formula $h_{\theta}\left(x\right)=p\left(y=1|x;\theta\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Decision boundary:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose we predict that 
+\begin_inset Formula $y=1$
+\end_inset
+
+ when 
+\begin_inset Formula $h_{\theta}\left(x\right)\geq0.5$
+\end_inset
+
+ and 
+\begin_inset Formula $y=0$
+\end_inset
+
+ when 
+\begin_inset Formula $h_{\theta}<0.5$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+We see that 
+\begin_inset Formula $g\left(z\right)$
+\end_inset
+
+ is 
+\begin_inset Formula $\geq0.5$
+\end_inset
+
+ when 
+\begin_inset Formula $z\geq0$
+\end_inset
+
+, thus 
+\begin_inset Formula $h_{\theta}\left(x\right)\geq0.5$
+\end_inset
+
+ whenever 
+\begin_inset Formula $\theta^{T}x\geq0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+This essentially defines a threshold for making predictions with our model.
+\end_layout
+
+\begin_layout Itemize
+The decision boundary is a property of the hypothesis and its parameters,
+ not a property of the dataset.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Non-linear decision boundaries:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can use higher-order polynomials terms in logistic regression.
+\end_layout
+
+\begin_layout Itemize
+Example: 
+\begin_inset Formula $h_{\theta}\left(x\right)=g\left(\theta_{0}+\theta_{1}x_{1}+\theta_{2}x_{2}+\theta_{3}x_{1}^{2}+\theta_{4}x_{2}^{2}+\theta_{5}x_{1}x_{2}+\theta_{6}x_{1}^{3}+...\right)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Logistic Regression Model
+\end_layout
+
+\begin_layout Itemize
+d
+\end_layout
+
 \end_body
 \end_document
