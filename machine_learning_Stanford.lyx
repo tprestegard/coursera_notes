@@ -1177,8 +1177,149 @@ Logistic Regression Model
 \end_layout
 
 \begin_layout Itemize
-d
+Cost function:
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Linear regression: 
+\begin_inset Formula $J\left(\theta\right)=\frac{1}{m}\sum_{i=1}^{m}\frac{1}{2}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)^{2}=\sum_{i=1}^{m}\text{cost}\left(h_{\theta}\left(x^{\left(i\right)}\right),y^{\left(i\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Logistic regression: 
+\begin_inset Formula $J\left(\theta\right)=\frac{1}{m}\sum_{i=1}^{m}\text{cost}\left(h_{\theta}\left(x^{\left(i\right)}\right),y^{\left(i\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What cost function here should we use here?
+\end_layout
+
+\begin_layout Itemize
+We can't use the same thing that we used for linear regression because it
+ will be a non-convex function - thus, gradient descent will not necessarily
+ converge to the global minimum.
+\end_layout
+
+\begin_layout Itemize
+Instead, we use 
+\begin_inset Formula $\text{cost}\left(h_{\theta}\left(x\right),y\right)=\left\{ \begin{array}{l}
+-\log\left(h_{\theta}\left(x\right)\right)\text{ if }y=1\\
+-\log\left(1-h_{\theta}\left(x\right)\right)\text{ if }y=0
+\end{array}\right.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $y=1$
+\end_inset
+
+: if 
+\begin_inset Formula $h_{\theta}\left(x\right)=1$
+\end_inset
+
+, the cost is 0, but as 
+\begin_inset Formula $h_{\theta}\left(x\right)\rightarrow0$
+\end_inset
+
+, the cost goes to 
+\begin_inset Formula $\infty$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $y=0$
+\end_inset
+
+: if 
+\begin_inset Formula $h_{\theta}\left(x\right)=0$
+\end_inset
+
+, the cost is 0, but as 
+\begin_inset Formula $h_{\theta}\left(x\right)\rightarrow1$
+\end_inset
+
+, the cost goes to 
+\begin_inset Formula $\infty$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Simplified way of writing the cost function:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\text{cost}\left(h_{\theta}\left(x\right),y\right)=-y\log\left(h_{\theta}\left(x\right)\right)-\left(1-y\right)\log\left(1-h_{\theta}\left(x\right)\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Note: 
+\begin_inset Formula $y$
+\end_inset
+
+ is always equal to 0 or 1.
+\end_layout
+
+\begin_layout Itemize
+So the full cost function is 
+\begin_inset Formula $J\left(\theta\right)=-\frac{1}{m}\sum_{i=1}^{m}y^{\left(i\right)}\log h_{\theta}\left(x^{\left(i\right)}\right)+\left(1-y^{\left(i\right)}\right)\log\left(1-h_{\theta}\left(x^{\left(i\right)}\right)\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Gradient descent: we do the same thing as before, we just have a new cost
+ function.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\theta_{j}$
+\end_inset
+
+ := 
+\begin_inset Formula $\theta_{j}-\alpha\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+This is the same as for linear regression, although our hypothesis function
+ has changed.
+\end_layout
+
+\begin_layout Itemize
+Make sure to simultaneously update all 
+\begin_inset Formula $\theta_{j}$
+\end_inset
+
+!
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
