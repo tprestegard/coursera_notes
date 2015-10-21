@@ -1765,7 +1765,11 @@ If
 \begin_inset Formula $\lambda$
 \end_inset
 
- is too large, we won't even fit the training dataset well.
+ is too large, we w
+\end_layout
+
+\begin_layout Itemize
+on't even fit the training dataset well.
  All of the parameters 
 \begin_inset Formula $\theta$
 \end_inset
@@ -1779,5 +1783,270 @@ If
 
 \end_deeper
 \end_deeper
+\begin_layout Subsection*
+Regularized linear regression
+\end_layout
+
+\begin_layout Itemize
+Recall that we don't want to shrink 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Now, our gradient descent algorithm looks like:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\theta_{0}:=\theta_{0}-\alpha\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{0}^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}+\frac{\lambda}{m}\theta_{j}$
+\end_inset
+
+ for 
+\begin_inset Formula $j=1,...,n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Can re-write this as 
+\begin_inset Formula $\theta_{j}:=\theta_{j}\left(1-\alpha\frac{\lambda}{m}\right)-\alpha\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}$
+\end_inset
+
+ for 
+\begin_inset Formula $j=1,...,n$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The term 
+\begin_inset Formula $1-\alpha\frac{\lambda}{m}$
+\end_inset
+
+ is usually slightly less than 1 (assuming that your learning rate is small).
+ This term shrinks your 
+\begin_inset Formula $\theta_{j}$
+\end_inset
+
+, then the other term is just the original gradient descent term.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Normal equation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Before, we had 
+\begin_inset Formula $\theta=\left(X^{T}X\right)^{-1}X^{T}Y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+With our new, regularized cost function, you can derive the minimum of the
+ cost function by taking derivatives with respect to each parameter, as
+ before.
+\end_layout
+
+\begin_layout Itemize
+Now, we get 
+\begin_inset Formula $\theta=\left(X^{T}X+\lambda Z\right)^{-1}X^{T}Y$
+\end_inset
+
+, where 
+\begin_inset Formula $Z$
+\end_inset
+
+ is the identity matrix, except the top left entry is 0 instead of 1 (because
+ we don't regularize 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Non-invertibility
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose we have fewer examples than features (
+\begin_inset Formula $m\leq n$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta=\left(X^{T}X\right)^{-1}X^{T}Y$
+\end_inset
+
+ will give a strange answer since 
+\begin_inset Formula $X^{T}X$
+\end_inset
+
+ is non-invertible/singular (make sure to use 
+\family typewriter
+pinv
+\family default
+ instead of 
+\family typewriter
+inv
+\family default
+).
+\end_layout
+
+\begin_layout Itemize
+However, if 
+\begin_inset Formula $\lambda>0$
+\end_inset
+
+ , we can prove that the matrix 
+\begin_inset Formula $X^{T}X+\lambda Z$
+\end_inset
+
+ is invertible!
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Regularized logistic regression
+\end_layout
+
+\begin_layout Itemize
+To modify our cost function to use regularization, we add a term 
+\begin_inset Formula $\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_{j}^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The full cost function is 
+\begin_inset Formula $J\left(\theta\right)=-\left[\frac{1}{m}\sum_{i=1}^{m}y^{\left(i\right)}\log\left(h_{\theta}\left(x^{\left(i\right)}\right)\right)+\left(1-y^{\left(i\right)}\right)\log\left(1-h_{\theta}\left(x^{\left(i\right)}\right)\right)\right]+\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_{j}^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Now, our gradient descent algorithm looks like:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\theta_{0}:=\theta_{0}-\alpha\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{0}^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}+\frac{\lambda}{m}\theta_{j}$
+\end_inset
+
+ for 
+\begin_inset Formula $j=1,...,n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Can re-write this as 
+\begin_inset Formula $\theta_{j}:=\theta_{j}\left(1-\alpha\frac{\lambda}{m}\right)-\alpha\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}$
+\end_inset
+
+ for 
+\begin_inset Formula $j=1,...,n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Recall that although this looks the same as for regularized linear regression,
+ the hypothesis function is different for logistic regression.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Advanced optimization methods:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% Define a function to compute the cost.
+\end_layout
+
+\begin_layout Plain Layout
+
+function [jVal, gradient] = costFunction(theta)
+\end_layout
+
+\begin_layout Plain Layout
+
+	jVal = %code to compute J(theta);
+\end_layout
+
+\begin_layout Plain Layout
+
+	gradient(1) = %code to compute d/dtheta_0 J(theta);
+\end_layout
+
+\begin_layout Plain Layout
+
+	gradient(2) = %code to compute d/dtheta_1 J(theta);
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	gradient(n+1) = %code to compute d/dtheta_n J(theta);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% then, we pass this function to fminunc as before.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+d
+\end_layout
+
 \end_body
 \end_document
