@@ -2044,9 +2044,406 @@ function [jVal, gradient] = costFunction(theta)
 
 \end_layout
 
-\begin_layout Standard
-d
+\begin_layout Section*
+Neural networks: representation
 \end_layout
 
+\begin_layout Subsection*
+Motivation
+\end_layout
+
+\begin_layout Itemize
+Used for solving complex, non-linear hypotheses.
+\end_layout
+
+\begin_layout Itemize
+For many predictors, including even quadratic terms can require a huge number
+ of terms (grows roughly as 
+\begin_inset Formula $n^{2}$
+\end_inset
+
+).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+One option is to include only a subset of higher-order terms, but it will
+ probably underfit the data.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Neural networks: algorithms that try to mimic the brain.
+\end_layout
+
+\begin_layout Itemize
+Recent resurgence: state-of-the-art technique for many computational application
+s.
+\end_layout
+
+\begin_layout Itemize
+Computationally more expensive.
+\end_layout
+
+\begin_layout Subsection*
+Neural networks
+\end_layout
+
+\begin_layout Itemize
+Developed as simulating networks of neurons in the brain.
+\end_layout
+
+\begin_layout Itemize
+Neuron structure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Dendrites: 
+\begin_inset Quotes eld
+\end_inset
+
+input wires,
+\begin_inset Quotes erd
+\end_inset
+
+ receive inputs from other locations.
+\end_layout
+
+\begin_layout Itemize
+Axon: 
+\begin_inset Quotes eld
+\end_inset
+
+output wire,
+\begin_inset Quotes erd
+\end_inset
+
+ used to send signals to other neurons.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Neuron model: logistic unit.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We use a model of what a neuron does: it takes some number of inputs (
+\begin_inset Formula $x_{1},x_{2},...,x_{n}$
+\end_inset
+
+), does some computation, and sends an output 
+\begin_inset Formula $h_{\theta}\left(x\right)=\frac{1}{1+e^{-\theta^{T}x}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is a sigmoid (logistic) activation function.
+\end_layout
+
+\begin_layout Itemize
+The parameters 
+\begin_inset Formula $\theta$
+\end_inset
+
+ are sometimes referred to as 
+\begin_inset Quotes eld
+\end_inset
+
+weights.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Formula $x_{0}$
+\end_inset
+
+ is sometimes referred to as the 
+\begin_inset Quotes eld
+\end_inset
+
+bias unit.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Neural network: divide into layers.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Layer 1: 
+\begin_inset Quotes eld
+\end_inset
+
+input layer,
+\begin_inset Quotes erd
+\end_inset
+
+ made up of input features.
+\end_layout
+
+\begin_layout Itemize
+Layer 2: some set of neurons, called 
+\begin_inset Quotes eld
+\end_inset
+
+hidden layers.
+\begin_inset Quotes erd
+\end_inset
+
+ Can be several hidden layers.
+\end_layout
+
+\begin_layout Itemize
+Final layer: 
+\begin_inset Quotes eld
+\end_inset
+
+output layer,
+\begin_inset Quotes erd
+\end_inset
+
+ outputs final value computed by a hypothesis.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Notation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $a_{i}^{\left(j\right)}$
+\end_inset
+
+: 
+\begin_inset Quotes eld
+\end_inset
+
+activation
+\begin_inset Quotes erd
+\end_inset
+
+ of unit 
+\begin_inset Formula $i$
+\end_inset
+
+ in layer 
+\begin_inset Formula $j$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Theta^{\left(j\right)}$
+\end_inset
+
+: matrix of weights controlling function mapping from layer 
+\begin_inset Formula $j$
+\end_inset
+
+ to layer 
+\begin_inset Formula $j+1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If a network has 
+\begin_inset Formula $s_{j}$
+\end_inset
+
+ units in layer 
+\begin_inset Formula $j$
+\end_inset
+
+ and 
+\begin_inset Formula $s_{j+1}$
+\end_inset
+
+units in layer 
+\begin_inset Formula $j+1$
+\end_inset
+
+, then 
+\begin_inset Formula $\Theta^{\left(j\right)}$
+\end_inset
+
+ will be of dimension 
+\begin_inset Formula $s_{j+1}\times\left(s_{j}+1\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Example: 
+\begin_inset Formula $a_{1}^{\left(2\right)}=g\left(\Theta_{10}^{\left(1\right)}x_{0}+\Theta_{11}^{\left(1\right)}x_{1}+\Theta_{12}^{\left(1\right)}x_{2}+\Theta_{13}^{\left(1\right)}x_{3}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Can write 
+\begin_inset Formula $z_{1}^{\left(2\right)}=\Theta_{10}^{\left(1\right)}x_{0}+\Theta_{11}^{\left(1\right)}x_{1}+\Theta_{12}^{\left(1\right)}x_{2}+\Theta_{13}^{\left(1\right)}x_{3}$
+\end_inset
+
+; i.e.
+ a row of 
+\begin_inset Formula $\Theta$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Vectorized implementation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $z^{\left(2\right)}=\Theta^{\left(1\right)}x=\Theta^{\left(1\right)}a^{\left(1\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $a^{\left(2\right)}=g\left(z^{\left(2\right)}\right)$
+\end_inset
+
+ (here 
+\begin_inset Formula $z^{\left(2\right)}$
+\end_inset
+
+ is a column vector of 
+\begin_inset Formula $z_{1}^{\left(2\right)},...,z_{3}^{\left(2\right)}$
+\end_inset
+
+.
+ Note that 
+\begin_inset Formula $g\left(z\right)$
+\end_inset
+
+ is applied element-wise.
+\end_layout
+
+\begin_layout Itemize
+Add 
+\begin_inset Formula $a_{0}^{\left(2\right)}=1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $z^{\left(3\right)}=\Theta^{\left(2\right)}a^{\left(2\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $h_{\Theta}\left(x\right)=a^{\left(3\right)}=g\left(z^{\left(3\right)}\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+We can think of the way a neural network works as though it is 
+\begin_inset Quotes eld
+\end_inset
+
+learning its own features.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The function mapping 
+\begin_inset Formula $a^{\left(1\right)}$
+\end_inset
+
+ to 
+\begin_inset Formula $a^{\left(2\right)}$
+\end_inset
+
+ is what changes the input features to new features which go into the hidden
+ layers.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+You can have neural networks with other types of layouts.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The layout is referred to as the 
+\begin_inset Quotes eld
+\end_inset
+
+architechture.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Applications
+\end_layout
+
+\begin_layout Itemize
+Can set up a neural network which acts as a logical filter (AND, OR, XOR,
+ NOT, etc.).
+\end_layout
+
+\begin_layout Itemize
+Interesting because sometimes these functions (XOR, for example) require
+ non-linear decision boundaries.
+\end_layout
+
+\begin_layout Itemize
+Multi-class classification:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Build a neural network with as many outputs as there are classes.
+\end_layout
+
+\begin_layout Itemize
+Then 
+\begin_inset Formula $h_{\Theta}\left(x\right)$
+\end_inset
+
+ is a vector, and we take the largest entry to be the predicted class.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
