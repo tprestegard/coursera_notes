@@ -2445,5 +2445,670 @@ Then
 \end_layout
 
 \end_deeper
+\begin_layout Section*
+Neural networks: learning
+\end_layout
+
+\begin_layout Subsection*
+Cost function and backpropagation
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $L$
+\end_inset
+
+: number of layers in the network.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $s_{l}$
+\end_inset
+
+: number of units (not counting bias unit) in layer 
+\begin_inset Formula $l$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Binary classification:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Labels 
+\begin_inset Formula $y$
+\end_inset
+
+ are either 0 or 1.
+\end_layout
+
+\begin_layout Itemize
+One output unit (
+\begin_inset Formula $K=1$
+\end_inset
+
+).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Multi-class classification:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $K$
+\end_inset
+
+ classes, 
+\begin_inset Formula $y\in R^{K}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $K$
+\end_inset
+
+ output units.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cost function:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Logistic regression: 
+\begin_inset Formula $J\left(\theta\right)=\frac{1}{m}\left[\sum_{i=1}^{m}y^{\left(i\right)}\log\left(h_{\theta}\left(x^{\left(i\right)}\right)\right)+\left(1-y^{\left(i\right)}\right)\log\left(1-h_{\theta}\left(x^{\left(i\right)}\right)\right)\right]+\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_{j}^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Neural network: 
+\begin_inset Formula $h_{\Theta}\left(x\right)\in R^{K}$
+\end_inset
+
+ (
+\begin_inset Formula $K$
+\end_inset
+
+-dimensional vector), 
+\begin_inset Formula $\left(h_{\Theta}\left(x\right)\right)_{i}=i$
+\end_inset
+
+th output.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $J\left(\Theta\right)=-\frac{1}{m}\left[\sum_{i=1}^{m}\sum_{k=1}^{K}y_{k}^{\left(i\right)}\log\left(h_{\Theta}\left(x^{\left(i\right)}\right)\right)_{k}+\left(1-y_{k}^{\left(i\right)}\right)\log\left(1-\left(h_{\Theta}\left(x^{\left(i\right)}\right)\right)_{k}\right)\right]+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_{l}}\sum_{j=1}^{s_{l+1}}\left(\Theta_{ji}^{\left(l\right)}\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Gradient computation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+One training example 
+\begin_inset Formula $\left(x,y\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Forward propagation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $a^{\left(1\right)}=x$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $a^{\left(2\right)}=g\left(z^{\left(2\right)}\right)=g\left(\Theta^{\left(1\right)}a^{\left(1\right)}\right)$
+\end_inset
+
+ (add 
+\begin_inset Formula $a_{0}^{\left(2\right)}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $a^{\left(3\right)}=g\left(z^{\left(3\right)}\right)=g\left(\Theta^{\left(2\right)}a^{\left(2\right)}\right)$
+\end_inset
+
+ (add 
+\begin_inset Formula $a_{0}^{\left(3\right)}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $a^{\left(4\right)}=h_{\Theta}\left(x\right)=g\left(z^{\left(4\right)}\right)=g\left(\Theta^{\left(3\right)}a^{\left(3\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Then, we use backpropagation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Intuition: 
+\begin_inset Formula $\delta_{j}^{\left(l\right)}=$
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+error
+\begin_inset Quotes erd
+\end_inset
+
+ of node 
+\begin_inset Formula $j$
+\end_inset
+
+ in layer 
+\begin_inset Formula $l$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+For each output unit (layer 
+\begin_inset Formula $L=4$
+\end_inset
+
+), 
+\begin_inset Formula $\delta_{j}^{\left(4\right)}=a_{j}^{\left(4\right)}-y_{j}$
+\end_inset
+
+.
+ (difference between the hypothesis and the actual classification)
+\end_layout
+
+\begin_layout Itemize
+Vectorized version: 
+\begin_inset Formula $\delta^{\left(4\right)}=a^{\left(4\right)}-y$
+\end_inset
+
+, each of these is a vector with number of elements equal to the number
+ of output units 
+\begin_inset Formula $K$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\delta^{\left(3\right)}=\left(\Theta^{\left(3\right)}\right)^{T}\delta^{\left(4\right)}.*g'\left(z^{\left(3\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\delta^{\left(2\right)}=\left(\Theta^{\left(2\right)}\right)^{T}\delta^{\left(3\right)}.*g'\left(z^{\left(2\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+No 
+\begin_inset Formula $\delta^{\left(1\right)}$
+\end_inset
+
+ for this example.
+\end_layout
+
+\begin_layout Itemize
+Notes: 
+\begin_inset Formula $g'\left(z^{\left(i\right)}\right)=a^{\left(i\right)}.*\left(1-a^{\left(i\right)}\right)=g\left(z^{\left(i\right)}\right).*\left(1-g\left(z^{\left(i\right)}\right)\right)$
+\end_inset
+
+, and 
+\begin_inset Formula $.*$
+\end_inset
+
+ indicates element-wise multiplication.
+\end_layout
+
+\begin_layout Itemize
+It is possible to prove that the partial derivative terms we want are given
+ by 
+\begin_inset Formula $\frac{\partial}{\partial\Theta_{ij}^{\left(l\right)}}J\left(\Theta\right)=a_{j}^{\left(l\right)}\delta_{i}^{\left(l+1\right)}$
+\end_inset
+
+ (without regularization).
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Backpropagation algorithm:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Training set 
+\begin_inset Formula $\left\{ \left(x^{\left(1\right)},y^{\left(1\right)}\right),...,\left(x^{\left(m\right)},y^{\left(m\right)}\right)\right\} $
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Set 
+\begin_inset Formula $\Delta_{ij}^{\left(l\right)}=0$
+\end_inset
+
+ for all 
+\begin_inset Formula $l,i,j$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+For 
+\begin_inset Formula $i=1:m$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Set 
+\begin_inset Formula $a^{\left(1\right)}=x^{\left(i\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Perform forward propagation to compute 
+\begin_inset Formula $a^{\left(l\right)}$
+\end_inset
+
+ for 
+\begin_inset Formula $l=2,3,...,L$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Using 
+\begin_inset Formula $y^{\left(i\right)}$
+\end_inset
+
+, compute 
+\begin_inset Formula $\delta^{\left(L\right)}=a^{\left(L\right)}-y^{\left(i\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Compute 
+\begin_inset Formula $\delta^{\left(L-1\right)},\delta^{\left(L-2\right)},...,\delta^{\left(2\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Delta_{ij}^{\left(l\right)}:=\Delta_{ij}^{\left(l\right)}+a_{j}^{\left(l\right)}\delta_{i}^{\left(l+1\right)}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Vectorized form: 
+\begin_inset Formula $\Delta^{\left(l\right)}:=\Delta^{\left(l\right)}+\delta^{\left(l+1\right)}\left(a^{\left(l\right)}\right)^{T}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+After the for loop, we compute:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $D_{ij}^{\left(l\right)}:=\frac{1}{m}\Delta_{ij}^{\left(l\right)}+\lambda\Theta_{ij}^{\left(l\right)}$
+\end_inset
+
+, if 
+\begin_inset Formula $j\neq0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $D_{ij}^{\left(l\right)}:=\frac{1}{m}\Delta_{ij}^{\left(l\right)}$
+\end_inset
+
+, if 
+\begin_inset Formula $j=0$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can show that 
+\begin_inset Formula $\frac{\partial}{\partial\Theta_{ij}^{\left(l\right)}}J\left(\Theta\right)=D_{ij}^{\left(l\right)}$
+\end_inset
+
+, so we can use this in gradient descent or other optimization algorithms.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+What is backpropagation doing?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\delta_{j}^{\left(l\right)}$
+\end_inset
+
+: 
+\begin_inset Quotes eld
+\end_inset
+
+error
+\begin_inset Quotes erd
+\end_inset
+
+ of cost for 
+\begin_inset Formula $a_{j}^{\left(l\right)}$
+\end_inset
+
+ (unit 
+\begin_inset Formula $j$
+\end_inset
+
+ in layer 
+\begin_inset Formula $l$
+\end_inset
+
+).
+ I.e., 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\delta_{j}^{\left(l\right)}=\frac{\partial}{\partial z_{j}^{\left(l\right)}}\text{cost}\left(i\right)$
+\end_inset
+
+ for 
+\begin_inset Formula $j\geq0$
+\end_inset
+
+, where cost
+\begin_inset Formula $\left(i\right)=y^{\left(i\right)}\log h_{\Theta}\left(x^{\left(i\right)}\right)+\left(1-y^{\left(i\right)}\right)\log h_{\Theta}\left(x^{\left(i\right)}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+These are a measure of how much we would like to change the neural network's
+ weights so as to change the intermediate values of the computation, and
+ thus change the final outputs, and the cost.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Backpropagation in practice
+\end_layout
+
+\begin_layout Itemize
+Unrolling parameters from matrices into vectors:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% Let's say you defined a function for computing the cost function
+\end_layout
+
+\begin_layout Plain Layout
+
+% Here jVal is a number, and theta and grad are vectors in R^{n+1}
+\end_layout
+
+\begin_layout Plain Layout
+
+function [jVal, grad] = costFunction(theta)
+\end_layout
+
+\begin_layout Plain Layout
+
+% You will pass it to fminunc as:
+\end_layout
+
+\begin_layout Plain Layout
+
+optTheta = fminunc(@costFunction, initialTheta, options)
+\end_layout
+
+\begin_layout Plain Layout
+
+% For a neural network, your parameters Theta are matrices.
+\end_layout
+
+\begin_layout Plain Layout
+
+% The gradients D are also matrices.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Example: a neural net with 10 inputs, a hidden layer of 10 nodes, and 1
+ output.
+ I.e., 
+\begin_inset Formula $s_{1}=10$
+\end_inset
+
+, 
+\begin_inset Formula $s_{2}=10$
+\end_inset
+
+, 
+\begin_inset Formula $s_{3}=1$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\Theta^{\left(1\right)}\in R^{10\times11}$
+\end_inset
+
+, 
+\begin_inset Formula $\Theta^{\left(2\right)}\in R^{10\times11}$
+\end_inset
+
+, 
+\begin_inset Formula $\Theta^{\left(3\right)}\in R^{1\times11}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $D^{\left(1\right)}\in R^{10\times11}$
+\end_inset
+
+, 
+\begin_inset Formula $D^{\left(2\right)}\in R^{10\times11}$
+\end_inset
+
+, 
+\begin_inset Formula $D^{\left(3\right)}\in R^{1\times11}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+To unroll them, you can do: 
+\family typewriter
+thetaVec = [Theta1(:); Theta2(:); Theta3(:)];
+\family default
+, and the same for D.
+\end_layout
+
+\begin_layout Itemize
+To go back to the matrix representation, you can do 
+\family typewriter
+Theta1 = reshape(thetaVec(1:110),10,11); Theta2 = reshape(thetaVec(111:220),10,1
+1); Theta3 = reshape(thetaVec(221:231),1,11);
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: have initial parameters 
+\begin_inset Formula $\Theta^{\left(1\right)}$
+\end_inset
+
+, 
+\begin_inset Formula $\Theta^{\left(2\right)}$
+\end_inset
+
+, 
+\begin_inset Formula $\Theta^{\left(3\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Unroll to get 
+\family typewriter
+initialTheta
+\family default
+ to pass to 
+\family typewriter
+fminunc(@costFunction, initialTheta, options)
+\end_layout
+
+\begin_layout Itemize
+Then we change our cost function:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+function [jVal, gradientVec] = costFunction(thetaVec)
+\end_layout
+
+\begin_layout Itemize
+From 
+\family typewriter
+thetaVec
+\family default
+, get 
+\begin_inset Formula $\Theta^{\left(1\right)}$
+\end_inset
+
+, 
+\begin_inset Formula $\Theta^{\left(2\right)}$
+\end_inset
+
+, 
+\begin_inset Formula $\Theta^{\left(3\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Use forward propagation and backpropagation to compute 
+\begin_inset Formula $D^{\left(1\right)}$
+\end_inset
+
+, 
+\begin_inset Formula $D^{\left(2\right)}$
+\end_inset
+
+, 
+\begin_inset Formula $D^{\left(3\right)}$
+\end_inset
+
+ and 
+\begin_inset Formula $J\left(\Theta\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Unroll 
+\begin_inset Formula $D^{\left(1\right)}$
+\end_inset
+
+, 
+\begin_inset Formula $D^{\left(2\right)}$
+\end_inset
+
+, 
+\begin_inset Formula $D^{\left(3\right)}$
+\end_inset
+
+ to get 
+\family typewriter
+gradientVec
+\family default
+.
+\end_layout
+
+\end_deeper
+\end_deeper
 \end_body
 \end_document
