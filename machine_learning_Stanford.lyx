@@ -3110,5 +3110,321 @@ gradientVec
 
 \end_deeper
 \end_deeper
+\begin_layout Itemize
+Downside of backpropagation - easy to have many subtle bugs in your implementati
+on.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+However, there is something called 
+\begin_inset Quotes eld
+\end_inset
+
+gradient checking
+\begin_inset Quotes erd
+\end_inset
+
+ which allows us to catch almost all of these bugs.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Gradient checking
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Numerical estimate of gradients: 
+\begin_inset Formula $\frac{\partial}{\partial\theta}J\left(\theta\right)\approx\frac{J\left(\theta+\epsilon\right)-J\left(\theta-\epsilon\right)}{2\epsilon}$
+\end_inset
+
+.
+ Usually, we take 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ to be very small, something like 
+\begin_inset Formula $10^{-4}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Implementation in Matlab: 
+\family typewriter
+gradApprox = (J(theta + eps) - J(theta - eps))/(2*eps);
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Gradient checking with a parameter vector 
+\begin_inset Formula $\theta\in R^{n}$
+\end_inset
+
+ (
+\begin_inset Formula $\theta$
+\end_inset
+
+ is the unrolled version of 
+\begin_inset Formula $\Theta^{\left(1\right)},\Theta^{\left(2\right)}$
+\end_inset
+
+, etc.).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\theta=\left[\theta_{1},\theta_{2},...,\theta_{n}\right]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\frac{\partial}{\partial\theta_{i}}J\left(\theta\right)\approx\frac{J\left(\theta_{1},...,\theta_{i}+\epsilon,...,\theta_{n}\right)-J\left(\theta_{1},...,\theta_{i}-\epsilon,...,\theta_{n}\right)}{2\epsilon}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+These equations give a way to numerically approximate the gradient with
+ respect to any of your parameters.
+\end_layout
+
+\begin_layout Itemize
+Implementation in Matlab:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for i=1:n
+\end_layout
+
+\begin_layout Plain Layout
+
+	thetaPlus = theta;
+\end_layout
+
+\begin_layout Plain Layout
+
+	thetaPlus(i) = thetaPlus(i) + epsilon;
+\end_layout
+
+\begin_layout Plain Layout
+
+	thetaMinus = theta;
+\end_layout
+
+\begin_layout Plain Layout
+
+	thetaMinus(i) = thetaMinus(i) - epsilon;
+\end_layout
+
+\begin_layout Plain Layout
+
+	gradApprox(i) = (J(thetaPlus) - J(thetaMinus))/(2*epsilon);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Implemenation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Implement backpropagation to compute 
+\family typewriter
+DVec
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+Implement numerical gradient checking to compute 
+\family typewriter
+gradApprox
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+Make sure they give similar values for a few test cases.
+\end_layout
+
+\begin_layout Itemize
+Turn off gradient checking; just use backpropagation for future runs.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Important: make sure to disable your gradient checking code before training
+ your classifier, otherwise your code will be very slow.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Random initialization: we need to pick some initial value for 
+\begin_inset Formula $\Theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For gradient descent, we previously set 
+\family typewriter
+initialTheta = zeros(n,1)
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This doesn't work for training a neural network; it will result in all nodes
+ being the same and all deltas being the same.
+ All of the partial derivatives will be equal to each other, as well.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+So, for a neural network, we need to use a random choice for 
+\family typewriter
+initialTheta
+\family default
+ between 
+\begin_inset Formula $\left[-\epsilon,\epsilon\right]$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+Theta1 = rand(10,11)*(2*initEps) - initEps;
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Theta2 = rand(1,11)*(2*initEps) - initEps;
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Putting it all together:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+First, pick some network architecture, or connectivity pattern between neurons.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Number of input units should be the number of features.
+\end_layout
+
+\begin_layout Itemize
+Number of output units should be the number of possible classifications.
+\end_layout
+
+\begin_layout Itemize
+Reasonable default: one hidden layer, or if more than one hidden layer,
+ have the same number of units in each hidden layer (usually the more, the
+ better, although more units requires more computational power).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Next, we need to train a neural network.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+First, randomly initialize the weights.
+\end_layout
+
+\begin_layout Itemize
+Then, implement forward propagation to get 
+\begin_inset Formula $h_{\Theta}\left(x^{\left(i\right)}\right)$
+\end_inset
+
+ for any 
+\begin_inset Formula $x^{\left(i\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Implement code to compute the cost function 
+\begin_inset Formula $J\left(\Theta\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Implement backpropagation to compute partial derivatives 
+\begin_inset Formula $\frac{\partial}{\partial\Theta_{jk}^{\left(l\right)}}J\left(\Theta\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Usually requires a for loop.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Use gradient checking to compare the partial derivatives computed using
+ backpropagation to those computed numerically for a few examples.
+\end_layout
+
+\begin_layout Itemize
+Disable gradient checking code if everything seems OK.
+\end_layout
+
+\begin_layout Itemize
+Use gradient descent or advanced optimization methods with backpropagation
+ to try to minimize 
+\begin_inset Formula $J\left(\Theta\right)$
+\end_inset
+
+ as a function of the parameters 
+\begin_inset Formula $\Theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Note: 
+\begin_inset Formula $J\left(\Theta\right)$
+\end_inset
+
+ is not necessarily convex, so it is possible for the algorithms to get
+ stuck in local optima.
+\end_layout
+
+\end_deeper
+\end_deeper
 \end_body
 \end_document
