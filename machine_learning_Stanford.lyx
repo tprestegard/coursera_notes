@@ -3426,5 +3426,286 @@ Note:
 
 \end_deeper
 \end_deeper
+\begin_layout Section*
+Advice for applying machine learning
+\end_layout
+
+\begin_layout Subsection*
+Evaluating a learning algorithm
+\end_layout
+
+\begin_layout Itemize
+How do you decide what the most promising avenues to explore are?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose you have implemented regularized linear regression to predict housing
+ prices.
+\end_layout
+
+\begin_layout Itemize
+However, when you test your hypothesis on a new set of houses, you find
+ that it makes unacceptably large errors in its predictions.
+\end_layout
+
+\begin_layout Itemize
+What should you try next?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Get more training examples, although this doesn't always help.
+\end_layout
+
+\begin_layout Itemize
+Spend time trying to carefully select a smaller set of features.
+\end_layout
+
+\begin_layout Itemize
+Try getting additional features.
+\end_layout
+
+\begin_layout Itemize
+Try adding polynomial features.
+\end_layout
+
+\begin_layout Itemize
+Try increasing or decreasing the regularization parameter 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Machine learning diagnostics: tests you can run to gain insight into what
+ is/isn't working with a learning algorithm, and gain guidance as to how
+ best to improve its performance.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Diagnostics can take time to implement, but doing so can be a very good
+ use of your time.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Evaluating your hypothesis:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Split your data into two portions: training and testing datasets.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Typical split is about 70% training, 30% testing.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $m_{test}$
+\end_inset
+
+: number of test examples.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\left(x_{test}^{\left(i\right)},y_{test}^{\left(i\right)}\right)$
+\end_inset
+
+: 
+\begin_inset Formula $i$
+\end_inset
+
+th example from test dataset.
+\end_layout
+
+\begin_layout Itemize
+Should usually divide dataset by randomly choosing samples since there may
+ sometimes be some order to the samples.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Procedure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Learn parameters 
+\begin_inset Formula $\theta$
+\end_inset
+
+ from training data by minimizing training error 
+\begin_inset Formula $J\left(\theta\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Compute test set error 
+\begin_inset Formula $J_{test}\left(\theta\right)=\frac{1}{2m_{test}}\sum_{i=1}^{m_{test}}\left(h_{\theta}\left(x_{test}^{\left(i\right)}\right)-y_{test}^{\left(i\right)}\right)^{2}$
+\end_inset
+
+ (this example is for linear regression).
+\end_layout
+
+\begin_layout Itemize
+Alternate definition of test set error: 0/1 misclassification error.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $err\left(h_{\theta}\left(x\right),y\right)=\left\{ \begin{array}{c}
+1,h_{\theta}\left(x\right)\geq0.5,y=0|h_{\theta}\left(x\right)<0.5,y=1\\
+0,\text{otherwise}
+\end{array}\right.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Test error: 
+\begin_inset Formula $\frac{1}{m_{test}}\sum_{i=1}^{m_{test}}err\left(h_{\theta}\left(x^{\left(i\right)}\right),y^{\left(i\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+When parameters are fit using a training set, the error of the parameters
+ as measured on that data (training set error) is likely to be lower than
+ when you measure the error on another, independent dataset (generalization
+ error).
+\end_layout
+
+\begin_layout Itemize
+Model selection
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Say you have a choice of models with different degrees of polynomials,.
+\end_layout
+
+\begin_layout Itemize
+It's as if you have another parameter, 
+\begin_inset Formula $d$
+\end_inset
+
+, which is the highest degree of the polynomial used in the model.
+\end_layout
+
+\begin_layout Itemize
+You could fit each model to your training data and get a set of parameters
+ for each model 
+\begin_inset Formula $\theta^{\left(d\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Then you can look at the test set and compute the cost for each model: 
+\begin_inset Formula $J_{test}\left(\theta^{\left(d\right)}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Then, rind the model with the lowest cost.
+ For this example, assume it's the model with parameters 
+\begin_inset Formula $\theta^{\left(5\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Question: how well does the model generalize? Could report test set error
+ 
+\begin_inset Formula $J_{test}\left(\theta^{\left(5\right)}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Problem: 
+\begin_inset Formula $J_{test}\left(\theta^{\left(5\right)}\right)$
+\end_inset
+
+ is likely to be optimistic because our extra parameter 
+\begin_inset Formula $d$
+\end_inset
+
+ is fit to our test data set.
+\end_layout
+
+\begin_layout Itemize
+Thus, we now need to split our dataset into three pieces:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Training dataset (
+\begin_inset Formula $\approx60\%$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Cross-validation (CV) dataset, sometimes also called validation dataset
+ (
+\begin_inset Formula $\approx20\%$
+\end_inset
+
+).
+ 
+\begin_inset Formula $m_{cv}$
+\end_inset
+
+ is the number of CV examples.
+\end_layout
+
+\begin_layout Itemize
+Test dataset (
+\begin_inset Formula $\approx20\%$
+\end_inset
+
+).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can calculate the CV and test errors just as we have for the training dataset.
+\end_layout
+
+\begin_layout Itemize
+For the best model selection strategy, calculate 
+\begin_inset Formula $J_{cv}\left(\theta^{\left(d\right)}\right)$
+\end_inset
+
+.
+ Then you can safely use 
+\begin_inset Formula $J_{test}\left(\theta^{\left(d\right)}\right)$
+\end_inset
+
+ for the best model to determine the generalization error for that model.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
