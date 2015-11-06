@@ -3707,5 +3707,312 @@ For the best model selection strategy, calculate
 \end_layout
 
 \end_deeper
+\begin_layout Subsection*
+Bias and variance
+\end_layout
+
+\begin_layout Itemize
+High bias is equivalent to underfitting the data.
+\end_layout
+
+\begin_layout Itemize
+High variance is equivalent to overfitting the data.
+\end_layout
+
+\begin_layout Itemize
+Idea for diagnosing bias/variance:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Plot training error vs.
+ degree of polynomial 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Plot cross-validation error vs.
+ degree of polynomial 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Training error will probably decrease with 
+\begin_inset Formula $d$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Cross-validation error will most likely reach a minimum at a certain value
+ of 
+\begin_inset Formula $d$
+\end_inset
+
+, then start increasing again.
+\end_layout
+
+\begin_layout Itemize
+High bias: high training error and high CV error.
+ 
+\begin_inset Formula $J_{train}\left(\theta\right)\approx J_{cv}\left(\theta\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+High variance: low training error, high CV error.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Regularization can help prevent overfitting, but how does it affect bias
+ and variance?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Suppose we are fitting a high-order polynomial.
+\end_layout
+
+\begin_layout Itemize
+How do we choose the regularization parameter 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ to minimize bias and variance?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Try a range of 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ values.
+\end_layout
+
+\begin_layout Itemize
+For each 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ value, we find the set of parameters 
+\begin_inset Formula $\theta$
+\end_inset
+
+ which minimizes 
+\begin_inset Formula $J\left(\theta\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Then, apply this set of parameters to the cross-validation dataset and pick
+ whichever 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ ends up giving the lowest 
+\begin_inset Formula $J_{cv}\left(\theta\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Then, apply this to the test set.
+\end_layout
+
+\begin_layout Itemize
+This is model selection applied to the regularization parameter 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Learning curves
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Plotting 
+\begin_inset Formula $J_{train}\left(\theta\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $J_{cv}\left(\theta\right)$
+\end_inset
+
+ versus 
+\begin_inset Formula $m$
+\end_inset
+
+ (training set size).
+\end_layout
+
+\begin_layout Itemize
+Lets you see how your algorithm changes with more training examples.
+\end_layout
+
+\begin_layout Itemize
+Average training error will grow with 
+\begin_inset Formula $m$
+\end_inset
+
+ (easy to fit only a few data points, harder to fit many).
+ Will usually start to plateau at a certain point.
+\end_layout
+
+\begin_layout Itemize
+Cross-validation error will tend to decrease as 
+\begin_inset Formula $m$
+\end_inset
+
+ increases.
+\end_layout
+
+\begin_layout Itemize
+High bias (underfitting) case:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Cross-validation error will initially decrease with 
+\begin_inset Formula $m$
+\end_inset
+
+, but will plateau relatively quickly.
+\end_layout
+
+\begin_layout Itemize
+Training error will start small and increase with 
+\begin_inset Formula $m$
+\end_inset
+
+, and will eventually plateau and end up very close to the cross-validation
+ error.
+\end_layout
+
+\begin_layout Itemize
+If a learning algorithm has high bias, getting more training data will not
+ help very much on its own.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+High variance (overfitting) case:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Training error will start small and increase very slowly with 
+\begin_inset Formula $m$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Cross-validation error will start high and decrease very slowly with 
+\begin_inset Formula $m$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+There will be a big gap between the training and cross-validation error.
+\end_layout
+
+\begin_layout Itemize
+If a learning algorithm has high variance, getting more training data is
+ likely to help.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Debugging a learning algorithm
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Getting more training examples will help with high variance cases.
+\end_layout
+
+\begin_layout Itemize
+Trying a smaller set of features will also help with high variance cases.
+\end_layout
+
+\begin_layout Itemize
+Adding features will help with high bias problems.
+\end_layout
+
+\begin_layout Itemize
+Adding polynomial features will also help with high bias problems.
+\end_layout
+
+\begin_layout Itemize
+Decreasing 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ will help fix high bias problems.
+\end_layout
+
+\begin_layout Itemize
+Increasing 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ will help fix high variance problems.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Neural networks and overfitting.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Small
+\begin_inset Quotes erd
+\end_inset
+
+ neural network: fewer parameters, computationally cheaper, more prone to
+ underfitting.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Large
+\begin_inset Quotes erd
+\end_inset
+
+ neural network: more parameters, computationally more expensive, more prone
+ to overfitting.
+ Use regularization to address overfitting.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
