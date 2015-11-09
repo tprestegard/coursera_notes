@@ -4014,5 +4014,323 @@ Large
 \end_layout
 
 \end_deeper
+\begin_layout Section*
+Machine learning system design
+\end_layout
+
+\begin_layout Subsection*
+Building a spam classifier
+\end_layout
+
+\begin_layout Itemize
+Supervised learning: how do we want to define 
+\begin_inset Formula $x$
+\end_inset
+
+, the set of features of the e-mail?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Could choose 
+\begin_inset Formula $\approx$
+\end_inset
+
+100 words indicative of spam/not spam.
+ (e.g., deal, buy, discount, your name, etc.)
+\end_layout
+
+\begin_layout Itemize
+Given an e-mail, parse it and record whether each word occurs or not.
+\end_layout
+
+\begin_layout Itemize
+Another option is to look through a training set of spam e-mail and pick
+ out the most frequently occurring words automatically, rather than choosing
+ the features manually.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How to spend your time to make your algorithm have low error?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Collect lots of data.
+\end_layout
+
+\begin_layout Itemize
+Develop sophisticated features based on e-mail routing information from
+ e-mail header.
+\end_layout
+
+\begin_layout Itemize
+Develop sophisticated features for message body.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Should 
+\begin_inset Quotes eld
+\end_inset
+
+deal
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Dealer
+\begin_inset Quotes erd
+\end_inset
+
+ be treated as the same word?
+\end_layout
+
+\begin_layout Itemize
+Features about punctuation (spam uses more exclamation points).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Detect misspellings (m0rtgage, w4tches, etc.).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Recommended approach:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Start with a simple algorithm that you can implement quickly.
+\end_layout
+
+\begin_layout Itemize
+Implement it and test on your cross-validation data set.
+\end_layout
+
+\begin_layout Itemize
+Plot learning curves to decide if more data, more features, etc.
+ are likely to help.
+\end_layout
+
+\begin_layout Itemize
+Error analysis: manually examine the examples (in the cross-validation data
+ set) that your algorithm made errors on.
+ See if you spot any systematic trend in what type of examples it is making
+ errors on.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $m_{CV}=500$
+\end_inset
+
+ examples in CV data set.
+\end_layout
+
+\begin_layout Itemize
+Algorithm misclassifies 100 e-mails.
+\end_layout
+
+\begin_layout Itemize
+Manually examine the 100 errors and categorize them baesd on:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What type of e-mail it is.
+\end_layout
+
+\begin_layout Itemize
+What cues (features) you think would have helped the algorithm classify
+ them correctly.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+The importance of numerical evaluation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Should discount/discounts/discounted/discounting be treated as the same
+ word?
+\end_layout
+
+\begin_layout Itemize
+In natural language processing, can use 
+\begin_inset Quotes eld
+\end_inset
+
+stemming
+\begin_inset Quotes erd
+\end_inset
+
+ software (e.g.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+porter stemmer
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Difficult example: universe/university.
+\end_layout
+
+\begin_layout Itemize
+Error analysis may not be helpful for deciding whether stemming would be
+ useful.
+ Best approach is to just try it and see if it works (i.e., is the cross-validatio
+n error lower with or without stemming?).
+\end_layout
+
+\begin_layout Itemize
+Need numerical evaluation (e.g., cross-validation error) of algorithm's performanc
+e with/without stemming.
+\end_layout
+
+\begin_layout Itemize
+Distinguish between upper/lower case.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Handling skewed data
+\end_layout
+
+\begin_layout Itemize
+Example: cancer classification.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Train logistic regression model 
+\begin_inset Formula $h_{\theta}\left(x\right)$
+\end_inset
+
+; 
+\begin_inset Formula $y=1$
+\end_inset
+
+ means that the patient has cancer.
+\end_layout
+
+\begin_layout Itemize
+Find that we get 1% error on test set (99% correct diagnoses).
+\end_layout
+
+\begin_layout Itemize
+But if only 0.50% of patients have cancer, our result is not particularly
+ good.
+\end_layout
+
+\begin_layout Itemize
+This is an example of skewed classes, where we have a lot more of one class
+ than the other.
+\end_layout
+
+\begin_layout Itemize
+In this case, classification accuracy is not very useful.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Precision/recall evaluation metric:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Take 
+\begin_inset Formula $y=1$
+\end_inset
+
+ in presence of rare class that we want to detect.
+\end_layout
+
+\begin_layout Itemize
+True positive: predicted class is 1 and actual class is 1.
+\end_layout
+
+\begin_layout Itemize
+True negative: predicted class is 0 and actual class is 0.
+\end_layout
+
+\begin_layout Itemize
+False positive: predicted class is 1 and actual class is 0.
+\end_layout
+
+\begin_layout Itemize
+False negative: predicted class is 0 and actual class is 1.
+\end_layout
+
+\begin_layout Itemize
+Precision: of all patients where we predicted 
+\begin_inset Formula $y=1$
+\end_inset
+
+, what fraction actually has cancer?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Equal to number of true positives divided by the total number of predicted
+ positives: 
+\begin_inset Formula $N_{TP}/\left(N_{TP}+N_{FP}\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Recall: of all patients that actually have cancer, what fraction did we
+ correctly detect as having cancer?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Equal to number of true positives divided by the number of actual positives:
+ 
+\begin_inset Formula $N_{TP}/\left(N_{TP}+N_{FN}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Also called 
+\series bold
+sensitivity
+\series default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+This may be more useful in general for skewed classes than classification
+ accuracy would be.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\end_layout
+
 \end_body
 \end_document
