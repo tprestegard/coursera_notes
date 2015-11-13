@@ -4328,9 +4328,262 @@ This may be more useful in general for skewed classes than classification
 \end_layout
 
 \end_deeper
+\begin_layout Section*
+Support vector machines
+\end_layout
+
+\begin_layout Subsection*
+Large margin classification
+\end_layout
+
 \begin_layout Itemize
+Alternative view of logistic regression:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Think about what we want logistic regression to do.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If 
+\begin_inset Formula $y=1$
+\end_inset
+
+, we want 
+\begin_inset Formula $h_{\theta}\left(x\right)\approx1$
+\end_inset
+
+, 
+\begin_inset Formula $\theta^{T}x\gg0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $y=0$
+\end_inset
+
+, we want 
+\begin_inset Formula $h_{\theta}\left(x\right)\approx0$
+\end_inset
+
+, 
+\begin_inset Formula $\theta^{T}x\ll0$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cost of example: 
+\begin_inset Formula $-\left(y\log h_{\theta}\left(x\right)+\left(1-y\right)\log\left(1-h_{\theta}\left(x\right)\right)\right)$
+\end_inset
+
 
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+If 
+\begin_inset Formula $y=1$
+\end_inset
+
+, the cost is 
+\begin_inset Formula $-\log\left(h_{\theta}\left(x\right)\right)=-\log\left(\frac{1}{1+\exp\left(-\theta^{T}x\right)}\right)$
+\end_inset
+
+; as 
+\begin_inset Formula $\theta^{T}x$
+\end_inset
+
+ gets large, the cost becomes small.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+To make a support vector machine, we use a 
+\begin_inset Quotes eld
+\end_inset
+
+simpler
+\begin_inset Quotes erd
+\end_inset
+
+ cost function: instead we use two lines.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Cost = 0 for 
+\begin_inset Formula $z=\theta^{T}x>1$
+\end_inset
+
+ (for 
+\begin_inset Formula $y=1$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Cost = linear function which follows curve for 
+\begin_inset Formula $z<1$
+\end_inset
+
+ (for 
+\begin_inset Formula $y=1$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Do the same thing for the case where 
+\begin_inset Formula $y=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+This will give us a computational advantage.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Support vector machine cost function: 
+\begin_inset Formula $J\left(\theta\right)=C\sum_{i=1}^{m}y^{\left(i\right)}\text{cost}_{1}\left(\theta^{T}x^{\left(i\right)}\right)+\left(1-y^{\left(i\right)}\right)\text{cost}_{0}\left(\theta^{T}x^{\left(i\right)}\right)+\frac{1}{2}\sum_{i=0}^{n}\theta_{j}^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We ignore the factor of 
+\begin_inset Formula $m$
+\end_inset
+
+ that was in previous cost functions because it's just a normalization factor.
+\end_layout
+
+\begin_layout Itemize
+We also pull out 
+\begin_inset Formula $\lambda$
+\end_inset
+
+from the regularization term.
+ 
+\begin_inset Formula $C=\frac{1}{\lambda}$
+\end_inset
+
+ is now the coefficient of the first term.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+We could have set our threshold at 
+\begin_inset Formula $\theta^{T}x\geq0$
+\end_inset
+
+ for 
+\begin_inset Formula $y=1$
+\end_inset
+
+ (and similarly for 
+\begin_inset Formula $y=0$
+\end_inset
+
+), but putting at 
+\begin_inset Formula $\theta^{T}x\geq1$
+\end_inset
+
+ means a stronger prediction.
+\end_layout
+
+\begin_layout Itemize
+Consider a case where we set 
+\begin_inset Formula $C$
+\end_inset
+
+ to be a very large value, like 
+\begin_inset Formula $10^{5}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+When minimizing the cost function, it will try to set the first term to
+ be 0.
+\end_layout
+
+\begin_layout Itemize
+This requires we find 
+\begin_inset Formula $\theta^{T}x^{\left(i\right)}\geq0$
+\end_inset
+
+ for 
+\begin_inset Formula $y^{\left(i\right)}=1$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta^{T}x^{\left(i\right)}\leq-1$
+\end_inset
+
+ for 
+\begin_inset Formula $y^{\left(i\right)}=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+End result is a very interesting decision boundary.
+ For a linearly separable case, the decision boundary will be close to what
+ appears optimal by eye.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This 
+\begin_inset Quotes eld
+\end_inset
+
+distance
+\begin_inset Quotes erd
+\end_inset
+
+ between the two classes is the 
+\emph on
+margin
+\emph default
+, the SVM tries to separate the two classes with as large of a margin as
+ possible.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Large margin classifiers can be sensitive to outliers.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can use an intermediate value for 
+\begin_inset Formula $C$
+\end_inset
+
+ instead of a very large one in order to reduce the effect of outliers.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
