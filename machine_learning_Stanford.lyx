@@ -4328,6 +4328,236 @@ This may be more useful in general for skewed classes than classification
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Example: suppose we want to predict 
+\begin_inset Formula $y=1$
+\end_inset
+
+ (cancer) only if very confident.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Could increase our prediction threshold:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Predict 1 if 
+\begin_inset Formula $h_{\theta}\left(x\right)\geq0.7$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Predict 0 if 
+\begin_inset Formula $h_{\theta}\left(x\right)<0.7$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+This will increase our precision - more of our predictions will be true.
+\end_layout
+
+\begin_layout Itemize
+It will also lower the recall because we predict fewer people will have
+ cancer.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Example: suppose we want to avoid missing too many cases of cancer (avoid
+ false negatives).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Could decrease our prediction threshold:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Predict 1 if 
+\begin_inset Formula $h_{\theta}\left(x\right)\geq0.3$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Predict 0 if 
+\begin_inset Formula $h_{\theta}\left(x\right)<0.3$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+This will give higher recall - we will flag almost all patients who do have
+ cancer.
+\end_layout
+
+\begin_layout Itemize
+But the precision will be lower - a higher fraction of the patients who
+ we predict to have cancer will not actually have cancer.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Main point: you can vary the value of your threshold and plot a curve which
+ shows a precision vs.
+ recall threshold.
+\end_layout
+
+\begin_layout Itemize
+Question: is there a way to choose this threshold optimally?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $F_{1}$
+\end_inset
+
+ score: tells us how to compare/weight precision and recall.
+ (also just called F score)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $F_{1}=2\frac{PR}{P+R}$
+\end_inset
+
+.
+ Like taking an average, but gives the lower score more weight.
+\end_layout
+
+\begin_layout Subsection*
+Data for machine learning
+\end_layout
+
+\begin_layout Itemize
+Designing a high-accuracy learning system
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: classify between confusable words (to, two, too; then, than).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Algorithms: Perceptron (logistic regression), Winnow, memory-based, naive
+ Bayes.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Test all algorithms and vary training set size - as training set size increases,
+ at a certain point, most algorithms end up getting very similar results.
+\end_layout
+
+\begin_layout Itemize
+Saying: 
+\begin_inset Quotes eld
+\end_inset
+
+It's not who has the best algorithm that wins, it's who has the most data.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Large data rationale
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assume features 
+\begin_inset Formula $x\in R^{n+1}$
+\end_inset
+
+ has sufficient information to predict 
+\begin_inset Formula $y$
+\end_inset
+
+ accurately.
+\end_layout
+
+\begin_layout Itemize
+Example: for breakfast I ate _____ eggs.
+ (algorithm should put in 
+\emph on
+two
+\emph default
+)
+\end_layout
+
+\begin_layout Itemize
+Counterexample: predict housing price from only size (square feet) and no
+ other features.
+\end_layout
+
+\begin_layout Itemize
+Useful test: given the input 
+\begin_inset Formula $x$
+\end_inset
+
+, can a human expert confidently predict 
+\begin_inset Formula $y$
+\end_inset
+
+?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can help determine if we have enough information for the learning algorithm
+ to do a good job.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Use a learning algorithm with many parameters (e.g., logistic/linear regression
+ with many features or a neural network with many hidden units).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This should give low bias and 
+\begin_inset Formula $J_{train}\left(\theta\right)$
+\end_inset
+
+ should be small.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Use a very large training set (unlikely to overfit).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If 
+\begin_inset Formula $J_{train}\left(\theta\right)\approx J_{test}\left(\theta\right)$
+\end_inset
+
+, then 
+\begin_inset Formula $J_{test}\left(\theta\right)$
+\end_inset
+
+ will most likely be small.
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
 \begin_layout Section*
 Support vector machines
 \end_layout
