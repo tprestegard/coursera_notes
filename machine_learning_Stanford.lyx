@@ -4830,7 +4830,7 @@ Magnitude:
 
 \begin_layout Itemize
 Inner product: 
-\begin_inset Formula $u\cdot v=\sum_{i}u_{i}v_{i}=u^{T}v=v^{T}u$
+\begin_inset Formula $u\cdot v=\sum_{i}u_{i}v_{i}=u^{T}v=v^{T}u=p\left|u\right|$
 \end_inset
 
 .
@@ -4842,7 +4842,11 @@ Inner product:
 \begin_inset Formula $u$
 \end_inset
 
- multiplied by the magnitude of 
+ (
+\begin_inset Formula $p$
+\end_inset
+
+) multiplied by the magnitude of 
 \begin_inset Formula $u$
 \end_inset
 
@@ -4901,6 +4905,9 @@ Note: we make a simplification and take
 
 \end_deeper
 \begin_layout Itemize
+\begin_inset Formula $\theta^{T}x=p^{\left(i\right)}\cdot\left|\theta\right|$
+\end_inset
+
 
 \end_layout
 
