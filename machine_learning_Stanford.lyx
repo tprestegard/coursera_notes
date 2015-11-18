@@ -4900,7 +4900,7 @@ Note: we make a simplification and take
 \begin_inset Formula $\theta_{0}$
 \end_inset
 
- to be 0.
+ to be 0 (this means that the decision boundary will pass through the origin).
 \end_layout
 
 \end_deeper
@@ -4911,6 +4911,309 @@ Note: we make a simplification and take
 
 \end_layout
 
+\end_deeper
+\begin_layout Subsection*
+Kernels
+\end_layout
+
+\begin_layout Itemize
+Question: is there a different or better way to choose features?
+\end_layout
+
+\begin_layout Itemize
+Example: given 
+\begin_inset Formula $x$
+\end_inset
+
+, compute new features based on proximity to landmarks 
+\begin_inset Formula $l^{1}$
+\end_inset
+
+, 
+\begin_inset Formula $l^{2}$
+\end_inset
+
+, 
+\begin_inset Formula $l^{3}$
+\end_inset
+
+ (points randomly chosen to be 
+\begin_inset Quotes eld
+\end_inset
+
+important
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+landmarks
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Given 
+\begin_inset Formula $x$
+\end_inset
+
+: 
+\begin_inset Formula $f_{1}=similarity\left(x,l^{1}\right)=\exp\left(-\frac{\left|x-l^{1}\right|^{2}}{2\sigma^{2}}\right)$
+\end_inset
+
+, similarly for 
+\begin_inset Formula $f_{2},f_{3}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Here, the formula for similarity is called the 
+\emph on
+kernel
+\emph default
+.
+ In this case, we use a Gaussian kernel.
+ Can also be written as 
+\begin_inset Formula $k\left(x,l^{\left(i\right)}\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Kernels and similarity
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $f_{1}=similarity\left(x,l^{1}\right)=\exp\left(-\frac{\left|x-l^{1}\right|^{2}}{2\sigma^{2}}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $x\approx l^{1}$
+\end_inset
+
+, then 
+\begin_inset Formula $f_{1}\approx1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $x$
+\end_inset
+
+ is far from 
+\begin_inset Formula $l^{1}$
+\end_inset
+
+, then 
+\begin_inset Formula $f_{1}\approx0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+This feature 
+\begin_inset Formula $f_{1}$
+\end_inset
+
+ measures how close 
+\begin_inset Formula $x$
+\end_inset
+
+ is to the first landmark, 
+\begin_inset Formula $l^{1}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Formula $\sigma$
+\end_inset
+
+ is a parameter of the kernel.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Larger 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ means a more spread out Gaussian distribution.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How do we choose the landmarks?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Start by choosing the positions of actual samples as landmarks (1 landmark
+ per sample).
+\end_layout
+
+\begin_layout Itemize
+This says your features will measure how close an example is to something
+ from the training set.
+\end_layout
+
+\begin_layout Itemize
+For each new example, there will be 
+\begin_inset Formula $m$
+\end_inset
+
+ features, one for each landmark.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Hypothesis: given 
+\begin_inset Formula $x$
+\end_inset
+
+, compute features 
+\begin_inset Formula $f\in R^{m+1}$
+\end_inset
+
+, predict 
+\begin_inset Formula $y=1$
+\end_inset
+
+ if 
+\begin_inset Formula $\theta^{T}f\geq0$
+\end_inset
+
+.
+ (
+\begin_inset Formula $\theta\in R^{m+1}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Training: minimize cost function 
+\begin_inset Formula $\text{min}C\sum_{i=1}^{m}y^{\left(i\right)}cost_{1}\left(\theta^{T}f^{\left(i\right)}\right)+\left(1-y^{\left(i\right)}\right)cost_{0}\left(\theta^{T}f^{\left(i\right)}\right)+\frac{1}{2}\sum_{j=1}^{n}\theta_{j}^{2}$
+\end_inset
+
+ (here, 
+\begin_inset Formula $n=m$
+\end_inset
+
+, since the number of features is equal to the number of samples).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can write last term as 
+\begin_inset Formula $\sum_{j=1}^{n}\theta_{j}^{2}=\theta^{T}\theta$
+\end_inset
+
+ (ignoring 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Most SVMs replace this with 
+\begin_inset Formula $\theta^{T}M\theta$
+\end_inset
+
+, where 
+\begin_inset Formula $M$
+\end_inset
+
+ is a matrix generally chosen based on your kernel.
+ This is a mathematical detail that allows the algorithm to run much more
+ efficiently.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can apply kernel method for things like logistic regression, but it doesn't
+ work quite as well.
+ SVMs use some computational tricks that logistic regression doesn't.
+\end_layout
+
+\begin_layout Itemize
+Don't recommend to write software to minimize the SVM cost function, use
+ stuff that has already been developed.
+\end_layout
+
+\begin_layout Itemize
+SVM parameters:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $C=1/\lambda$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Large 
+\begin_inset Formula $C$
+\end_inset
+
+: lower bias, higher variance.
+\end_layout
+
+\begin_layout Itemize
+Small 
+\begin_inset Formula $C$
+\end_inset
+
+: higher bias, lower variance.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Large 
+\begin_inset Formula $\sigma^{2}$
+\end_inset
+
+: features 
+\begin_inset Formula $f_{i}$
+\end_inset
+
+ vary more smoothly.
+ Higher bias, lower variance.
+\end_layout
+
+\end_deeper
 \end_deeper
 \end_body
 \end_document
