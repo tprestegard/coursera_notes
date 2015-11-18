@@ -4815,5 +4815,95 @@ Can use an intermediate value for
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Vector stuff
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Magnitude: 
+\begin_inset Formula $\left|u\right|=\sqrt{u_{1}^{2}+u_{2}^{2}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Inner product: 
+\begin_inset Formula $u\cdot v=\sum_{i}u_{i}v_{i}=u^{T}v=v^{T}u$
+\end_inset
+
+.
+ This is equal to the length of the projection of 
+\begin_inset Formula $v$
+\end_inset
+
+ onto 
+\begin_inset Formula $u$
+\end_inset
+
+ multiplied by the magnitude of 
+\begin_inset Formula $u$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+SVM decision boundary
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\text{min}\frac{1}{2}\sum_{j=1}^{n}\theta_{j}^{2}$
+\end_inset
+
+, such that 
+\begin_inset Formula $\theta^{T}x^{\left(i\right)}\geq1$
+\end_inset
+
+ if 
+\begin_inset Formula $y^{\left(i\right)}=1$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta^{T}x^{\left(i\right)}\leq-1$
+\end_inset
+
+ if 
+\begin_inset Formula $y^{\left(i\right)}=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Can think of 
+\begin_inset Formula $\sum_{j=1}^{n}\theta_{j}^{2}=\left(\sqrt{\sum_{j=1}^{n}\theta_{j}^{2}}\right)^{2}$
+\end_inset
+
+, which is like the magnitude of the parameter vector theta:
+\begin_inset Formula $\left|\theta\right|^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Note: we make a simplification and take 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+ to be 0.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
