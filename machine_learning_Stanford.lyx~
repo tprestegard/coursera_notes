@@ -5794,8 +5794,7 @@ Another method: evaluate k-means based on a metric for how well it performs
 
 \begin_deeper
 \begin_layout Itemize
-Example: picking T-shirt sizes (S,M,L vs.
- XS,S,M,L,XL).
+Example: picking T-shirt sizes (S,M,L or XS,S,M,L,XL).
  Think about how number of sizes might impact sales and manufacturing costs.
 \end_layout
 
