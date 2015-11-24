@@ -5782,7 +5782,7 @@ elbow.
 \end_layout
 
 \begin_layout Itemize
-Not used that often - you usually don't see a nice, clear elbow, it's usually
+Not used that often - you usually don't see a nice, clear elbow; it's usually
  a smooth curve.
 \end_layout
 
@@ -5794,8 +5794,249 @@ Another method: evaluate k-means based on a metric for how well it performs
 
 \begin_deeper
 \begin_layout Itemize
-Example: picking T-shirt sizes (S,M,L or XS,S,M,L,XL).
+Example: picking T-shirt sizes (S, M, L vs.
+ XS, S, M, L, XL).
  Think about how number of sizes might impact sales and manufacturing costs.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Section*
+Dimensionality reduction
+\end_layout
+
+\begin_layout Subsection*
+Motivation
+\end_layout
+
+\begin_layout Itemize
+Can be useful when you have some features which are partly or fully correlated.
+\end_layout
+
+\begin_layout Itemize
+Want to define a new feature which encapsulates one or more other features.
+\end_layout
+
+\begin_layout Itemize
+Example: reduce data from 2D to 1D:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Originally have two examples 
+\begin_inset Formula $x^{\left(1\right)}\in R^{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $x^{\left(2\right)}\in R^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If the two features are highly correlated, dimensionality reduction may
+ let us convert to 
+\begin_inset Formula $z^{\left(1\right)}\in R$
+\end_inset
+
+ and 
+\begin_inset Formula $z^{\left(2\right)}\in R$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Dimensionality reduction may allow our algorithms to run more quickly -
+ this is one of the main reasons we pursue it.
+\end_layout
+
+\begin_layout Itemize
+Dimensionality reduction also helps us to visualize the data better.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Hard to plot and visualize 50-dimensional data, but 2D or 3D data is easier.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Principal component analysis (PCA)
+\end_layout
+
+\begin_layout Itemize
+Tries to find a lower-dimensional surface to project the data onto such
+ that it minimizes the orthogonal projection error (least-squares error).
+\end_layout
+
+\begin_layout Itemize
+Should perform feature scaling before doing PCA.
+\end_layout
+
+\begin_layout Itemize
+Problem formulation for reducing from 2D to 1D: find a direction (a vector
+ 
+\begin_inset Formula $u^{\left(1\right)}\in R$
+\end_inset
+
+) onto which to project the data so as to minimize the projection error.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can generalize this to going from 
+\begin_inset Formula $n$
+\end_inset
+
+ dimensions to 
+\begin_inset Formula $k$
+\end_inset
+
+ dimensions.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How does PCA relate to linear regression?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+They are not the same!
+\end_layout
+
+\begin_layout Itemize
+Linear regression: minimize vertical distance between points and regression
+ line.
+ Trying to use 
+\begin_inset Formula $x_{1}$
+\end_inset
+
+ to predict 
+\begin_inset Formula $x_{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+PCA: minimize 
+\emph on
+orthogonal
+\emph default
+ distance between points and projection.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Implementation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Perform feature scaling and mean normalization: 
+\begin_inset Formula $\mu_{j}=\sum_{i=1}^{m}x_{j}^{\left(i\right)}$
+\end_inset
+
+; replace each 
+\begin_inset Formula $x_{j}^{\left(i\right)}$
+\end_inset
+
+ with 
+\begin_inset Formula $x_{j}-\mu_{j}$
+\end_inset
+
+.
+ Then scale by standard deviation.
+\end_layout
+
+\begin_layout Itemize
+Example: reduce data from 
+\begin_inset Formula $n$
+\end_inset
+
+ dimensions to 
+\begin_inset Formula $k$
+\end_inset
+
+ dimensions.
+\end_layout
+
+\begin_layout Itemize
+Compute covariance matrix: 
+\begin_inset Formula $\Sigma=\frac{1}{m}\sum_{i=1}^{n}\left(x^{\left(i\right)}\right)\left(x^{\left(i\right)}\right)^{T}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Compute eigenvectors of matrix 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+: 
+\family typewriter
+[U,S,V] = svd(Sigma);
+\family default
+ (singular value decomposition).
+ Can also use 
+\family typewriter
+eig(Sigma)
+\family default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\Sigma$
+\end_inset
+
+ is 
+\begin_inset Formula $n\times n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $U$
+\end_inset
+
+ is 
+\begin_inset Formula $n\times n$
+\end_inset
+
+; each column is a vector corresponding to a principal component.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Take the first 
+\begin_inset Formula $k$
+\end_inset
+
+ columns of 
+\begin_inset Formula $U$
+\end_inset
+
+.
+ Call this 
+\begin_inset Formula $U_{reduce}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Formula $z=U_{reduce}^{T}x$
+\end_inset
+
+.
 \end_layout
 
 \end_deeper
