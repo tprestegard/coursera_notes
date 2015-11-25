@@ -6028,18 +6028,216 @@ Take the first
 \begin_inset Formula $U_{reduce}$
 \end_inset
 
-
+.
 \end_layout
 
 \end_deeper
 \begin_layout Itemize
-\begin_inset Formula $z=U_{reduce}^{T}x$
+\begin_inset Formula $z=U_{reduce}^{T}\cdot x$
 \end_inset
 
 .
 \end_layout
 
 \end_deeper
+\end_deeper
+\begin_layout Itemize
+Reconstruction from compressed representation: given a point 
+\begin_inset Formula $z$
+\end_inset
+
+ in the compressed space, can we map it back to the full representation
+ 
+\begin_inset Formula $x$
+\end_inset
+
+?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $x_{approx}=U_{reduce}\cdot z$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Variance retained: 
+\begin_inset Formula $\sum_{i=1}^{k}S_{ii}/\sum_{i=1}^{n}S_{ii}\leq1$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Choosing the number of principal components to use:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+PCA tries to minimize the average squared projection error: 
+\begin_inset Formula $\frac{1}{m}\sum_{i=1}^{m}\left|x^{\left(i\right)}-x_{approx}^{\left(i\right)}\right|^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Total variation in the data: 
+\begin_inset Formula $\frac{1}{m}\sum_{i=1}^{m}\left|x^{\left(i\right)}\right|^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Typically, choose 
+\begin_inset Formula $k$
+\end_inset
+
+ so that the average squared projection error divided by the total variation
+ is 
+\begin_inset Formula $\leq0.01$
+\end_inset
+
+.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+99% of variance is retained.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Can use second output of 
+\family typewriter
+svd()
+\family default
+: this is a diagonal matrix; the quantity we want to calculate is 
+\begin_inset Formula $1-\frac{\sum_{i=1}^{k}S_{ii}}{\sum_{i=1}^{n}S_{ii}}\leq0.01$
+\end_inset
+
+ OR 
+\begin_inset Formula $\frac{\sum_{i=1}^{k}S_{ii}}{\sum_{i=1}^{n}S_{ii}}\geq0.99$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Advice for applying PCA to speed up supervised learning:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: 100 by 100 images.
+\end_layout
+
+\begin_layout Itemize
+Extract inputs: unlabeled dataset 
+\begin_inset Formula $x^{\left(1\right)},...,x^{\left(m\right)}\in R^{10000}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Use PCA to get 
+\begin_inset Formula $z^{\left(1\right)},...,z^{\left(m\right)}\in R^{1000}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Pair 
+\begin_inset Formula $z$
+\end_inset
+
+s with 
+\begin_inset Formula $y$
+\end_inset
+
+s.
+\end_layout
+
+\begin_layout Itemize
+Note: the mapping from 
+\begin_inset Formula $x$
+\end_inset
+
+ to 
+\begin_inset Formula $z$
+\end_inset
+
+ should be defined by running PCA on the training set.
+ Then you can use the same mapping for the cross-validation and test sets.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Bad use of PCA: to prevent overfitting.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The idea: if we use PCA to go to 
+\begin_inset Formula $k<n$
+\end_inset
+
+ features, it should be less likely to overfit.
+\end_layout
+
+\begin_layout Itemize
+Sometimes, this might work OK, but regularization is a much better way to
+ address overfitting.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+PCA is sometimes used where it shouldn't be.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Example: design of ML system.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Get training set.
+\end_layout
+
+\begin_layout Itemize
+Run PCA to reduce training set in dimension.
+\end_layout
+
+\begin_layout Itemize
+Train logistric regression.
+\end_layout
+
+\begin_layout Itemize
+Test on test set: map test set to lower dimension, use hypothesis function
+ to test algorithm.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+But why not just try it without PCA?
+\end_layout
+
+\begin_layout Itemize
+Should first try it without PCA; if it doesn't do what you want, then implement
+ PCA and see what the results are.
+\end_layout
+
 \end_deeper
 \end_body
 \end_document
