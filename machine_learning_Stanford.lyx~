@@ -6220,7 +6220,7 @@ Run PCA to reduce training set in dimension.
 \end_layout
 
 \begin_layout Itemize
-Train logistric regression.
+Train logistic regression.
 \end_layout
 
 \begin_layout Itemize
@@ -6239,5 +6239,127 @@ Should first try it without PCA; if it doesn't do what you want, then implement
 \end_layout
 
 \end_deeper
+\begin_layout Section*
+Anomaly detection
+\end_layout
+
+\begin_layout Subsection*
+Density estimation
+\end_layout
+
+\begin_layout Itemize
+What is anomaly detection?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Trying to decide if a new example fits in with the other examples.
+\end_layout
+
+\begin_layout Itemize
+Is the new example 
+\begin_inset Formula $x_{test}$
+\end_inset
+
+ anomalous?
+\end_layout
+
+\begin_layout Itemize
+Can define a model 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ which gives the probability that an example is OK.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We also define a threshold 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+, where if 
+\begin_inset Formula $p\left(x\right)\geq\epsilon$
+\end_inset
+
+, we mark the example as OK.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Uses:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Fraud detection:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $x^{\left(i\right)}$
+\end_inset
+
+: features of user 
+\begin_inset Formula $i$
+\end_inset
+
+'s activity.
+\end_layout
+
+\begin_layout Itemize
+Model 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ from data.
+\end_layout
+
+\begin_layout Itemize
+Identify unusual users by checking which have 
+\begin_inset Formula $p\left(x\right)<\epsilon$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Manufacturing example: monitoring computers in a data center.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $x^{\left(i\right)}$
+\end_inset
+
+: features of machine 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ Examples: memory use, number of disk accesses, CPU load, network traffic,
+ etc.
+\end_layout
+
+\begin_layout Itemize
+Model 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ from data and identify unusual machines.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Gaussian distribution: 
+\begin_inset Formula $p\left(x;\mu,\sigma^{2}\right)=\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{\left(x-\mu\right)^{2}}{2\sigma^{2}}\right)$
+\end_inset
+
+.
+\end_layout
+
 \end_body
 \end_document
