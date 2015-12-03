@@ -6361,5 +6361,1288 @@ Gaussian distribution:
 .
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Can estimate for a data set:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\mu=\frac{1}{m}\sum_{i=1}^{m}x^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\sigma^{2}=\frac{1}{m-1}\sum_{i=1}^{m}\left(x^{\left(i\right)}-\mu\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In machine learning, people tend to use 
+\begin_inset Formula $1/m$
+\end_inset
+
+ instead of 
+\begin_inset Formula $1/\left(m-1\right)$
+\end_inset
+
+ (not sure why....).
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Developing an anomaly detection algorithm
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Training set with 
+\begin_inset Formula $m$
+\end_inset
+
+ examples: 
+\begin_inset Formula $\left\{ x^{\left(1\right)},...,x^{\left(m\right)}\right\} $
+\end_inset
+
+, where each example is 
+\begin_inset Formula $x\in R^{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Assume each feature 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ is Gaussian distributed with mean 
+\begin_inset Formula $\mu_{i}$
+\end_inset
+
+ and variance 
+\begin_inset Formula $\sigma_{i}^{2}$
+\end_inset
+
+ - this corresponds to assuming the features are all independent.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Should we do PCA to make this assumption more robust?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Model 
+\begin_inset Formula $p\left(x\right)=p\left(x_{1};\mu_{1},\sigma_{1}^{2}\right)p\left(x_{2};\mu_{2},\sigma_{2}^{2}\right)...p\left(x_{n};\mu_{n},\sigma_{n}^{2}\right)=\prod_{j=1}^{n}p\left(x_{j};\mu_{j},\sigma_{j}^{2}\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Procedure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Choose features that you think might be indicative of anomalous examples.
+\end_layout
+
+\begin_layout Itemize
+Fit parameters 
+\begin_inset Formula $\mu_{j}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{j}^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Given a new example, compute 
+\begin_inset Formula $p\left(x\right).$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Mark as anomalous if 
+\begin_inset Formula $p\left(x\right)<\epsilon$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reasonable choice for 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+: something like 0.02?
+\end_layout
+
+\begin_layout Subsection*
+Building an anomaly detection system
+\end_layout
+
+\begin_layout Itemize
+When developing a learning algorithm, making decisions is much easier if
+ we have a way of evaluating the algorithm.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assume we have some labeled data with anomalous and non-anomalous examples.
+\end_layout
+
+\begin_layout Itemize
+Training set: large number of examples, no anomalous cases.
+\end_layout
+
+\begin_layout Itemize
+Cross-validation and test sets should include anomalous examples.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Algorithm evaluation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Fit model 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ on training set.
+\end_layout
+
+\begin_layout Itemize
+Make predictions on a test set.
+\end_layout
+
+\begin_layout Itemize
+Possible evaluation metrics:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+True positive, false positive, false negative, true negative.
+\end_layout
+
+\begin_layout Itemize
+Precision/recall.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $F_{1}$
+\end_inset
+
+ score.
+\end_layout
+
+\begin_layout Itemize
+Classification accuracy is not good because there are a small number of
+ anomalies; an algorithm that always predicts 
+\begin_inset Formula $y=0$
+\end_inset
+
+ will do well.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can also use cross-validation set to choose parameter 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Anomaly detection vs.
+ supervised learning
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Anomaly detection
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Very small number of positive examples (
+\begin_inset Formula $y=1$
+\end_inset
+
+).
+ 0-20 positive examples is common.
+\end_layout
+
+\begin_layout Itemize
+Large number of negative (
+\begin_inset Formula $y=0$
+\end_inset
+
+) examples.
+\end_layout
+
+\begin_layout Itemize
+Many different types of anomalies, hard for any algorithm to learn from
+ positive examples what the anomalies might look like; future anomalies
+ may look very different from examples seen so far.
+\end_layout
+
+\begin_layout Itemize
+Examples: fraud detection, manufacturing, monitoring machines in a data
+ center.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Supervised learning
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Large number of positive and negative examples.
+\end_layout
+
+\begin_layout Itemize
+Enough positive examples for the algorithm to get a sense of what positive
+ examples are like; future positive examples are likely to be similar to
+ ones in the training set.
+\end_layout
+
+\begin_layout Itemize
+Examples: e-mail spam classification, weather prediction, cancer classification.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Choosing features
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+First, plot histogram of the features, check for significant non-Gaussianity.
+ Usually OK if it's somewhat close to Gaussian.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can also test if the log of a feature is Gaussian; if so, replace that feature
+ with its log.
+\end_layout
+
+\begin_layout Itemize
+Other transforms: 
+\begin_inset Formula $x\rightarrow x^{\alpha}$
+\end_inset
+
+, usually 
+\begin_inset Formula $\alpha<1$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Want 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ to be large for normal examples and small for anomalous examples.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Common problem: 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ is comparable (say, both large) for normal and anomalous examples.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Multivariate Gaussian distribution
+\end_layout
+
+\begin_layout Itemize
+In some cases, we need to account for correlations between variables - our
+ assumption of independence may not be valid.
+\end_layout
+
+\begin_layout Itemize
+Then, we can't model 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ assuming the variables are independent.
+ We need to do it all in one go.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Parameters: 
+\begin_inset Formula $\mu\in R^{n}$
+\end_inset
+
+, 
+\begin_inset Formula $\Sigma\in R^{n\times n}$
+\end_inset
+
+ (covariance matrix).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $p\left(x;\mu,\Sigma\right)=\frac{1}{\left(2\pi\right)^{n/2}\det\left(\Sigma\right)}\exp\left(-\frac{1}{2}\left(x-\mu\right)^{T}\Sigma^{-1}\left(x-\mu\right)\right)$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Anomaly detection with the multivariate Gaussian
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+First, fit model 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+by setting:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\mu=\frac{1}{m}\sum_{i=1}^{m}x^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Sigma=\frac{1}{m}\sum_{i=1}^{m}\left(x^{\left(i\right)}-\mu\right)\left(x^{\left(i\right)}-\mu\right)^{T}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Given a new example 
+\begin_inset Formula $x$
+\end_inset
+
+, compute 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ and flag as anomalous if 
+\begin_inset Formula $p\left(x\right)<\epsilon$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Our original model (assuming independent features) corresponds to a multivariate
+ Gaussian where the contours of the multivariate PDF are 
+\begin_inset Quotes eld
+\end_inset
+
+axis-aligned.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is equivalent to saying that the covariance matrix is diagonal.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+When should we use the independent model and when should we use the multivariate
+ model?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Independent:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Manually create features to capture anomalies where 
+\begin_inset Formula $x_{1},x_{2}$
+\end_inset
+
+ take unusual combinations of values.
+\end_layout
+
+\begin_layout Itemize
+Computationally cheaper, scales better to large 
+\begin_inset Formula $n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Works OK even if 
+\begin_inset Formula $m$
+\end_inset
+
+ (training set size) is small.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Multivariate:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Automatically captures correlations between features.
+\end_layout
+
+\begin_layout Itemize
+Computationally more expensive because we need to invert the 
+\begin_inset Formula $n\times n$
+\end_inset
+
+ matrix 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Must have 
+\begin_inset Formula $m>n$
+\end_inset
+
+, or else 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+ is not invertible.
+ (preferable to have 
+\begin_inset Formula $m\gg n$
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+If you fit a multivariate model and find that 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+ is singular or non-invertible:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Check if 
+\begin_inset Formula $m>n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+You may have highly redundant (linearly dependent) features (
+\begin_inset Formula $x_{3}=Cx_{4}$
+\end_inset
+
+, 
+\begin_inset Formula $x_{7}=x_{8}+x_{9}$
+\end_inset
+
+, etc.).
+\end_layout
+
+\end_deeper
+\begin_layout Section*
+Recommender systems
+\end_layout
+
+\begin_layout Itemize
+When you buy a product online, most websites automatically recommend other
+ products that you may like.
+ Recommender systems look at patterns of activity between different users
+ and different products to produce these recommendations.
+\end_layout
+
+\begin_layout Subsection*
+Predicting movie ratings
+\end_layout
+
+\begin_layout Itemize
+User rates movies using 0 to 5 stars.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="5">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Movie
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Alice (1)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Bob (2)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Carol (3)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Dave (4)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Love at last
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Romance forever
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+?
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+?
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cute puppies of love
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+?
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+?
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Nonstop car chases
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Swords vs.
+ karate
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+?
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Notation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $n_{u}$
+\end_inset
+
+: number of users (4 in this example).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $n_{m}$
+\end_inset
+
+: number of movies (5 in this example).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $r\left(i,j\right)$
+\end_inset
+
+: 1 if user 
+\begin_inset Formula $j$
+\end_inset
+
+ has rated movie 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $y^{\left(i,j\right)}$
+\end_inset
+
+: rating given by user 
+\begin_inset Formula $j$
+\end_inset
+
+ to movie 
+\begin_inset Formula $i$
+\end_inset
+
+ (defined only if 
+\begin_inset Formula $r\left(i,j\right)=1$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta^{\left(j\right)}$
+\end_inset
+
+: parameter vector for user 
+\begin_inset Formula $j$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $x^{\left(i\right)}$
+\end_inset
+
+: feature vector for movie 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $m^{\left(j\right)}$
+\end_inset
+
+: number of movies rated by user 
+\begin_inset Formula $j$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Goal: based on a user's rating for some movies, predict how they would rate
+ other movies.
+\end_layout
+
+\begin_layout Itemize
+What if we had features for each movies?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In this example, we would want features which measure the degree of romance
+ and the degree of action in each movie.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="3">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Movie
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $x_{1}$
+\end_inset
+
+ (romance)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $x_{2}$
+\end_inset
+
+ (action)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Love at last
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Romance forever
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.01
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cute puppies of love
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.99
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Nonstop car chases
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Swords vs.
+ karate
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.9
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+For each user 
+\begin_inset Formula $j$
+\end_inset
+
+, learn a parameter 
+\begin_inset Formula $\theta^{\left(j\right)}\in R^{3}$
+\end_inset
+
+.
+ Predict user 
+\begin_inset Formula $j$
+\end_inset
+
+ as rating movie 
+\begin_inset Formula $i$
+\end_inset
+
+ with 
+\begin_inset Formula $\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Problem formulation:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For user 
+\begin_inset Formula $j$
+\end_inset
+
+ and movie 
+\begin_inset Formula $i$
+\end_inset
+
+, predicted rating: 
+\begin_inset Formula $\left(\theta^{\left(j\right)}\right)^{T}\left(x^{\left(i\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+To learn 
+\begin_inset Formula $\theta^{\left(j\right)}$
+\end_inset
+
+ (parameter for user 
+\begin_inset Formula $j$
+\end_inset
+
+): 
+\begin_inset Formula $\text{min}_{\theta^{\left(j\right)}}\frac{1}{2m^{\left(j\right)}}\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}\left(x^{\left(i\right)}\right)-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2m^{\left(j\right)}}\sum_{k=1}^{n}\left(\theta_{k}^{\left(j\right)}\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+To learn 
+\begin_inset Formula $\theta$
+\end_inset
+
+ for all users: 
+\begin_inset Formula $J\left(\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}\right)\text{min}_{\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}}\frac{1}{2}\sum_{j=1}^{n_{u}}\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}\left(x^{\left(i\right)}\right)-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2}\sum_{j=1}^{n_{u}}\sum_{k=1}^{n}\left(\theta_{k}^{\left(j\right)}\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Gradient descent update:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\theta_{k}^{\left(j\right)}:=\theta_{k}^{\left(j\right)}-\alpha\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)x_{k}^{\left(i\right)}$
+\end_inset
+
+ for 
+\begin_inset Formula $k=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta_{k}^{\left(j\right)}:=\theta_{k}^{\left(j\right)}-\alpha\left(\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)x_{k}^{\left(i\right)}+\lambda\theta_{k}^{\left(j\right)}\right)$
+\end_inset
+
+ for 
+\begin_inset Formula $k\neq0$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The term multiplying 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is equal to 
+\begin_inset Formula $\frac{\partial}{\partial\theta_{k}^{\left(j\right)}}J\left(\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Standard
+Collaborative filtering
+\end_layout
+
+\begin_layout Itemize
+d
+\end_layout
+
 \end_body
 \end_document

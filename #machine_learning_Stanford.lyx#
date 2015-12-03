@@ -7296,17 +7296,6 @@ Notation:
 .
 \end_layout
 
-\begin_layout Itemize
-\begin_inset Formula $m^{\left(j\right)}$
-\end_inset
-
-: number of movies rated by user 
-\begin_inset Formula $j$
-\end_inset
-
-.
-\end_layout
-
 \end_deeper
 \begin_layout Itemize
 Goal: based on a user's rating for some movies, predict how they would rate
@@ -7559,90 +7548,12 @@ For user
 \end_inset
 
 , predicted rating: 
-\begin_inset Formula $\left(\theta^{\left(j\right)}\right)^{T}\left(x^{\left(i\right)}\right)$
+\begin_inset Formula $\left(\theta^{\left(j\right)}\right)^{T}$
 \end_inset
 
 
-\end_layout
-
-\begin_layout Itemize
-To learn 
-\begin_inset Formula $\theta^{\left(j\right)}$
-\end_inset
-
- (parameter for user 
-\begin_inset Formula $j$
-\end_inset
-
-): 
-\begin_inset Formula $\text{min}_{\theta^{\left(j\right)}}\frac{1}{2m^{\left(j\right)}}\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}\left(x^{\left(i\right)}\right)-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2m^{\left(j\right)}}\sum_{k=1}^{n}\left(\theta_{k}^{\left(j\right)}\right)^{2}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-To learn 
-\begin_inset Formula $\theta$
-\end_inset
-
- for all users: 
-\begin_inset Formula $J\left(\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}\right)\text{min}_{\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}}\frac{1}{2}\sum_{j=1}^{n_{u}}\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}\left(x^{\left(i\right)}\right)-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2}\sum_{j=1}^{n_{u}}\sum_{k=1}^{n}\left(\theta_{k}^{\left(j\right)}\right)^{2}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-Gradient descent update:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-\begin_inset Formula $\theta_{k}^{\left(j\right)}:=\theta_{k}^{\left(j\right)}-\alpha\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)x_{k}^{\left(i\right)}$
-\end_inset
-
- for 
-\begin_inset Formula $k=0$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\theta_{k}^{\left(j\right)}:=\theta_{k}^{\left(j\right)}-\alpha\left(\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)x_{k}^{\left(i\right)}+\lambda\theta_{k}^{\left(j\right)}\right)$
-\end_inset
-
- for 
-\begin_inset Formula $k\neq0$
-\end_inset
-
-.
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-The term multiplying 
-\begin_inset Formula $\alpha$
-\end_inset
-
- is equal to 
-\begin_inset Formula $\frac{\partial}{\partial\theta_{k}^{\left(j\right)}}J\left(\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}\right)$
-\end_inset
-
-.
 \end_layout
 
 \end_deeper
-\end_deeper
-\end_deeper
-\begin_layout Subsection*
-Collaborative filtering
-\end_layout
-
-\begin_layout Itemize
-d
-\end_layout
-
 \end_body
 \end_document
