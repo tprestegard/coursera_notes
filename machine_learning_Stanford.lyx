@@ -6397,5 +6397,291 @@ In machine learning, people tend to use
 \end_deeper
 \end_deeper
 \end_deeper
+\begin_layout Itemize
+Developing an anomaly detection algorithm
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Training set with 
+\begin_inset Formula $m$
+\end_inset
+
+ examples: 
+\begin_inset Formula $\left\{ x^{\left(1\right)},...,x^{\left(m\right)}\right\} $
+\end_inset
+
+, where each example is 
+\begin_inset Formula $x\in R^{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Assume each feature 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ is Gaussian distributed with mean 
+\begin_inset Formula $\mu_{i}$
+\end_inset
+
+ and variance 
+\begin_inset Formula $\sigma_{i}^{2}$
+\end_inset
+
+ - this corresponds to assuming the features are all independent.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Should we do PCA to make this assumption more robust?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Model 
+\begin_inset Formula $p\left(x\right)=p\left(x_{1};\mu_{1},\sigma_{1}^{2}\right)p\left(x_{2};\mu_{2},\sigma_{2}^{2}\right)...p\left(x_{n};\mu_{n},\sigma_{n}^{2}\right)=\prod_{j=1}^{n}p\left(x_{j};\mu_{j},\sigma_{j}^{2}\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Procedure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Choose features that you think might be indicative of anomalous examples.
+\end_layout
+
+\begin_layout Itemize
+Fit parameters 
+\begin_inset Formula $\mu_{j}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{j}^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Given a new example, compute 
+\begin_inset Formula $p\left(x\right).$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Mark as anomalous if 
+\begin_inset Formula $p\left(x\right)<\epsilon$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Reasonable choice for 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+: something like 0.02?
+\end_layout
+
+\begin_layout Subsection*
+Building an anomaly detection system
+\end_layout
+
+\begin_layout Itemize
+When developing a learning algorithm, making decisions is much easier if
+ we have a way of evaluating the algorithm.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Assume we have some labeled data with anomalous and non-anomalous examples.
+\end_layout
+
+\begin_layout Itemize
+Training set: large number of examples, no anomalous cases.
+\end_layout
+
+\begin_layout Itemize
+Cross-validation and test sets should include anomalous examples.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Algorithm evaluation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Fit model 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ on training set.
+\end_layout
+
+\begin_layout Itemize
+Make predictions on a test set.
+\end_layout
+
+\begin_layout Itemize
+Possible evaluation metrics:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+True positive, false positive, false negative, true negative.
+\end_layout
+
+\begin_layout Itemize
+Precision/recall.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $F_{1}$
+\end_inset
+
+ score.
+\end_layout
+
+\begin_layout Itemize
+Classification accuracy is not good because there are a small number of
+ anomalies; an algorithm that always predicts 
+\begin_inset Formula $y=0$
+\end_inset
+
+ will do well.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can also use cross-validation set to choose parameter 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Anomaly detection vs.
+ supervised learning
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Anomaly detection
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Very small number of positive examples (
+\begin_inset Formula $y=1$
+\end_inset
+
+).
+ 0-20 positive examples is common.
+\end_layout
+
+\begin_layout Itemize
+Large number of negative (
+\begin_inset Formula $y=0$
+\end_inset
+
+) examples.
+\end_layout
+
+\begin_layout Itemize
+Many different types of anomalies, hard for any algorithm to learn from
+ positive examples what the anomalies might look like; future anomalies
+ may look very different from examples seen so far.
+\end_layout
+
+\begin_layout Itemize
+Examples: fraud detection, manufacturing, monitoring machines in a data
+ center.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Supervised learning
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Large number of positive and negative examples.
+\end_layout
+
+\begin_layout Itemize
+Enough positive examples for the algorithm to get a sense of what positive
+ examples are like; future positive examples are likely to be similar to
+ ones in the training set.
+\end_layout
+
+\begin_layout Itemize
+Examples: e-mail spam classification, weather prediction, cancer classification.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Choosing features
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+First, plot histogram of the features, check for significant non-Gaussianity.
+ Usually OK if it's somewhat close to Gaussian.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can also test if the log of a feature is Gaussian; if so, replace that feature
+ with its log.
+\end_layout
+
+\begin_layout Itemize
+Other transforms: 
+\begin_inset Formula $x\rightarrow x^{\alpha}$
+\end_inset
+
+, usually 
+\begin_inset Formula $\alpha<1$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Want 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ to be large for normal examples and small for anomalous examples.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Common problem: 
+\begin_inset Formula $p\left(x\right)$
+\end_inset
+
+ is comparable (say, both large) for normal and anomalous examples.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
