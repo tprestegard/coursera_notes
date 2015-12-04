@@ -7641,7 +7641,84 @@ Collaborative filtering
 \end_layout
 
 \begin_layout Itemize
-d
+Sometimes, it might be hard to get features.
+ Example: previous study with movie ratings - lots of work to get people
+ to watch movies and rate the amount of romance and action.
+ What if we let the people rating the movies define their own 
+\begin_inset Formula $\theta$
+\end_inset
+
+ which describes how much they like each type of movie?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+I.e., someone who likes romantic movies and hates action movies would have
+ a parameter vector 
+\begin_inset Formula $\theta^{\left(i\right)}=\left[0,5,0\right]$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Optimization algorithm to learn the features:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Given 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+, to learn 
+\begin_inset Formula $x^{\left(i\right)}$
+\end_inset
+
+: 
+\begin_inset Formula $\text{min}_{x^{\left(i\right)}}\frac{1}{2}\sum_{j:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2}\sum_{k=1}^{n}\left(x_{k}^{\left(i\right)}\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Given 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+, to learn 
+\begin_inset Formula $x^{\left(1\right)},...,x^{\left(n_{m}\right)}$
+\end_inset
+
+: 
+\begin_inset Formula $\text{min}_{x^{\left(1\right)},...,x^{\left(n_{m}\right)}}\frac{1}{2}\sum_{i=1}^{n_{m}}\sum_{j:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2}\sum_{i=1}^{n_{m}}\sum_{k=1}^{n}\left(x_{k}^{\left(i\right)}\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Also, if we know the features 
+\begin_inset Formula $x^{\left(1\right)},...,x^{\left(n_{m}\right)}$
+\end_inset
+
+, can estimate the parameter 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+ (this is what we did before).
+\end_layout
+
+\begin_layout Itemize
+Can also iterate: 
+\begin_inset Formula $\theta\rightarrow x\rightarrow\theta\rightarrow x$
+\end_inset
+
+, and so on.
+ Will allow you to estimate parameters better.
 \end_layout
 
 \end_body
