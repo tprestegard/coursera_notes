@@ -7721,5 +7721,142 @@ Can also iterate:
  Will allow you to estimate parameters better.
 \end_layout
 
+\begin_layout Itemize
+Full algorithm description:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Objective: given 
+\begin_inset Formula $x^{\left(1\right)},...x^{\left(n_{m}\right)}$
+\end_inset
+
+, estimate 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+ (or vice versa).
+\end_layout
+
+\begin_layout Itemize
+Actually, we can do both at the same time!
+\end_layout
+
+\begin_layout Itemize
+Minimizing 
+\begin_inset Formula $x^{\left(1\right)},...x^{\left(n_{m}\right)}$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+ simultaneously:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $J\left(x^{\left(1\right)},...,x^{\left(n_{m}\right)},\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}\right)=\frac{1}{2}\sum_{\left(i,j\right):r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2}\sum_{i=1}^{n_{m}}\sum_{k=1}^{n}\left(x_{k}^{\left(i\right)}\right)^{2}+\frac{\lambda}{2}\sum_{j=1}^{n_{u}}\sum_{k=1}^{n}\left(\theta_{k}^{\left(j\right)}\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Here we minimize 
+\begin_inset Formula $J$
+\end_inset
+
+ over all features 
+\begin_inset Formula $x^{\left(1\right)},...,x^{\left(n_{m}\right)}$
+\end_inset
+
+ and parameters 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Note that we don't minimize over 
+\begin_inset Formula $x_{0}$
+\end_inset
+
+ because we are now learning all of the features
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Procedure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Initialize 
+\begin_inset Formula $x^{\left(1\right)},...,x^{\left(n_{m}\right)},\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+ to small, random values.
+\end_layout
+
+\begin_layout Itemize
+Minimize 
+\begin_inset Formula $J\left(x^{\left(1\right)},...,x^{\left(n_{m}\right)},\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}\right)$
+\end_inset
+
+ using gradient descent or an advanced optimization algorithm.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $x_{k}^{\left(i\right)}:=x_{k}^{\left(i\right)}-\alpha\left(\sum_{j:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)\theta_{k}^{\left(j\right)}+\lambda x_{k}^{\left(i\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta_{k}^{\left(j\right)}:=\theta_{k}^{\left(j\right)}-\alpha\left(\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)x_{k}^{\left(i\right)}+\lambda\theta_{k}^{\left(j\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Term in parentheses is equal to 
+\begin_inset Formula $\frac{\partial}{\partial x_{k}^{\left(i\right)}}J\left(...\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+For a user with parameters 
+\begin_inset Formula $\theta$
+\end_inset
+
+ and a movie with learned features 
+\begin_inset Formula $x$
+\end_inset
+
+, predict a star rating of 
+\begin_inset Formula $\theta^{T}x$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Low rank matrix factorization
+\end_layout
+
+\begin_layout Itemize
+d
+\end_layout
+
 \end_body
 \end_document
