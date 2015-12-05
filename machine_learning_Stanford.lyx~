@@ -7636,13 +7636,365 @@ The term multiplying
 \end_deeper
 \end_deeper
 \end_deeper
-\begin_layout Standard
+\begin_layout Subsection*
 Collaborative filtering
 \end_layout
 
 \begin_layout Itemize
-d
+Sometimes, it might be hard to get features.
+ Example: previous study with movie ratings - lots of work to get people
+ to watch movies and rate the amount of romance and action.
+ What if we let the people rating the movies define their own 
+\begin_inset Formula $\theta$
+\end_inset
+
+ which describes how much they like each type of movie?
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+I.e., someone who likes romantic movies and hates action movies would have
+ a parameter vector 
+\begin_inset Formula $\theta^{\left(i\right)}=\left[0,5,0\right]$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Optimization algorithm to learn the features:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Given 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+, to learn 
+\begin_inset Formula $x^{\left(i\right)}$
+\end_inset
+
+: 
+\begin_inset Formula $\text{min}_{x^{\left(i\right)}}\frac{1}{2}\sum_{j:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2}\sum_{k=1}^{n}\left(x_{k}^{\left(i\right)}\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Given 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+, to learn 
+\begin_inset Formula $x^{\left(1\right)},...,x^{\left(n_{m}\right)}$
+\end_inset
+
+: 
+\begin_inset Formula $\text{min}_{x^{\left(1\right)},...,x^{\left(n_{m}\right)}}\frac{1}{2}\sum_{i=1}^{n_{m}}\sum_{j:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2}\sum_{i=1}^{n_{m}}\sum_{k=1}^{n}\left(x_{k}^{\left(i\right)}\right)^{2}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Also, if we know the features 
+\begin_inset Formula $x^{\left(1\right)},...,x^{\left(n_{m}\right)}$
+\end_inset
+
+, can estimate the parameter 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+ (this is what we did before).
+\end_layout
+
+\begin_layout Itemize
+Can also iterate: 
+\begin_inset Formula $\theta\rightarrow x\rightarrow\theta\rightarrow x$
+\end_inset
+
+, and so on.
+ Will allow you to estimate parameters better.
+\end_layout
+
+\begin_layout Itemize
+Full algorithm description:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Objective: given 
+\begin_inset Formula $x^{\left(1\right)},...x^{\left(n_{m}\right)}$
+\end_inset
+
+, estimate 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+ (or vice versa).
+\end_layout
+
+\begin_layout Itemize
+Actually, we can do both at the same time!
+\end_layout
+
+\begin_layout Itemize
+Minimizing 
+\begin_inset Formula $x^{\left(1\right)},...x^{\left(n_{m}\right)}$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+ simultaneously:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $J\left(x^{\left(1\right)},...,x^{\left(n_{m}\right)},\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}\right)=\frac{1}{2}\sum_{\left(i,j\right):r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)^{2}+\frac{\lambda}{2}\sum_{i=1}^{n_{m}}\sum_{k=1}^{n}\left(x_{k}^{\left(i\right)}\right)^{2}+\frac{\lambda}{2}\sum_{j=1}^{n_{u}}\sum_{k=1}^{n}\left(\theta_{k}^{\left(j\right)}\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Here we minimize 
+\begin_inset Formula $J$
+\end_inset
+
+ over all features 
+\begin_inset Formula $x^{\left(1\right)},...,x^{\left(n_{m}\right)}$
+\end_inset
+
+ and parameters 
+\begin_inset Formula $\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Note that we don't minimize over 
+\begin_inset Formula $x_{0}$
+\end_inset
+
+ because we are now learning all of the features
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Procedure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Initialize 
+\begin_inset Formula $x^{\left(1\right)},...,x^{\left(n_{m}\right)},\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}$
+\end_inset
+
+ to small, random values.
+\end_layout
+
+\begin_layout Itemize
+Minimize 
+\begin_inset Formula $J\left(x^{\left(1\right)},...,x^{\left(n_{m}\right)},\theta^{\left(1\right)},...,\theta^{\left(n_{u}\right)}\right)$
+\end_inset
+
+ using gradient descent or an advanced optimization algorithm.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $x_{k}^{\left(i\right)}:=x_{k}^{\left(i\right)}-\alpha\left(\sum_{j:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)\theta_{k}^{\left(j\right)}+\lambda x_{k}^{\left(i\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta_{k}^{\left(j\right)}:=\theta_{k}^{\left(j\right)}-\alpha\left(\sum_{i:r\left(i,j\right)=1}\left(\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}-y^{\left(i,j\right)}\right)x_{k}^{\left(i\right)}+\lambda\theta_{k}^{\left(j\right)}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Term in parentheses is equal to 
+\begin_inset Formula $\frac{\partial}{\partial x_{k}^{\left(i\right)}}J\left(...\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+For a user with parameters 
+\begin_inset Formula $\theta$
+\end_inset
+
+ and a movie with learned features 
+\begin_inset Formula $x$
+\end_inset
+
+, predict a star rating of 
+\begin_inset Formula $\theta^{T}x$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Low rank matrix factorization
+\end_layout
+
+\begin_layout Itemize
+Put all ratings from all users in a matrix.
+\end_layout
+
+\begin_layout Itemize
+Using movies example: 
+\begin_inset Formula $n_{u}=5$
+\end_inset
+
+, 
+\begin_inset Formula $n_{m}=4$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Y=\left[\begin{array}{cccc}
+5 & 5 & 0 & 0\\
+5 & ? & ? & 0\\
+? & 4 & 0 & ?\\
+0 & 0 & 5 & 4\\
+0 & 0 & 5 & 0
+\end{array}\right]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Predicted ratings: 
+\begin_inset Formula $Y_{ij}=\left(\theta^{\left(j\right)}\right)^{T}x^{\left(i\right)}$
+\end_inset
+
+.
+ We can calculate this element-by-element, or we can vectorize it!
+\end_layout
+
+\begin_layout Itemize
+Define a vector of feature vectors 
+\begin_inset Formula $X=\left[\begin{array}{c}
+\left(x^{\left(1\right)}\right)^{T}\\
+\left(x^{\left(2\right)}\right)^{T}\\
+.\\
+.\\
+\left(x^{\left(n_{m}\right)}\right)^{T}
+\end{array}\right]$
+\end_inset
+
+ and a vector of parameter vectors 
+\begin_inset Formula $\Theta=\left[\begin{array}{c}
+\left(\Theta^{\left(1\right)}\right)^{T}\\
+\left(\Theta^{\left(2\right)}\right)^{T}\\
+.\\
+.\\
+\left(\Theta^{\left(n_{u}\right)}\right)^{T}
+\end{array}\right]$
+\end_inset
+
+; then we can calculate 
+\begin_inset Formula $Y=X\Theta^{T}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+This is called low rank matrix factorization.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can use learned features to find related movies.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For each product 
+\begin_inset Formula $i$
+\end_inset
+
+, we learn a feature vector 
+\begin_inset Formula $x^{\left(i\right)}\in R^{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+How to find movies 
+\begin_inset Formula $j$
+\end_inset
+
+ related to movie 
+\begin_inset Formula $i$
+\end_inset
+
+? (can be used to make recommendations)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Find a movie 
+\begin_inset Formula $j$
+\end_inset
+
+ such that the distance between the two feature vectors is small.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\left|x^{\left(i\right)}-x^{\left(j\right)}\right|=\text{small}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+What if we have a user who hasn't rated any movies?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+First term in cost function plays no role since 
+\begin_inset Formula $r\left(i,j\right)$
+\end_inset
+
+ is 0 for all movies.
+\end_layout
+
+\begin_layout Itemize
+The only term that affects 
+\begin_inset Formula $\theta$
+\end_inset
+
+ for the new user is the regularization term, so we'll get a parameter vector
+ of all zeros.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
