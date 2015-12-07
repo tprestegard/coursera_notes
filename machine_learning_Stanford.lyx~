@@ -7995,6 +7995,750 @@ The only term that affects
  of all zeros.
 \end_layout
 
+\begin_layout Itemize
+Thus, we'll predict ratings of 0 for all movies for the new user - this
+ doesn't seem very useful!
+\end_layout
+
+\begin_layout Itemize
+To fix this, we use mean normalization:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Subtract the mean rating for each movie so that each movie has an average
+ rating of zero.
+\end_layout
+
+\begin_layout Itemize
+Adjust your 
+\begin_inset Formula $Y$
+\end_inset
+
+ matrix to account for this and use this matrix to do collaborative filtering.
+\end_layout
+
+\begin_layout Itemize
+For user 
+\begin_inset Formula $j$
+\end_inset
+
+ on movie 
+\begin_inset Formula $i$
+\end_inset
+
+, predict 
+\begin_inset Formula $\left(\theta^{\left(j\right)}\right)^{T}\left(x^{\left(i\right)}\right)+\mu_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+This results in the predicted ratings for the new user being the mean ratings
+ for each movie.
+\end_layout
+
 \end_deeper
+\end_deeper
+\begin_layout Section*
+Large scale machine learning
+\end_layout
+
+\begin_layout Subsection*
+Gradient descent with large datasets
+\end_layout
+
+\begin_layout Itemize
+Example: a training set size: 
+\begin_inset Formula $m=1e8$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A single step of gradient descent requires a sum over all of these examples!
+\end_layout
+
+\begin_layout Itemize
+Question: why not just test on a subset 
+\begin_inset Formula $m=1000$
+\end_inset
+
+ before investing the effort into training on the full dataset?
+\end_layout
+
+\begin_layout Itemize
+Can test if more data is useful by plotting 
+\begin_inset Formula $J_{CV}\left(\theta\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $J_{train}\left(\theta\right)$
+\end_inset
+
+ vs.
+ 
+\begin_inset Formula $m$
+\end_inset
+
+ and see how they compare as 
+\begin_inset Formula $m$
+\end_inset
+
+ increases.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Linear regression with gradient descent:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $h_{\theta}\left(x\right)=\sum_{j=0}^{n}\theta_{j}x_{j}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $J_{train}\left(\theta\right)=\frac{1}{2m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Gradient descent: repeat 
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}$
+\end_inset
+
+ for every 
+\begin_inset Formula $j=0,...,n$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If 
+\begin_inset Formula $m$
+\end_inset
+
+ is large, this step takes a long time!
+\end_layout
+
+\begin_layout Itemize
+This is also called 
+\emph on
+batch
+\emph default
+ gradient descent.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Stochastic gradient descent:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\text{cost}\left(\theta,\left(x^{\left(i\right)},y^{\left(i\right)}\right)\right)=\frac{1}{2}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Measures how well the cost function does on a single example.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Formula $J_{train}\left(\theta\right)=\frac{1}{m}\sum_{i=1}^{m}\text{cost}\left(\theta,\left(x^{\left(i\right)},y^{\left(i\right)}\right)\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is the average of the cost function over all training examples.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Procedure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Randomly shuffle the dataset.
+\end_layout
+
+\begin_layout Itemize
+Repeat:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+for 
+\begin_inset Formula $i=1,...,m$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+(
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}$
+\end_inset
+
+, for 
+\begin_inset Formula $j=0,...,n$
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+How many times to repeat this whole thing? Usually 1 to 10 passes is most
+ common, but it depends on the size of your training set.
+\end_layout
+
+\begin_layout Itemize
+Note: the term multiplying 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is equal to 
+\begin_inset Formula $\frac{\partial}{\partial\theta_{j}}\text{cost}\left(\theta\left(x^{\left(i\right)},y^{\left(i\right)}\right)\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Main difference between this and batch gradient descent is that we take
+ a small step after looking at each example rather than having to sum over
+ all examples before taking a step.
+\end_layout
+
+\begin_layout Itemize
+However, we end up taking a less 
+\begin_inset Quotes eld
+\end_inset
+
+direct
+\begin_inset Quotes erd
+\end_inset
+
+ route to the minimum of the cost function.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Mini-batch gradient descent
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In between batch and stochastic gradient descent.
+\end_layout
+
+\begin_layout Itemize
+We use 
+\begin_inset Formula $b$
+\end_inset
+
+ examples in each iteration, where 
+\begin_inset Formula $b$
+\end_inset
+
+ is the mini-batch size.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $b$
+\end_inset
+
+ is typically chosen to be something like 10, may be between 2 and 100.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Procedure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Get 
+\begin_inset Formula $b$
+\end_inset
+
+ randomly chosen examples from the training set.
+\end_layout
+
+\begin_layout Itemize
+Run batch gradient descent once on these examples.
+\end_layout
+
+\begin_layout Itemize
+Repeat for each
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Written out for 
+\begin_inset Formula $b=10$
+\end_inset
+
+, 
+\begin_inset Formula $m=1000$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Repeat:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+for 
+\begin_inset Formula $i=1,11,21,31,...,991$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\frac{1}{10}\sum_{k=1}^{i+9}\left(h_{\theta}\left(x^{\left(k\right)}\right)-y^{\left(k\right)}\right)x_{j}^{\left(k\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+(for every 
+\begin_inset Formula $j=0,...,n$
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Usually want to use 1-10 passes.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Why is it useful?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Only outperforms stochastic gradient descent if we have a good vectorized
+ implementation for handling the 
+\begin_inset Formula $b$
+\end_inset
+
+ examples on each iteration.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Disadvantage: new parameter 
+\begin_inset Formula $b$
+\end_inset
+
+ which you have to study.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Checking for convergence:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Batch gradient descent
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Plot 
+\begin_inset Formula $J_{train}\left(\theta\right)$
+\end_inset
+
+ as a function of the number of iterations of gradient descent.
+\end_layout
+
+\begin_layout Itemize
+This should decrease as the number of iterations increases.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Stochastic gradient descent
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+During learning, compute 
+\begin_inset Formula $\text{cost}\left(\theta,\left(x^{\left(i\right)},y^{\left(i\right)}\right)\right)$
+\end_inset
+
+ before updating 
+\begin_inset Formula $\theta$
+\end_inset
+
+ using 
+\begin_inset Formula $\left(x^{\left(i\right)},y^{\left(i\right)}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Every 1000 iterations or so, average the cost function over the last 1000
+ examples and plot it.
+\end_layout
+
+\begin_layout Itemize
+If the algorithm appears to be diverging, use a smaller 
+\begin_inset Formula $\alpha$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+If the cost function seems to be flat vs.
+ the number of iterations, you may need to change something - learning rate,
+ features, etc.
+\end_layout
+
+\begin_layout Itemize
+Can slowly decrease 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ over time if we want 
+\begin_inset Formula $\theta$
+\end_inset
+
+ to converge.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ex: 
+\begin_inset Formula $\alpha=\frac{const1}{iterationNumber+const2}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Subsection*
+Online learning
+\end_layout
+
+\begin_layout Itemize
+Online learning algorithm: problems where we have a continuous stream of
+ data coming in and we want an algorithm to learn from that.
+\end_layout
+
+\begin_layout Itemize
+Example: shipping service website where user comes, specifies origin and
+ destination, you offer to ship their package for some asking price, and
+ users sometimes choose to use your shipping service (
+\begin_inset Formula $y=1$
+\end_inset
+
+) and sometimes not (
+\begin_inset Formula $y=0$
+\end_inset
+
+).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Features 
+\begin_inset Formula $x$
+\end_inset
+
+ capture properties of the user, the origin and destination, and the asking
+ price.
+\end_layout
+
+\begin_layout Itemize
+We want to learn 
+\begin_inset Formula $p\left(y=1|x;\theta\right)$
+\end_inset
+
+ to optimize the price.
+\end_layout
+
+\begin_layout Itemize
+Procedure:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Repeat forever:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Get 
+\begin_inset Formula $\left(x,y\right)$
+\end_inset
+
+ corresponding to user.
+\end_layout
+
+\begin_layout Itemize
+Update parameters 
+\begin_inset Formula $\theta$
+\end_inset
+
+ using just this example 
+\begin_inset Formula $\left(x,y\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\left(h_{\theta}\left(x\right)-y\right)x_{j}$
+\end_inset
+
+ (for 
+\begin_inset Formula $j=0,...,n$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+(this is for logistic regression)
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+After using each data point, we throw it out and never use it again.
+\end_layout
+
+\begin_layout Itemize
+This type of algorithm can adapt to changing user preferences.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Another application - product search.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+User searches for 
+\begin_inset Quotes eld
+\end_inset
+
+Android phone 1080p camera
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Have 100 phones in store, will return 10 results.
+\end_layout
+
+\begin_layout Itemize
+Want to have a learning algorithm figure out which 10 phones we should show
+ to the user based on their search query.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $x$
+\end_inset
+
+: features of phone, how many words in user query match name of phone, how
+ many words in user search query match phone description, etc.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $y=1$
+\end_inset
+
+ if user clicks on link, 
+\begin_inset Formula $y=0$
+\end_inset
+
+ otherwise.
+\end_layout
+
+\begin_layout Itemize
+Learn 
+\begin_inset Formula $p\left(y=1|x;\theta\right)$
+\end_inset
+
+ and use this to show the user the 10 phones that they are most likely to
+ click on.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Other examples: choosing special offers to show the user, customized selection
+ of news articles, product recommendation, etc.
+\end_layout
+
+\begin_layout Subsection*
+MapReduce and data parallelism
+\end_layout
+
+\begin_layout Itemize
+Example with 
+\begin_inset Formula $m=400$
+\end_inset
+
+ data points:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Batch gradient descent: 
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\frac{1}{400}\sum_{i=1}^{400}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Machine 1: Use 
+\begin_inset Formula $\left(x^{\left(1\right)},y^{\left(1\right)}\right),...,\left(x^{\left(100\right)},y^{\left(100\right)}\right)$
+\end_inset
+
+ and compute the summation for the first 100 examples.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $temp_{j}^{\left(1\right)}=\sum_{i=1}^{100}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Machine 2: same thing with examples 101 to 200.
+\end_layout
+
+\begin_layout Itemize
+Machine 3: same thing with examples 201 to 300.
+\end_layout
+
+\begin_layout Itemize
+Machine 4: same thing with examples 301 to 400.
+\end_layout
+
+\begin_layout Itemize
+After all of these computation are done, we send them to a master server,
+ which combines the results and updates 
+\begin_inset Formula $\theta_{j}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\frac{1}{400}\left(temp_{j}^{\left(1\right)}+temp_{j}^{\left(2\right)}+temp_{j}^{\left(3\right)}+temp_{j}^{\left(4\right)}\right)$
+\end_inset
+
+ (for 
+\begin_inset Formula $j=0,...,n$
+\end_inset
+
+).
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Many learning algorithms can be expressed as computing sums of functions
+ over the training set.
+\end_layout
+
+\begin_layout Itemize
+Example: advanced optimization with logistic regression.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We need:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $J_{train}\left(\theta\right)=-1\frac{1}{m}\sum_{i=1}^{m}y^{\left(i\right)}\log h_{\theta}\left(x^{\left(i\right)}\right)-\left(1-y^{\left(i\right)}\right)\log\left(1-h_{\theta}\left(x^{\left(i\right)}\right)\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\frac{\partial}{\partial\theta_{j}}J_{train}\left(\theta\right)=\frac{1}{m}\sum_{i=1}^{m}\left(h_{\theta}\left(x^{\left(i\right)}\right)-y^{\left(i\right)}\right)x_{j}^{\left(i\right)}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+You can use MapReduce on computers with multiple cores as well!
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+No network latency for communication between computers.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Photo optical character recognition (OCR)
+\end_layout
+
+\begin_layout Itemize
+d
+\end_layout
+
 \end_body
 \end_document
