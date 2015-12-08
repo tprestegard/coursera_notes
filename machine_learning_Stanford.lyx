@@ -8732,7 +8732,7 @@ No network latency for communication between computers.
 \end_layout
 
 \end_deeper
-\begin_layout Subsection*
+\begin_layout Section*
 Photo optical character recognition (OCR)
 \end_layout
 
@@ -8865,5 +8865,131 @@ We slide a window in one dimension through the text rectangle and let the
 \end_layout
 
 \end_deeper
+\begin_layout Section*
+Artificial data synthesis
+\end_layout
+
+\begin_layout Itemize
+Using a small dataset, doing random operations to generate new data.
+\end_layout
+
+\begin_layout Itemize
+Can take data you already have and distort it.
+ Example: take a character and apply distortions or blurs to make the algorithm
+ more robust.
+\end_layout
+
+\begin_layout Itemize
+Can also generate completely new data yourself.
+\end_layout
+
+\begin_layout Itemize
+Photo OCR: take random fonts and paste a few characters on a random background,
+ applying distortions.
+ Then include these new examples in your training data set.
+\end_layout
+
+\begin_layout Itemize
+Usually, it doesn't help to add purely random/meaningless noise to your
+ data.
+ The distortion introduced should be representative of the type of distortions
+ you might expect to see in your test data set.
+\end_layout
+
+\begin_layout Itemize
+Discussion on getting more data:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Make sure you have a low bias classifier before expending the effort (plot
+ learning curves, keep increasing the number of features or hidden units
+ (for a neural network) until you have a low bias classifier).
+\end_layout
+
+\begin_layout Itemize
+Consider: how much work would it be to get 10 times as much data as we currently
+ have?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Artificial data synthesis.
+\end_layout
+
+\begin_layout Itemize
+Collect/label it yourself.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Crowdsourcing
+\begin_inset Quotes erd
+\end_inset
+
+, e.g.
+ Amazon Mechanical Turk
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Section*
+Ceiling analysis: which part of the pipeline to work on next?
+\end_layout
+
+\begin_layout Itemize
+Ceiling analysis: estimating the error due to each component of your pipeline.
+ What part of the pipeline should you spend the most time trying to improve?
+\end_layout
+
+\begin_layout Itemize
+Example: image -> text detection -> character segmentation -> character
+ recognition.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Overall system has accuracy 72%.
+\end_layout
+
+\begin_layout Itemize
+Manually label text in images to simulate 100% text detection accuracy.
+\end_layout
+
+\begin_layout Itemize
+Then check overall accuracy: 89%
+\end_layout
+
+\begin_layout Itemize
+Now manually segment character to simulate 100% character segmentation accuracy.
+\end_layout
+
+\begin_layout Itemize
+Then check overall accuracy: 90%.
+\end_layout
+
+\begin_layout Itemize
+Now manually perform character recognition to simulate 100% character recognitio
+n accuracy.
+\end_layout
+
+\begin_layout Itemize
+Then check overall accuracy: 100% (obviously).
+\end_layout
+
+\begin_layout Itemize
+This implies that improving the text detection could increase the overall
+ accuracy by up to 17%, so this is the weakest link in your pipeline.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Important to help you identify which are the most crucial parts of the pipeline
+ to improve and where you should spend your time.
+ Don't trust your gut feelings on this!
+\end_layout
+
 \end_body
 \end_document

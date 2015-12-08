@@ -8955,39 +8955,17 @@ Overall system has accuracy 72%.
 \end_layout
 
 \begin_layout Itemize
-Manually label text in images to simulate 100% text detection accuracy.
+Test and find that text detection has 89% accuracy.
 \end_layout
 
 \begin_layout Itemize
-Then check overall accuracy: 89%
+Now manually label text in images to simulate 100% text detection accuracy.
 \end_layout
 
 \begin_layout Itemize
-Now manually segment character to simulate 100% character segmentation accuracy.
-\end_layout
-
-\begin_layout Itemize
-Then check overall accuracy: 90%.
-\end_layout
-
-\begin_layout Itemize
-Now manually perform character recognition to simulate 100% character recognitio
-n accuracy.
-\end_layout
-
-\begin_layout Itemize
-Then check overall accuracy: 100% (obviously).
-\end_layout
-
-\begin_layout Itemize
-This implies that improving the text detection could increase the overall
- accuracy by up to 17%, so this is the weakest link in your pipeline.
+Then check character segmentation accuracy: 90%.
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-
-\end_layout
-
 \end_body
 \end_document
