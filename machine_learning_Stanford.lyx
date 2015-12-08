@@ -8737,8 +8737,133 @@ Photo optical character recognition (OCR)
 \end_layout
 
 \begin_layout Itemize
-d
+Recognizing and reading text in digital images.
 \end_layout
 
+\begin_layout Itemize
+Very useful to modularize the full procedure!
+\end_layout
+
+\begin_layout Itemize
+Photo OCR pipeline overview:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Text detection: define a rectangle around the text.
+\end_layout
+
+\begin_layout Itemize
+Character segmentation: separate each character.
+\end_layout
+
+\begin_layout Itemize
+Character classification: classify each character as a letter.
+\end_layout
+
+\begin_layout Itemize
+May need a 
+\begin_inset Quotes eld
+\end_inset
+
+correction
+\begin_inset Quotes erd
+\end_inset
+
+ step.
+ Example: 
+\begin_inset Quotes eld
+\end_inset
+
+c1eaning
+\begin_inset Quotes erd
+\end_inset
+
+ should be corrected to 
+\begin_inset Quotes eld
+\end_inset
+
+cleaning
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Sliding window: define a window size (82 by 50 pixels, for example) and
+ slide the window around in your image, performing logistic regression to
+ determine if what you are looking for (pedestrians, text, etc.) is contained
+ in each window.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use some step size of something like 5-10 pixels to slide the window after
+ each iteration.
+\end_layout
+
+\begin_layout Itemize
+Can use larger window size to select parts of the image, then resize those
+ to 82 by 50 pixels before passing to your logistic regression classifier.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Text detection:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Want to define rectangles which contain text.
+ It's tricky because different text blocks may have different heights, widths,
+ and aspect ratios.
+\end_layout
+
+\begin_layout Itemize
+Get training examples of positive and negative cases.
+\end_layout
+
+\begin_layout Itemize
+Run a small window on the image (of the size that will detect single letters).
+\end_layout
+
+\begin_layout Itemize
+Then apply an expansion classifier: if a pixel is within X pixels of a pixel
+ that is expected to have text, color that pixel white as well.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This helps us to define our bounding rectangles.
+\end_layout
+
+\begin_layout Itemize
+We define bounding rectangles around groups of white pixels which have reasonabl
+e aspect ratios.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+1D sliding window for character segmentation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Positive examples should be focused on spaces between two characters.
+\end_layout
+
+\begin_layout Itemize
+Negative examples should have blanks and single letters.
+\end_layout
+
+\begin_layout Itemize
+We slide a window in one dimension through the text rectangle and let the
+ learning algorithm determine where there are gaps.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document

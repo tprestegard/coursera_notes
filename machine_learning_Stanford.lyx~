@@ -8732,12 +8732,67 @@ No network latency for communication between computers.
 \end_layout
 
 \end_deeper
-\begin_layout Standard
+\begin_layout Subsection*
 Photo optical character recognition (OCR)
 \end_layout
 
 \begin_layout Itemize
-d
+Recognizing and reading text in digital images.
+\end_layout
+
+\begin_layout Itemize
+Very useful to modularize the full procedure!
+\end_layout
+
+\begin_layout Itemize
+Photo OCR pipeline overview:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Text detection: define a rectangle around the text.
+\end_layout
+
+\begin_layout Itemize
+Character segmentation: separate each character.
+\end_layout
+
+\begin_layout Itemize
+Character classification: classify each character as a letter.
+\end_layout
+
+\begin_layout Itemize
+May need a 
+\begin_inset Quotes eld
+\end_inset
+
+correction
+\begin_inset Quotes erd
+\end_inset
+
+ step.
+ Example: 
+\begin_inset Quotes eld
+\end_inset
+
+c1eaning
+\begin_inset Quotes erd
+\end_inset
+
+ should be corrected to 
+\begin_inset Quotes eld
+\end_inset
+
+cleaning
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
 \end_layout
 
 \end_body
