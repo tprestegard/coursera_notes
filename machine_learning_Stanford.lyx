@@ -8183,12 +8183,7 @@ Randomly shuffle the dataset.
 \end_layout
 
 \begin_layout Itemize
-Repeat:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-for 
+Repeat for 
 \begin_inset Formula $i=1,...,m$
 \end_inset
 
@@ -8208,7 +8203,6 @@ for
 )
 \end_layout
 
-\end_deeper
 \end_deeper
 \begin_layout Itemize
 How many times to repeat this whole thing? Usually 1 to 10 passes is most
@@ -8313,12 +8307,7 @@ Written out for
 
 \begin_deeper
 \begin_layout Itemize
-Repeat:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-for 
+Repeat for 
 \begin_inset Formula $i=1,11,21,31,...,991$
 \end_inset
 
@@ -8330,18 +8319,13 @@ for
 \begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\frac{1}{10}\sum_{k=1}^{i+9}\left(h_{\theta}\left(x^{\left(k\right)}\right)-y^{\left(k\right)}\right)x_{j}^{\left(k\right)}$
 \end_inset
 
-
-\end_layout
-
-\begin_layout Itemize
-(for every 
+ (for every 
 \begin_inset Formula $j=0,...,n$
 \end_inset
 
 )
 \end_layout
 
-\end_deeper
 \end_deeper
 \begin_layout Itemize
 Usually want to use 1-10 passes.
@@ -8530,7 +8514,6 @@ Update parameters
 .
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
 \begin_inset Formula $\theta_{j}:=\theta_{j}-\alpha\left(h_{\theta}\left(x\right)-y\right)x_{j}$
 \end_inset
@@ -8539,14 +8522,9 @@ Update parameters
 \begin_inset Formula $j=0,...,n$
 \end_inset
 
-)
+) (this is for logistic regression)
 \end_layout
 
-\begin_layout Itemize
-(this is for logistic regression)
-\end_layout
-
-\end_deeper
 \end_deeper
 \end_deeper
 \begin_layout Itemize
